@@ -4,15 +4,9 @@ namespace ApiVacations\Helpers;
 
 class Routes
 {
-    private static array $config = [
-        "host"=> "localhost",
-        "name"=> "Vacations",
-        "user"=> "root",
-        "pass"=> "dupablada2000"
-      ];
-    
+   
     private static array $routes = [
-        "/login" => ["POST", 'login'],
+        ["/login", "POST", 'login'],
         "/logout" => ["POST", 'logout'],
         "/users" => ["GET", 'getUsers'],
         "/users" => ["POST", 'addUser'],

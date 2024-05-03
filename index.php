@@ -13,19 +13,18 @@ use ApiVacations\Helpers\Logger;
 use ApiVacations\Exceptions\ConfigExcepion;
 use ApiVacations\Exceptions\DatabaseException;
 use ApiVacations\Exceptions\AppException;
-use ApiVacations\Helpers\Request;
+//use ApiVacations\Helpers\Request;
 use ApiVacations\Controller\App;
 
-$data = file_get_contents('php://input');
+// $data = file_get_contents('php://input');
+// Dump::dump(json_decode($data));
 
-Dump::dump(json_decode($data));
-
-Dump::dump($_SERVER);
-$request = new Request();
-echo 'method: ' . $request->getMethod() . "<br>";
-echo 'redirect url: ' . $request->getRedirectUrl() . "<br>";
-echo 'getDocmentRoot: ' . $request->getDocmentRoot() . "<br>";
-echo 'bbb: ' . $request->getParam('bbb') . "<br>";
+// Dump::dump($_SERVER);
+// $request = new Request();
+// echo 'method: ' . $request->getMethod() . "<br>";
+// echo 'redirect url: ' . $request->getRedirectUrl() . "<br>";
+// echo 'getDocmentRoot: ' . $request->getDocmentRoot() . "<br>";
+// echo 'bbb: ' . $request->getParam('bbb') . "<br>";
 
 
 //curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local

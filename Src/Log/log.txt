@@ -1,0 +1,8 @@
+2024-05-03 12:21:12 - Log level: ERROR
+2024-05-03 12:21:12 - Message: Error database credentials
+2024-05-03 12:23:37 - Log level: ERROR
+2024-05-03 12:23:37 - Message: Error database credentials
+2024-05-03 12:28:46 - Log level: ERROR
+2024-05-03 12:28:46 - Message: Error database credentials
+2024-05-03 12:28:46 - Line : 35
+2024-05-03 12:28:46 - File : /var/www/api.vacations.local/Src/Helpers/DB.php

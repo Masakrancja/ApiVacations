@@ -1,0 +1,9 @@
+{
+    "name": "your-name/your-project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "ApiVacations\\": "Src/"
+        }
+    }
+}

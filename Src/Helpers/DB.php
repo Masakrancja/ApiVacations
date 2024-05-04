@@ -16,7 +16,6 @@ final class DB
         $this->config = $config;
         $this->validate();
         $this->connect();
-
     }
 
     public static function getInstance(array $config): DB
@@ -37,7 +36,8 @@ final class DB
         $correctKeys = ['host', 'user', 'name', 'pass'];
         foreach ($this->config as $key => $config) {
             if (empty($config) OR !in_array($key, $correctKeys)) {
-                throw new ConfigExcepion('Error database credentials', 500);
+                Logger::error('Error configuration file', ['Method' => 'DB::validate', 'File' => 'db.php']);
+                throw new ConfigExcepion('Server error', 500);
             }
         }
     }
@@ -57,9 +57,8 @@ final class DB
             );            
         }
         catch (\PDOException $e) {
-            throw new DatabaseException('Błąd połączenia z bazą danych', 500);
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
         }  
-
     }
-
 }

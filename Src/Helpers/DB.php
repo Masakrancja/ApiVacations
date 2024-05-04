@@ -27,6 +27,11 @@ final class DB
         return self::$instance;
     }
 
+    public function getConn(): \PDO
+    {
+        return $this->connect;
+    }
+
     private function validate(): void
     {
         $correctKeys = ['host', 'user', 'name', 'pass'];

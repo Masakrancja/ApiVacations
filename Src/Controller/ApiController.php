@@ -3,24 +3,49 @@ declare(strict_types=1);
 namespace ApiVacations\Controller;
 
 use ApiVacations\Controller\AbstractController;
+use ApiVacations\Debug\Dump;
 use ApiVacations\Exceptions\AppException;
+use ApiVacations\Helpers\Request;
+use ApiVacations\Helpers\Routes;
+use ApiVacations\Helpers\Auth;
+use ApiVacations\Model\User\UserModel;
 class ApiController extends AbstractController
 {
-    public function __construct()
+    private UserModel $userModel;
+    public function __construct(Request $request, Routes $routes, Auth $auth)
     {
+        $this->request = $request;
+        $this->routes = $routes;
+        $this->auth = $auth;
+        $this->userModel = new UserModel;
+    }
+
+    public function run(): string
+    {
+        $result = '';
         $redirectUrl = $this->request->getRedirectUrl();
+        $method = $this->request->getMethod();
+        $token = $this->auth->getToken();
+
+        echo json_encode($token);
+        exit();
 
 
-        if ($this->request->getMethod() === "GET") {
-            echo "GET";
-        } elseif ($this->request->getMethod() === "POST") {
-            echo "POST";
-        } elseif ($this->request->getMethod() === "PUT") {
-            echo "PUT";
-        } elseif ($this->request->getMethod() === "DELETE") {
-            echo "DELETE";
+        $result = $this->routes->getFunction($redirectUrl, $method);
+        if (!empty($result)) {
+            $function = $result['name'] ;
+            $param0 = $result['params'][0] ?? null;
+            $param1 = $result['params'][1] ?? null;
+            
+            if ($param0 && $param1) {
+                return $this->userModel->{$function}($param0, $param1);
+            } elseif ($param0) {
+                return $this->userModel->{$function}($param0);
+            } else {
+                return $this->userModel->{$function}();
+            }
         } else {
-            throw new AppException("Bad request", 400);
+            throw new AppException('Bad request', 400);
         }
     }
 }

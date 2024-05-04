@@ -20,16 +20,23 @@ class Routes
         ['/logout', 'POST', 'Auth']
     ];
 
-    public function getFunction(string $redirectUri, string $method): ?array
+    public function getFunction(?string $redirectUri, ?string $method): ?array
     {
-        if ($route) {
+        $result = [];
+        if ($redirectUri && $method) {
             foreach ($this->routes as $route) {
                 if (
                     preg_match('~^' . $route[0] . '$~', $redirectUri, $matches) AND 
                     $route[1] == $method
                 ) {
-                    $matches['function'] = $route[2];
-                    return $matches;
+                    $result['folder'] = $route[2];
+                    $result['name'] = strtolower($method);
+                    $result['params'] = [];
+                    $c = count($matches);
+                    for ($i = 1; $i < $c; $i++) {
+                        $result['params'][] = $matches[$i];
+                    }
+                    return $result;
                 }
             }
         }

@@ -5,7 +5,8 @@ namespace ApiVacations;
 // header('Access-Control-Allow-Headers: *');
 // header('Access-Control-Allow-Methods: *');
 // header('Access-Control-Allow-Credentials: true');
-// header('Content-type: json/application');
+//header('Content-Type: application/json');
+
 
 require 'vendor/autoload.php';
 use ApiVacations\Debug\Dump;
@@ -29,8 +30,10 @@ use ApiVacations\Controller\App;
 
 //curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local
 //curl -X PUT -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local
-//curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local
+//curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer dsfgdafgsdfgsdfgsdf" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local
 //curl -X DELETE -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 30, "city": "New York"}' http://api.vacations.local
+//curl -X GET -H "Content-Type: application/json" -H "X-API-KEY: abcdefghijklm" http://api.vacations.local/sdfsdf
+
 
 // echo '<h1 style="text-align: center;">Vacations API</h1>';
 
@@ -38,15 +41,11 @@ try {
     (new App())->run();
 }
 catch (ConfigExcepion $e) {
-    Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
-    Dump::dump($e);
-    echo "". $e->getMessage() ."<br>";
+    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
 }
 catch (DatabaseException $e) {
-    Logger::error($e->getMessage());
-    echo "". $e->getMessage() ."<br>";
+    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
 }
 catch (AppException $e) {
-    Logger::error($e->getCode() . $e->getMessage());
-    echo $e->getCode() . " - ". $e->getMessage() ."<br>";
+    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
 }

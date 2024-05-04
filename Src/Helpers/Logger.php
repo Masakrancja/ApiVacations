@@ -41,6 +41,4 @@ class Logger
         }
         return $result;
     }
-
-
 }

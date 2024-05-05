@@ -5,11 +5,12 @@ namespace ApiVacations\Model\User;
 use ApiVacations\Exceptions\DatabaseException;
 use ApiVacations\Model\AbstractModel;
 use ApiVacations\Exceptions\AppException;
+use ApiVacations\Helpers\Logger;
 
 
 class UserModel extends AbstractModel
 {
-    public function get(?int $param1=null, ?int $param2=null): string
+    public function get(array $data=[], ?int $param1=null, ?int $param2=null): string
     {
         $result = [];
         $result['code'] = 200;
@@ -24,17 +25,17 @@ class UserModel extends AbstractModel
         throw new AppException('Bad request', 400);
     }
 
-    public function put(int $param1, ?int $param2=null): string
+    public function put(array $data=[], int $param1, ?int $param2=null): string
     {
 
     }
 
-    public function post(?int $param1=null): string
+    public function post(array $data=[], ?int $param1=null): string
     {
 
     }
 
-    public function delete(int $param1): string
+    public function delete(array $data=[], int $param1): string
     {
 
     }

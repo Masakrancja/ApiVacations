@@ -27,8 +27,11 @@ class ApiController extends AbstractController
         $method = $this->request->getMethod();
         $token = $this->auth->getToken();
 
-        echo json_encode($token);
-        exit();
+        $rawData = $this->request->getRawData();
+
+
+        echo json_encode($rawData);
+        //exit();
 
 
         $result = $this->routes->getFunction($redirectUrl, $method);
@@ -38,14 +41,14 @@ class ApiController extends AbstractController
             $param1 = $result['params'][1] ?? null;
             
             if ($param0 && $param1) {
-                return $this->userModel->{$function}($param0, $param1);
+                return $this->userModel->{$function}($rawData, $param0, $param1);
             } elseif ($param0) {
-                return $this->userModel->{$function}($param0);
+                return $this->userModel->{$function}($rawData, $param0);
             } else {
-                return $this->userModel->{$function}();
+                return $this->userModel->{$function}($rawData);
             }
         } else {
-            throw new AppException('Bad request', 400);
+            throw new AppException('Not Found', 404);
         }
     }
 }

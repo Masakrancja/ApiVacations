@@ -9,8 +9,6 @@ namespace ApiVacations;
 
 
 require 'vendor/autoload.php';
-use ApiVacations\Debug\Dump;
-use ApiVacations\Helpers\Logger;
 use ApiVacations\Exceptions\ConfigExcepion;
 use ApiVacations\Exceptions\DatabaseException;
 use ApiVacations\Exceptions\AppException;

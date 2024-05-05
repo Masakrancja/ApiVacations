@@ -6,10 +6,7 @@ class Request
 {
     public function getRedirectUrl(): ?string
     {
-        if (isset($_SERVER["REDIRECT_URL"])) {
-            return $_SERVER["REDIRECT_URL"];
-        }
-        return null;
+        return $_SERVER["REDIRECT_URL"] ?? null;
     }
 
     public function getMethod(): string
@@ -38,4 +35,14 @@ class Request
         return null;
     }
 
+    public function getRawData(): array
+    {
+        $content = file_get_contents('php://input');
+        if ($content) {
+            return json_decode((string) $content, true);
+        }
+        return [];
+    }
+
 }
+

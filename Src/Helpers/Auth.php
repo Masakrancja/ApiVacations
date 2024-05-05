@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace ApiVacations\Helpers;
 use ApiVacations\Exceptions\AppException;
 use ApiVacations\Exceptions\DatabaseException;
+use ApiVacations\Helpers\Logger;
 
 class Auth
 {
@@ -43,7 +44,7 @@ class Auth
                 $stmt->execute();
                 $row = $stmt->fetch(\PDO::FETCH_ASSOC);
                 if ($row) {
-                    return (bool) ((int) $row["isAdmin"]);
+                    return (bool) $row["isAdmin"];
                 }
             }
             catch (\PDOException $e) {

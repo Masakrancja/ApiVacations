@@ -4,6 +4,7 @@ namespace ApiVacations\Helpers;
 
 use ApiVacations\Exceptions\ConfigExcepion;
 use ApiVacations\Exceptions\DatabaseException;
+use ApiVacations\Helpers\Logger;
 
 final class DB
 {

@@ -6,3 +6,11 @@
 2024-05-03 12:28:46 - Message: Error database credentials
 2024-05-03 12:28:46 - Line : 35
 2024-05-03 12:28:46 - File : /var/www/api.vacations.local/Src/Helpers/DB.php
+2024-05-30 18:32:36 - Log level: ERROR
+2024-05-30 18:32:36 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+2024-05-30 18:32:36 - Line : 24
+2024-05-30 18:32:36 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php
+2024-05-30 18:36:15 - Log level: ERROR
+2024-05-30 18:36:15 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+2024-05-30 18:36:15 - Line : 24
+2024-05-30 18:36:15 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php

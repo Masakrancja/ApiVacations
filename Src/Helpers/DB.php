@@ -32,6 +32,32 @@ final class DB
         return $this->connect;
     }
 
+    public function selectProcess(
+        string $sql, array $params=[], $method='fetch'
+    ): ?array
+    {
+        try {
+            $stmt = $this->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+            if ($method == 'fetch') {
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+                return ($row) ? $row : null;
+            } elseif ($method == 'fetchAll') {
+                return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?? [];
+            } else {
+                Logger::error('Error method. Only fetch and fetchAll', ['Method' => 'DB::selectProcess', 'File' => 'db.php']);
+                throw new ConfigExcepion('Server error', 500);
+            }
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
     private function validate(): void
     {
         $correctKeys = ['host', 'user', 'name', 'pass'];

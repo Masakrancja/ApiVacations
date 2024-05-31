@@ -9,8 +9,6 @@ class App extends AbstractController
 {
     public function run()
     {
-        (new ApiController(
-            $this->request, $this->routes, $this->auth
-        ))->run();
+        (new ApiController($this->request))->run();
     }
 }

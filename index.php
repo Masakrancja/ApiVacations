@@ -7,12 +7,15 @@ namespace ApiVacations;
 // header('Access-Control-Allow-Credentials: true');
 //header('Content-Type: application/json');
 
+header("Content-type: application/json; charset=UTF-8");
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require 'vendor/autoload.php';
 use ApiVacations\Exceptions\ConfigExcepion;
 use ApiVacations\Exceptions\DatabaseException;
 use ApiVacations\Exceptions\AppException;
-//use ApiVacations\Helpers\Request;
 use ApiVacations\Controller\App;
 
 // $data = file_get_contents('php://input');
@@ -39,11 +42,11 @@ try {
     (new App())->run();
 }
 catch (ConfigExcepion $e) {
-    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage(),'code'=> $e->getCode()]);
 }
 catch (DatabaseException $e) {
-    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage(),'code'=> $e->getCode()]);
 }
 catch (AppException $e) {
-    echo json_encode(['message' => $e->getMessage(),'code'=> $e->getCode()]);
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage(),'code'=> $e->getCode()]);
 }

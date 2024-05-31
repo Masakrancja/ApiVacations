@@ -6,15 +6,15 @@ use ApiVacations\Exceptions\AppException;
 
 class User
 {
-    private int $id;
-    private int $groupId;
+    private ?int $id = null;
+    private ?int $groupId = null;
     private string $login;
     private string $pass;
     private string $tokenApi;
-    private bool $isActive;
-    private bool $isAdmin;
-    private string $createdAt;
-    private string $updatedAt;
+    private bool $isActive = false;
+    private bool $isAdmin = false;
+    private ?string $createdAt = null;
+    private ?string $updatedAt = null;
 
     public function getId(): int
     {

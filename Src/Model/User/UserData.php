@@ -6,17 +6,17 @@ use ApiVacations\Exceptions\AppException;
 
 class UserData
 {
-    private $id;
-    private $userId;
-    private $firstName;
-    private $lastName;
-    private $address;
-    private $postalCode;
-    private $city;
-    private $phone;
-    private $email;
-    private $createdAt;
-    private $updatedAt;
+    private ?int $id = null;
+    private ?int $userId = null;
+    private string $firstName;
+    private string $lastName;
+    private string $address;
+    private string $postalCode;
+    private string $city;
+    private string $phone;
+    private string $email;
+    private ?string $createdAt = null;
+    private ?string $updatedAt = null;
 
     public function getId(): int
     {

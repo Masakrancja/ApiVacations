@@ -10,7 +10,7 @@ class Group
     private string $address;
     private string $postalCode;
     private string $city;
-    private ?string $nip = null;
+    private string $nip;
     private string $createdAt;
     private string $updatedAt;
 

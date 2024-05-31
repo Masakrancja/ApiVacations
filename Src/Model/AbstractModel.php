@@ -4,6 +4,7 @@ namespace ApiVacations\Model;
 
 use ApiVacations\Config\DBConfig;
 use ApiVacations\Helpers\DB;
+use ApiVacations\Exceptions\AppException;
 
 abstract class AbstractModel
 {

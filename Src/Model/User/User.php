@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace ApiVacations\Model\User;
+
 use ApiVacations\Helpers\Validator;
 use ApiVacations\Exceptions\AppException;
 
@@ -33,6 +34,9 @@ class User
 
     public function setGroupId(int $groupId): void
     {
+        if (!Validator::intValidate($groupId, 1)) {
+            throw new AppException('Group not exist', 422);
+        }
         $this->groupId = $groupId;
     }
 
@@ -45,7 +49,7 @@ class User
     {
         $login = Validator::stringSanitize($login);
         if (!Validator::stringValidate($login, 5, 20)) {
-            throw new AppException("Value length must be between 5 - 20", 422);
+            throw new AppException("Login length must be between 5 - 20", 422);
         }
         $this->login = $login;
     }
@@ -57,6 +61,10 @@ class User
 
     public function setPass(string $pass): void
     {
+        $pass = Validator::stringSanitize($pass);
+        if (!Validator::stringValidate($pass, 4, 20)) {
+            throw new AppException("Password length must be between 4 - 20", 422);
+        }
         $this->pass = $pass;
     }
 

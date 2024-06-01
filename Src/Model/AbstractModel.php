@@ -5,14 +5,24 @@ namespace ApiVacations\Model;
 use ApiVacations\Config\DBConfig;
 use ApiVacations\Helpers\DB;
 use ApiVacations\Exceptions\AppException;
+use ApiVacations\Model\User\User;
+use ApiVacations\Model\User\UserData;
+use ApiVacations\Model\Group\Group;
 
 abstract class AbstractModel
 {
     protected DB $db;
+    protected User $user;
+    protected UserData $userData;
+    protected Group $group;
+
 
     public function __construct()
     {
         $this->db = DB::getInstance(DBConfig::getConfig());
+        $this->user = new User;
+        $this->userData = new UserData;
+        $this->group = new Group;
     }
 
     protected function getUserData(int $id): array
@@ -53,6 +63,48 @@ abstract class AbstractModel
         }
         http_response_code(401);
         throw new AppException('Unauthorized', 401);
+    }
+
+    protected function isGroupId(int $id): bool
+    {
+        $sql = "SELECT id FROM Groups WHERE id = :id";
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (bool) $row;
+    }
+
+    protected function isGroupNip(string $nip): bool
+    {
+        $sql = "SELECT id FROM `Groups` WHERE nip = :nip";
+        $params = [
+            [
+                'key' => ':nip',
+                'value' => $nip,
+                'type' => \PDO::PARAM_STR,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (bool) $row;        
+    }
+
+    protected function isUserLogin(string $login): bool
+    {
+        $sql = "SELECT id FROM `Groups` WHERE login = :login";
+        $params = [
+            [
+                'key' => ':login',
+                'value' => $login,
+                'type' => \PDO::PARAM_STR,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (bool) $row;  
     }
 
     protected function getUserGroupId(string $token): int

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace ApiVacations\Model\User;
+
 use ApiVacations\Helpers\Validator;
 use ApiVacations\Exceptions\AppException;
 
@@ -47,7 +48,7 @@ class UserData
     {
         $firstName = Validator::stringSanitize($firstName);
         if (!Validator::stringValidate($firstName, 2, 30)) {
-            throw new AppException("Value length must be between 2 - 30", 422);
+            throw new AppException("Firstname length must be between 2 - 30", 422);
         }        
         $this->firstName = $firstName;
     }
@@ -61,7 +62,7 @@ class UserData
     {
         $lastName = Validator::stringSanitize($lastName);
         if (!Validator::stringValidate($lastName, 2, 30)) {
-            throw new AppException("Value length must be between 2 - 30", 422);
+            throw new AppException("Lastname length must be between 2 - 30", 422);
         }  
         $this->lastName = $lastName;
     }
@@ -75,7 +76,7 @@ class UserData
     {
         $address = Validator::stringSanitize($address);
         if (!Validator::stringValidate($address, 5)) {
-            throw new AppException("Value length must great or equal 5", 422);
+            throw new AppException("Address length must great or equal 5", 422);
         }  
         $this->address = $address;
     }
@@ -89,7 +90,7 @@ class UserData
     {
         $postalCode = Validator::stringSanitize($postalCode);
         if (!Validator::stringValidate($postalCode, 0, 10)) {
-            throw new AppException("Value length must less or equal 10", 422);
+            throw new AppException("Postal code length must less or equal 10", 422);
         }  
         $this->postalCode = $postalCode;
     }
@@ -103,7 +104,7 @@ class UserData
     {
         $city = Validator::stringSanitize($city);
         if (!Validator::stringValidate($city, 2, 30)) {
-            throw new AppException("Value length must be between 2 - 30", 422);
+            throw new AppException("N leame of city length must be between 2 - 30", 422);
         }  
         $this->city = $city;
     }
@@ -117,7 +118,7 @@ class UserData
     {
         $phone = Validator::stringSanitize($phone);
         if (!Validator::stringValidate($phone, 6, 20)) {
-            throw new AppException("Value length must be between 6 - 20", 422);
+            throw new AppException("Phone number length must be between 6 - 20", 422);
         }          
         $this->phone = $phone;
     }
@@ -131,7 +132,7 @@ class UserData
     {
         $email = Validator::stringSanitize($email);
         if (!Validator::stringValidate($email, 5)) {
-            throw new AppException("Value length must great or equal 5", 422);
+            throw new AppException("Email length must great or equal 5", 422);
         }
         if (!Validator::emailValidate($email)) {
             throw new AppException("Error email format", 422);

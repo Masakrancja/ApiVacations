@@ -19,9 +19,19 @@ class Validator
         return true;
     }
 
+    public static function intValidate(
+        int $value, int $min=0, int $max=PHP_INT_MAX
+    ): bool 
+    {
+        if ($value >= $min && $value <= $max) {
+            return true;
+        }
+        return false;
+    }
+
     public static function emailValidate(string $email): bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+        return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
     }
     
 }

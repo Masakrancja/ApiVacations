@@ -26,12 +26,12 @@ class ApiController extends AbstractController
         $params = $this->request->getParams();
         $rawData = $this->request->getRawData();
 
-        echo '{"method":"' . $method . '"}' . "\n";
+        // echo '{"method":"' . $method . '"}' . "\n";
         // echo '{"token":"' . $token . '"}' . "\n";
         // echo '{"path":"' . $path . '"}' . "\n";
         // echo '{"param":"' . $param . '"}' . "\n";
         // echo json_encode($params) . "\n";
-        echo json_encode($rawData) . "\n";
+        // echo json_encode($rawData) . "\n";
         //echo json_encode($uriTable);
 
         //http api.vacations.local/users?limit=100\&offset=1 X-API-KEY:wfsdfasdfdf name=JAN
@@ -62,8 +62,8 @@ class ApiController extends AbstractController
         $result = [];
         if ($method === 'GET') {
             if ($param !== null) {
-                $autorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
                 $param = $this->request->paramValidateInt($param);
+                $autorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
                 $result['response'] = $this->userModel->getUser(
                     $param, $token, $autorize
                 );
@@ -77,19 +77,22 @@ class ApiController extends AbstractController
                 );
             }
             $result['code'] = 200;
-            $result['status'] = 'OK';
-            http_response_code($result['code']);
-            echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
         } elseif ($method === 'POST') {
-            echo '{"POST": ""}'."\n";
-
+            $result['response'] = $this->userModel->addUser($rawData);
+            $result['code'] = 201;
         } elseif ($method === 'PATCH') {
-
+            echo '{"PATCH": ""}'."\n";
+            $result['code'] = 200;
         } else {
             header('Allow: GET,POST,PATCH');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
         }
+
+        exit();
+        http_response_code($result['code']);
+        $result['status'] = 'OK';
+        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
     }
 
     private function EventsControler()

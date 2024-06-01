@@ -11,7 +11,6 @@ class UserModel extends AbstractModel
 {
     public function getUsers(?array $params, string $token, string $authorize): array
     {
-        $token = $this->checkToken($token);
         if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
             http_response_code(401);
             throw new AppException('Unauthorized', 401);            
@@ -42,7 +41,6 @@ class UserModel extends AbstractModel
     public function getUser(int $id, string $token, string $authorize): ?array
     {
         $canIenter = false;
-        $token = $this->checkToken($token);
         if ($authorize === 'admin') {
             if ($this->isItMyUser($token, $id) OR $this->isItMe($token, $id)) {
                 $canIenter = true;
@@ -79,6 +77,7 @@ class UserModel extends AbstractModel
 
     public function addUser(?object $data): ?object
     {
+        $result = new \StdClass;
         //User
         if ($data === null) {
             http_response_code(422);
@@ -115,7 +114,6 @@ class UserModel extends AbstractModel
             $this->group->setNip((string) ($data->group->nip ?? ''));
         }
 
-        
         //Sprawdzenie czy istnieje podana grupa jeżeli jest tworzony user
         if (!$this->user->getIsAdmin()) {
             if (!$this->isGroupId($this->user->getGroupId())) {
@@ -123,7 +121,7 @@ class UserModel extends AbstractModel
                 throw new AppException('Selected group not exist', 422);
             }
         }
-       
+      
         //Sprawdzenie czy admin nie tworzy już istniejącej grupy
         if ($this->user->getIsAdmin()) {
             if ($this->isGroupNip($this->group->getNip())) {
@@ -133,13 +131,74 @@ class UserModel extends AbstractModel
         }
 
         //Sprawdzenie czy login już jest wykorzystany
-        if ($this->isUserLogin($this->group->getLogin())) {
+        if ($this->isUserLogin($this->user->getLogin())) {
             http_response_code(422);
-            throw new AppException('Login: ' . $this->group->getLogin() . ' exist' , 422);                
+            throw new AppException('Login: ' . $this->user->getLogin() . ' exist' , 422);                
         }
-        exit();
-        
 
+
+        try {
+            $this->db->getConn()->beginTransaction();
+            $sql = "
+                INSERT INTO Users (login, pass, token_api, isActive, isAdmin)
+                VALUES (:login, :pass, :token_api, :isActive, :isAdmin)
+            ";
+            $stmt = $this->db->getConn()->prepare($sql);
+            $stmt->bindValue(':login', $this->user->getLogin(), \PDO::PARAM_STR);
+            $stmt->bindValue(':pass', md5($this->user->getPass()), \PDO::PARAM_STR);
+            $stmt->bindValue(':token_api', $this->user->getTokenApi(), \PDO::PARAM_STR);
+            $stmt->bindValue(':isActive', $this->user->getIsActive(), \PDO::PARAM_BOOL);
+            $stmt->bindValue(':isAdmin', $this->user->getIsAdmin(), \PDO::PARAM_BOOL);
+            $stmt->execute();
+            $userId = $this->db->getConn()->lastInsertId();
+
+            $sql = "
+                INSERT INTO UserData (user_id, firstName, lastName, address, postalCode, city, phone, email) 
+                VALUES (:user_id, :firstName, :lastName, :address, :postalCode, :city, :phone, :email)
+            ";
+            $stmt = $this->db->getConn()->prepare($sql);
+            $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':firstName', $this->userData->getFirstName(), \PDO::PARAM_STR);
+            $stmt->bindValue(':lastName', $this->userData->getLastName(), \PDO::PARAM_STR);
+            $stmt->bindValue(':address', $this->userData->getAddress(), \PDO::PARAM_STR);
+            $stmt->bindValue(':postalCode', $this->userData->getPostalCode(), \PDO::PARAM_STR);
+            $stmt->bindValue(':city', $this->userData->getCity(), \PDO::PARAM_STR);
+            $stmt->bindValue(':phone', $this->userData->getPhone(), \PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->userData->getEmail(), \PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($this->user->getIsAdmin()) {
+                $sql = "
+                    INSERT INTO Groups (user_id, name, address, postalCode, city, nip) 
+                    VALUES (:user_id, :name, :address, :postalCode, :city, :nip)
+                ";
+                $stmt = $this->db->getConn()->prepare($sql);
+                $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+                $stmt->bindValue(':name', $this->group->getName(), \PDO::PARAM_STR);
+                $stmt->bindValue(':address', $this->group->getAddress(), \PDO::PARAM_STR);
+                $stmt->bindValue(':postalCode', $this->group->getPostalCode(), \PDO::PARAM_STR);
+                $stmt->bindValue(':city', $this->group->getCity(), \PDO::PARAM_STR);
+                $stmt->bindValue(':nip', $this->group->getNip(), \PDO::PARAM_STR);
+                $stmt->execute();
+                $groupId = $this->db->getConn()->lastInsertId();
+            } else {
+                $groupId = $this->user->getGroupId();
+            }
+
+            $sql = "
+                UPDATE Users SET group_id = :group_id WHERE id = :id
+            ";
+            $stmt = $this->db->getConn()->prepare($sql);
+            $stmt->bindValue(':group_id', $groupId, \PDO::PARAM_INT);
+            //$stmt->bindValue(':id', $userId, \PDO::PARAM_INT);
+            $stmt->execute();
+            $this->db->getConn()->commit();
+        }
+        catch (\PDOException $e) {
+            $this->db->getConn()->rollBack();
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
 
         /*
         {
@@ -165,7 +224,7 @@ class UserModel extends AbstractModel
         }
 {"login":"ada23m","pass":"dupablada","group_id":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
         */
-        return new \StdClass;
+        return $result;
     }
 
 

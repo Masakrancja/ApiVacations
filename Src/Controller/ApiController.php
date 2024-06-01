@@ -11,6 +11,7 @@ use ApiVacations\Model\User\UserModel;
 class ApiController extends AbstractController
 {
     private UserModel $userModel;
+    private AuthModel $authModel;
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -22,12 +23,18 @@ class ApiController extends AbstractController
     {
         [$path, $param] = $this->request->getUriTable();
         $method = $this->request->getMethod();
-        $token = $this->authModel->getToken();
+        $token = null;
+        if (!($method === 'POST' AND $path === 'users')) {
+            $token = $this->authModel->checkToken(
+                $this->authModel->getToken()
+            );
+        }
+
         $params = $this->request->getParams();
         $rawData = $this->request->getRawData();
 
         // echo '{"method":"' . $method . '"}' . "\n";
-        // echo '{"token":"' . $token . '"}' . "\n";
+        //echo '{"token":"' . $token . '"}' . "\n";
         // echo '{"path":"' . $path . '"}' . "\n";
         // echo '{"param":"' . $param . '"}' . "\n";
         // echo json_encode($params) . "\n";
@@ -68,7 +75,7 @@ class ApiController extends AbstractController
                     $param, $token, $autorize
                 );
                 if ($result['response'] === null) {
-                    http_response_code($result['code']);
+                    http_response_code(200);
                     throw new AppException('Not found', 404);
                 }
             } else {

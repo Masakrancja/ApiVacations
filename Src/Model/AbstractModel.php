@@ -95,7 +95,7 @@ abstract class AbstractModel
 
     protected function isUserLogin(string $login): bool
     {
-        $sql = "SELECT id FROM `Groups` WHERE login = :login";
+        $sql = "SELECT id FROM Users WHERE login = :login";
         $params = [
             [
                 'key' => ':login',

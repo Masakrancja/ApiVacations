@@ -24,30 +24,11 @@ class UserModel extends AbstractModel
             throw new AppException('Unauthorized', 401);            
         }
         $group_id = $this->getUserGroupId($token);
-        $result = [];
-        $sql = "
-            SELECT id, isActive, isAdmin, createdAt, updatedAt  
-            FROM Users 
-            WHERE group_id = :group_id AND isAdmin = 0
-            LIMIT 
-        " . ($params['offset'] ?? 0) . ", " . ($params['limit'] ?? 10);
-        $params = [
-            [
-                'key' => ':group_id',
-                'value' => $group_id,
-                'type' => \PDO::PARAM_INT,
-            ]
-        ];
-        $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
-        foreach($rows as $row) {
-            $row['userData'] = $this->getUserData((int) $row['id']);
-            $result[] = $row;            
-        }
-        return $result;
+        return $this->getUsersFromDB($params, $group_id);
     }
 
     /**
-     * Get particular user from database by ID
+     * Get particular user
      *
      * @param integer $id // User ID
      * @param string $token // X-API-KEY token
@@ -69,26 +50,9 @@ class UserModel extends AbstractModel
         }
         if (!$canIenter) {
             http_response_code(401);
-            throw new AppException('Unauthorized - you are not Admin or User', 401);
+            throw new AppException('Unauthorized', 401);
         }
-        $sql = "
-            SELECT id, isActive, isAdmin, createdAt, updatedAt 
-            FROM Users 
-            WHERE id = :id
-        ";
-        $params = [
-            [
-                'key' => ':id',
-                'value' => $id,
-                'type' => \PDO::PARAM_INT,
-            ]
-        ];
-        $row = $this->db->selectProcess($sql, $params, 'fetch');
-        if ($row) {
-            $row['userData'] = $this->getUserData((int) $row['id']);
-            return $row;
-        }
-        return null;        
+        return $this->getUserFromDB($id);
     }
 
     /**
@@ -97,9 +61,10 @@ class UserModel extends AbstractModel
      * @param object|null $data
      * @return object|null
      */
-    public function addUser(?object $data): ?object
+    public function addUser(?object $data): ?array
     {
         $result = new \StdClass;
+
         //User
         if ($data === null) {
             http_response_code(422);
@@ -119,13 +84,13 @@ class UserModel extends AbstractModel
         ));
 
         //UserData
-        $this->userData->setFirstName((string) ($data->data->firstName ?? ''));
-        $this->userData->setLastName((string) ($data->data->lastName ??''));
-        $this->userData->setAddress((string) ($data->data->address ??''));
-        $this->userData->setPostalCode((string) ($data->data->postalCode ?? ''));
-        $this->userData->setCity((string) ($data->data->city ?? ''));
-        $this->userData->setPhone((string) ($data->data->phone ?? ''));
-        $this->userData->setEmail((string) ($data->data->email ?? ''));
+        $this->userData->setFirstName((string) ($data->userData->firstName ?? ''));
+        $this->userData->setLastName((string) ($data->userData->lastName ??''));
+        $this->userData->setAddress((string) ($data->userData->address ??''));
+        $this->userData->setPostalCode((string) ($data->userData->postalCode ?? ''));
+        $this->userData->setCity((string) ($data->userData->city ?? ''));
+        $this->userData->setPhone((string) ($data->userData->phone ?? ''));
+        $this->userData->setEmail((string) ($data->userData->email ?? ''));
 
         //Group
         if ($this->user->getIsAdmin()) {
@@ -143,7 +108,7 @@ class UserModel extends AbstractModel
                 throw new AppException('Selected group not exist', 422);
             }
         }
-      
+
         //Sprawdzenie czy admin nie tworzy już istniejącej grupy
         if ($this->user->getIsAdmin()) {
             if ($this->isGroupNip($this->group->getNip())) {
@@ -157,6 +122,156 @@ class UserModel extends AbstractModel
             http_response_code(422);
             throw new AppException('Login: ' . $this->user->getLogin() . ' exist' , 422);                
         }
+        
+        $userId = $this->addUserToDB();
+        return $this->getUserFromDB($userId);
+
+
+        /*
+        {
+            "login": "ada23m,
+            "pass": "dupablada",
+            "group_id": null,
+            "userData": {
+                "firstName": "Adam",
+                "lastName": "Wilk",
+                "address": "Czarcia 5",
+                "postalCode": "11-111",
+                "city": "Old Town",
+                "phone": "12-333-444-555",
+                "email": "adam@aa.com"
+            },
+            "group": {
+                "name": "F.H. Vip",
+                "address": "Dzwonkowa 4",
+                "postalCode": "11-222",
+                "city": "New Town",
+                "nip": "123-456-78-90"
+            }
+        }
+{"login":"ada23m","pass":"dupablada","group_id":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
+        */
+        
+    }
+
+    public function editUserData(
+        ?object $data, string $token, string $authorize, int $id
+    ): ?array
+    {
+
+        echo json_encode($data) . "\n\n";
+
+
+        $user = $this->getUser($id, $token, $authorize);
+        if (!$user) {
+            http_response_code(200);
+            throw new AppException('Not found', 404);
+        }
+
+        echo json_encode($user) . "\n\n";
+
+        $firstName = $data->firstName ?? $user['userData']['firstName'];
+        $lastName = $data->lastName ?? $user['userData']['lastName'];
+        $address = $data->address ?? $user['userData']['address'];
+        $postalCode = $data->postalCode ?? $user['userData']['postalCode'];
+        $city = $data->city ?? $user['userData']['city'];
+        $phone = $data->phone ?? $user['userData']['phone'];
+        $email = $data->email ?? $user['userData']['email'];
+
+        echo 'firstName: ' . $firstName . "\n";
+        echo 'lastName: ' . $lastName . "\n";
+        echo 'address: ' . $address . "\n";
+        echo 'postalCode: ' .$postalCode . "\n";
+        echo 'city: ' . $city . "\n";
+        echo 'phone: ' . $phone . "\n";
+        echo 'email: ' . $email . "\n";
+        
+
+        return [];
+
+        /*
+        {
+            "firstName":"",
+            "lastName":"",
+            "address":"",
+            "postalCode":"",
+            "city":"",
+            "phone":"",
+            "email":""
+        }
+        */
+    }
+
+    private function getUsersFromDB(?array $params, int $group_id): array
+    {
+        $result = [];
+        $sql = "
+            SELECT id, login, isActive, isAdmin, createdAt, updatedAt  
+            FROM Users 
+            WHERE group_id = :group_id
+            LIMIT 
+        " . ($params['offset'] ?? 0) . ", " . ($params['limit'] ?? 10);
+        $params = [
+            [
+                'key' => ':group_id',
+                'value' => $group_id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
+        foreach($rows as $row) {
+            $row['userData'] = $this->getUserData((int) $row['id']);
+            $result[] = $row;            
+        }
+        return $result;
+    }
+
+    private function getUserData(int $id): array
+    {
+        $sql = "
+            SELECT firstName, lastName, address, postalCode, city, phone, email, createdAt, updatedAt  
+            FROM UserData 
+            WHERE user_id = :id
+        ";
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        if ($row) {
+            return $row;
+        }
+        http_response_code(401);
+        throw new AppException('Unauthorized', 401);
+    }
+
+    private function getUserFromDB(int $id): ?array
+    {
+        $sql = "
+            SELECT id, login, isActive, isAdmin, createdAt, updatedAt 
+            FROM Users 
+            WHERE id = :id
+        ";
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        if ($row) {
+            $row['userData'] = $this->getUserData((int) $row['id']);
+            return $row;
+        }
+        return null;           
+    }
+
+    private function addUserToDB(): int
+    {
         try {
             $this->db->getConn()->beginTransaction();
             $sql = "
@@ -188,7 +303,7 @@ class UserModel extends AbstractModel
 
             if ($this->user->getIsAdmin()) {
                 $sql = "
-                    INSERT INTO Groups (user_id, name, address, postalCode, city, nip) 
+                    INSERT INTO `Groups` (user_id, name, address, postalCode, city, nip) 
                     VALUES (:user_id, :name, :address, :postalCode, :city, :nip)
                 ";
                 $stmt = $this->db->getConn()->prepare($sql);
@@ -211,38 +326,13 @@ class UserModel extends AbstractModel
             $stmt->bindValue(':id', $userId, \PDO::PARAM_INT);
             $stmt->execute();
             $this->db->getConn()->commit();
+            return (int) $userId;
         }
         catch (\PDOException $e) {
             $this->db->getConn()->rollBack();
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
-
-        /*
-        {
-            "login": "ada23m,
-            "pass": "dupablada",
-            "group_id": null,
-            "data": {
-                "firstName": "Adam",
-                "lastName": "Wilk",
-                "address": "Czarcia 5",
-                "postalCode": "11-111",
-                "city": "Old Town",
-                "phone": "12-333-444-555",
-                "email": "adam@aa.com"
-            },
-            "group": {
-                "name": "F.H. Vip",
-                "address": "Dzwonkowa 4",
-                "postalCode": "11-222",
-                "city": "New Town",
-                "nip": "123-456-78-90"
-            }
-        }
-{"login":"ada23m","pass":"dupablada","group_id":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
-        */
-        return $result;
     }
 
 

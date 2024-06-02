@@ -33,14 +33,6 @@ class ApiController extends AbstractController
         $params = $this->request->getParams();
         $rawData = $this->request->getRawData();
 
-        // echo '{"method":"' . $method . '"}' . "\n";
-        //echo '{"token":"' . $token . '"}' . "\n";
-        // echo '{"path":"' . $path . '"}' . "\n";
-        // echo '{"param":"' . $param . '"}' . "\n";
-        // echo json_encode($params) . "\n";
-        // echo json_encode($rawData) . "\n";
-        //echo json_encode($uriTable);
-
         //http api.vacations.local/users?limit=100\&offset=1 X-API-KEY:wfsdfasdfdf name=JAN
 
         switch($path) {
@@ -88,15 +80,20 @@ class ApiController extends AbstractController
             $result['response'] = $this->userModel->addUser($rawData);
             $result['code'] = 201;
         } elseif ($method === 'PATCH') {
-            echo '{"PATCH": ""}'."\n";
+            if ($param !== null) {
+                $param = $this->request->paramValidateInt($param);
+                $autorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
+                $result['response'] = $this->userModel->editUserData($rawData, $token, $autorize, $param);              
+            } else {
+                http_response_code(404);
+                throw new AppException('Not found', 405);               
+            }
             $result['code'] = 200;
         } else {
             header('Allow: GET,POST,PATCH');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
         }
-
-        exit();
         http_response_code($result['code']);
         $result['status'] = 'OK';
         echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);

@@ -1,120 +1,33 @@
-2024-05-03 12:21:12 - Log level: ERROR
-2024-05-03 12:21:12 - Message: Error database credentials
-2024-05-03 12:23:37 - Log level: ERROR
-2024-05-03 12:23:37 - Message: Error database credentials
-2024-05-03 12:28:46 - Log level: ERROR
-2024-05-03 12:28:46 - Message: Error database credentials
-2024-05-03 12:28:46 - Line : 35
-2024-05-03 12:28:46 - File : /var/www/api.vacations.local/Src/Helpers/DB.php
-2024-05-30 18:32:36 - Log level: ERROR
-2024-05-30 18:32:36 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-05-30 18:32:36 - Line : 24
-2024-05-30 18:32:36 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php
-2024-05-30 18:36:15 - Log level: ERROR
-2024-05-30 18:36:15 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
-2024-05-30 18:36:15 - Line : 24
-2024-05-30 18:36:15 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php
-2024-06-01 16:27:03 - Log level: ERROR
-2024-06-01 16:27:03 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:27:03 - Line : 44
-2024-06-01 16:27:03 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:27:48 - Log level: ERROR
-2024-06-01 16:27:48 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:27:48 - Line : 44
-2024-06-01 16:27:48 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:28:57 - Log level: ERROR
-2024-06-01 16:28:57 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:28:57 - Line : 44
-2024-06-01 16:28:57 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:29:39 - Log level: ERROR
-2024-06-01 16:29:39 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:29:39 - Line : 44
-2024-06-01 16:29:39 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:31:22 - Log level: ERROR
-2024-06-01 16:31:22 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:31:22 - Line : 44
-2024-06-01 16:31:22 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:35:10 - Log level: ERROR
-2024-06-01 16:35:10 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:35:10 - Line : 44
-2024-06-01 16:35:10 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:35:36 - Log level: ERROR
-2024-06-01 16:35:36 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:35:36 - Line : 47
-2024-06-01 16:35:36 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:36:46 - Log level: ERROR
-2024-06-01 16:36:46 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:36:46 - Line : 50
-2024-06-01 16:36:46 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:38:30 - Log level: ERROR
-2024-06-01 16:38:30 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:38:30 - Line : 50
-2024-06-01 16:38:30 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:40:50 - Log level: ERROR
-2024-06-01 16:40:50 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:40:50 - Line : 50
-2024-06-01 16:40:50 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:44:04 - Log level: ERROR
-2024-06-01 16:44:04 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = 1234567890' at line 1
-2024-06-01 16:44:04 - Line : 47
-2024-06-01 16:44:04 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:44:45 - Log level: ERROR
-2024-06-01 16:44:45 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = 1234567890' at line 1
-2024-06-01 16:44:45 - Line : 47
-2024-06-01 16:44:45 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:45:16 - Log level: ERROR
-2024-06-01 16:45:16 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:45:16 - Line : 47
-2024-06-01 16:45:16 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:45:40 - Log level: ERROR
-2024-06-01 16:45:40 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:45:40 - Line : 47
-2024-06-01 16:45:40 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:47:09 - Log level: ERROR
-2024-06-01 16:47:09 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-06-01 16:47:09 - Line : 44
-2024-06-01 16:47:09 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:48:41 - Log level: ERROR
-2024-06-01 16:48:41 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = '1234567890'' at line 1
-2024-06-01 16:48:41 - Line : 44
-2024-06-01 16:48:41 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:49:06 - Log level: ERROR
-2024-06-01 16:49:06 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = 'a1234567890'' at line 1
-2024-06-01 16:49:06 - Line : 44
-2024-06-01 16:49:06 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 16:49:34 - Log level: ERROR
-2024-06-01 16:49:34 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE nip = 'a1234567890'' at line 1
-2024-06-01 16:49:34 - Line : 44
-2024-06-01 16:49:34 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 17:40:17 - Log level: ERROR
-2024-06-01 17:40:17 - Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'login' in 'where clause'
-2024-06-01 17:40:17 - Line : 44
-2024-06-01 17:40:17 - File : /var/www/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 17:41:05 - Log level: ERROR
-2024-06-01 17:41:05 - Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'login' in 'where clause'
-2024-06-01 17:41:05 - Line : 44
-2024-06-01 17:41:05 - File : /var/www/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 17:42:01 - Log level: ERROR
-2024-06-01 17:42:01 - Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'login' in 'where clause'
-2024-06-01 17:42:01 - Line : 44
-2024-06-01 17:42:01 - File : /var/www/api.vacations.local/Src/Helpers/DB.php
-2024-06-01 18:46:38 - Log level: ERROR
-2024-06-01 18:46:38 - Message: SQLSTATE[HY000]: General error: 1364 Field 'group_id' doesn't have a default value
-2024-06-01 18:46:38 - Line : 152
-2024-06-01 18:46:38 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
-2024-06-01 19:17:09 - Log level: ERROR
-2024-06-01 19:17:09 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-06-01 19:17:09 - Line : 194
-2024-06-01 19:17:09 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
-2024-06-02 08:35:23 - Log level: ERROR
-2024-06-02 08:35:23 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-06-02 08:35:23 - Line : 194
-2024-06-02 08:35:23 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
-2024-06-02 08:35:40 - Log level: ERROR
-2024-06-02 08:35:40 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-06-02 08:35:40 - Line : 194
-2024-06-02 08:35:40 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
-2024-06-02 08:55:05 - Log level: ERROR
-2024-06-02 08:55:05 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
-2024-06-02 08:55:05 - Line : 194
-2024-06-02 08:55:05 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 10:42:54 - Log level: ERROR
+2024-06-02 10:42:54 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE id = 5' at line 1
+2024-06-02 10:42:54 - Line : 44
+2024-06-02 10:42:54 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
+2024-06-02 10:43:46 - Log level: ERROR
+2024-06-02 10:43:46 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE id = 5' at line 1
+2024-06-02 10:43:46 - Line : 44
+2024-06-02 10:43:46 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
+2024-06-02 10:44:14 - Log level: ERROR
+2024-06-02 10:44:14 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups WHERE id = 5' at line 1
+2024-06-02 10:44:14 - Line : 44
+2024-06-02 10:44:14 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
+2024-06-02 10:47:05 - Log level: ERROR
+2024-06-02 10:47:05 - Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'login' in 'where clause'
+2024-06-02 10:47:05 - Line : 44
+2024-06-02 10:47:05 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
+2024-06-02 10:48:25 - Log level: ERROR
+2024-06-02 10:48:25 - Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'login' in 'where clause'
+2024-06-02 10:48:25 - Line : 44
+2024-06-02 10:48:25 - File : /var/www/vhosts/api.vacations.local/Src/Helpers/DB.php
+2024-06-02 10:49:27 - Log level: ERROR
+2024-06-02 10:49:27 - Message: SQLSTATE[HY000]: General error: 1364 Field 'group_id' doesn't have a default value
+2024-06-02 10:49:27 - Line : 174
+2024-06-02 10:49:27 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 10:50:38 - Log level: ERROR
+2024-06-02 10:50:38 - Message: SQLSTATE[HY000]: General error: 1364 Field 'group_id' doesn't have a default value
+2024-06-02 10:50:38 - Line : 174
+2024-06-02 10:50:38 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 11:45:43 - Log level: ERROR
+2024-06-02 11:45:43 - Message: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups (user_id, name, address, postalCode, city, nip) 
+                    VALU' at line 1
+2024-06-02 11:45:43 - Line : 268
+2024-06-02 11:45:43 - File : /var/www/vhosts/api.vacations.local/Src/Model/User/UserModel.php

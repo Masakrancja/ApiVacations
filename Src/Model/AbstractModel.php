@@ -25,28 +25,6 @@ abstract class AbstractModel
         $this->group = new Group;
     }
 
-    protected function getUserData(int $id): array
-    {
-        $sql = "
-            SELECT firstName, lastName, address, postalCode, city, email 
-            FROM UserData 
-            WHERE user_id = :id
-        ";
-        $params = [
-            [
-                'key' => ':id',
-                'value' => $id,
-                'type' => \PDO::PARAM_INT,
-            ]
-        ];
-        $row = $this->db->selectProcess($sql, $params, 'fetch');
-        if ($row) {
-            return $row;
-        }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
-    }
-
     protected function getUserId(string $token): int
     {
         $sql = "SELECT id from Users WHERE token_api = :token";
@@ -67,7 +45,7 @@ abstract class AbstractModel
 
     protected function isGroupId(int $id): bool
     {
-        $sql = "SELECT id FROM Groups WHERE id = :id";
+        $sql = "SELECT id FROM `Groups` WHERE id = :id";
         $params = [
             [
                 'key' => ':id',
@@ -186,4 +164,8 @@ abstract class AbstractModel
         ];
         return (bool) $this->db->selectProcess($sql, $params, 'fetch');
     }
+
+
+
+
 }

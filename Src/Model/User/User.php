@@ -80,7 +80,7 @@ class User
 
     public function getIsActive(): bool
     {
-        return $this->isActive;
+        return (bool) $this->isActive;
     }
 
     public function setIsActive(bool $isActive): void
@@ -90,7 +90,7 @@ class User
 
     public function getIsAdmin(): bool
     {
-        return $this->isAdmin;
+        return (bool) $this->isAdmin;
     }
 
     public function setIsAdmin(bool $isAdmin): void

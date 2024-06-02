@@ -106,3 +106,15 @@
 2024-06-01 19:17:09 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
 2024-06-01 19:17:09 - Line : 194
 2024-06-01 19:17:09 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 08:35:23 - Log level: ERROR
+2024-06-02 08:35:23 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+2024-06-02 08:35:23 - Line : 194
+2024-06-02 08:35:23 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 08:35:40 - Log level: ERROR
+2024-06-02 08:35:40 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+2024-06-02 08:35:40 - Line : 194
+2024-06-02 08:35:40 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php
+2024-06-02 08:55:05 - Log level: ERROR
+2024-06-02 08:55:05 - Message: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+2024-06-02 08:55:05 - Line : 194
+2024-06-02 08:55:05 - File : /var/www/api.vacations.local/Src/Model/User/UserModel.php

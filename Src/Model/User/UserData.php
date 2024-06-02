@@ -104,7 +104,7 @@ class UserData
     {
         $city = Validator::stringSanitize($city);
         if (!Validator::stringValidate($city, 2, 30)) {
-            throw new AppException("N leame of city length must be between 2 - 30", 422);
+            throw new AppException("Name of city length must be between 2 - 30", 422);
         }  
         $this->city = $city;
     }
@@ -160,4 +160,3 @@ class UserData
         $this->updatedAt = $updatedAt;
     }
 }
-

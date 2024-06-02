@@ -9,6 +9,14 @@ use ApiVacations\Helpers\Logger;
 
 class UserModel extends AbstractModel
 {
+    /**
+     * Get particulary all users from Database. Default first 10 users
+     *
+     * @param array|null $params // keys: int limit, int offset
+     * @param string $token // X-API-KEY token
+     * @param string $authorize // 'admin' or 'user'
+     * @return array
+     */
     public function getUsers(?array $params, string $token, string $authorize): array
     {
         if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
@@ -38,6 +46,14 @@ class UserModel extends AbstractModel
         return $result;
     }
 
+    /**
+     * Get particular user from database by ID
+     *
+     * @param integer $id // User ID
+     * @param string $token // X-API-KEY token
+     * @param string $authorize // 'admin' or 'user'
+     * @return array|null
+     */
     public function getUser(int $id, string $token, string $authorize): ?array
     {
         $canIenter = false;
@@ -75,6 +91,12 @@ class UserModel extends AbstractModel
         return null;        
     }
 
+    /**
+     * Add User to Database
+     *
+     * @param object|null $data
+     * @return object|null
+     */
     public function addUser(?object $data): ?object
     {
         $result = new \StdClass;
@@ -83,7 +105,7 @@ class UserModel extends AbstractModel
             http_response_code(422);
             throw new AppException('Empty data', 422);
         }
-        $this->user->setIsAdmin($data->isAdmin ?? true);
+        $this->user->setIsAdmin((bool) ($data->isAdmin ?? true));
         if (!$this->user->getIsAdmin()) {
             $this->user->setGroupId((int) ($data->group_id ?? 0));
             $this->user->setIsActive(false);
@@ -135,8 +157,6 @@ class UserModel extends AbstractModel
             http_response_code(422);
             throw new AppException('Login: ' . $this->user->getLogin() . ' exist' , 422);                
         }
-
-
         try {
             $this->db->getConn()->beginTransaction();
             $sql = "
@@ -151,7 +171,6 @@ class UserModel extends AbstractModel
             $stmt->bindValue(':isAdmin', $this->user->getIsAdmin(), \PDO::PARAM_BOOL);
             $stmt->execute();
             $userId = $this->db->getConn()->lastInsertId();
-
             $sql = "
                 INSERT INTO UserData (user_id, firstName, lastName, address, postalCode, city, phone, email) 
                 VALUES (:user_id, :firstName, :lastName, :address, :postalCode, :city, :phone, :email)
@@ -184,13 +203,12 @@ class UserModel extends AbstractModel
             } else {
                 $groupId = $this->user->getGroupId();
             }
-
             $sql = "
                 UPDATE Users SET group_id = :group_id WHERE id = :id
             ";
             $stmt = $this->db->getConn()->prepare($sql);
             $stmt->bindValue(':group_id', $groupId, \PDO::PARAM_INT);
-            //$stmt->bindValue(':id', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':id', $userId, \PDO::PARAM_INT);
             $stmt->execute();
             $this->db->getConn()->commit();
         }

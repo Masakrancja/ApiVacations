@@ -4,7 +4,7 @@ namespace ApiVacations\Helpers;
 
 class Logger
 {
-    public static string $logfile = '/Src/Log/log.txt';
+    public static string $logfile = '/Log/log.txt';
 
     public static function error(string $message, array $context = []): void
     {

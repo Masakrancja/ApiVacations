@@ -53,7 +53,7 @@ final class DB
             }
         }
         catch (\PDOException $e) {
-            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            Logger::error($e->getMessage() . ' - sql query: ' . $sql, ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
     }

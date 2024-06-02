@@ -1,3 +1,3 @@
 vendor/
 .phpdoc/
-Src/Log/log.txt
+Log/log.txt

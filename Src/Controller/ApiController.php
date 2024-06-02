@@ -99,7 +99,7 @@ class ApiController extends AbstractController
             }
             $result['code'] = 204;
         } else {
-            header('Allow: GET,POST,PATCH');
+            header('Allow: GET,POST,PATCH, DELETE');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
         }
@@ -108,9 +108,25 @@ class ApiController extends AbstractController
         echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
     }
 
-    private function EventsControler()
+    private function EventsControler(
+        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
+    ): void
     {
         echo '{"events":"events"}' . "\n";
+        $result = [];
+        if ($method === 'GET') {
+
+        } elseif ($method === 'POST') {
+
+        } elseif ($method === 'PATCH') {
+
+        } elseif ($method === 'DELETE') {
+
+        } else {
+            header('Allow: GET,POST,PATCH, DELETE');
+            http_response_code(405);
+            throw new AppException('Method not allowed', 405);
+        }
     }
 
     private function ReasonsControler()

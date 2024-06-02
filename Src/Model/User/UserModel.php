@@ -125,33 +125,6 @@ class UserModel extends AbstractModel
         
         $userId = $this->addUserToDB();
         return $this->getUserFromDB($userId);
-
-
-        /*
-        {
-            "login": "ada23m,
-            "pass": "dupablada",
-            "groupId": null,
-            "userData": {
-                "firstName": "Adam",
-                "lastName": "Wilk",
-                "address": "Czarcia 5",
-                "postalCode": "11-111",
-                "city": "Old Town",
-                "phone": "12-333-444-555",
-                "email": "adam@aa.com"
-            },
-            "group": {
-                "name": "F.H. Vip",
-                "address": "Dzwonkowa 4",
-                "postalCode": "11-222",
-                "city": "New Town",
-                "nip": "123-456-78-90"
-            }
-        }
-{"login":"ada23m","pass":"dupablada","groupId":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
-        */
-        
     }
 
     public function editUserData(
@@ -180,21 +153,6 @@ class UserModel extends AbstractModel
 
         $rowCount = $this->editUserInDB($id);
         return $this->getUserFromDB($id);
-                
-
-
-
-        /*
-        {
-            "firstName":"",
-            "lastName":"",
-            "address":"",
-            "postalCode":"",
-            "city":"",
-            "phone":"",
-            "email":""
-        }
-        */
     }
 
     public function deleteUser(string $token, string $authorize, int $id)

@@ -1,3 +1,9 @@
+phpDocumentator:
+phpDocumentor -d ./Src/ -i ./Src/Config/ -t ./docs/
+
+
+
+
         /*
         {
             "login": "ada23m,

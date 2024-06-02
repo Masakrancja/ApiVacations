@@ -62,9 +62,9 @@ class ApiController extends AbstractController
         if ($method === 'GET') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $autorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
+                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
                 $result['response'] = $this->userModel->getUser(
-                    $param, $token, $autorize
+                    $param, $token, $authorize
                 );
                 if ($result['response'] === null) {
                     http_response_code(200);
@@ -82,13 +82,22 @@ class ApiController extends AbstractController
         } elseif ($method === 'PATCH') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $autorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
-                $result['response'] = $this->userModel->editUserData($rawData, $token, $autorize, $param);              
+                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
+                $result['response'] = $this->userModel->editUserData($rawData, $token, $authorize, $param); 
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 405);               
+                throw new AppException('Not found', 404);               
             }
             $result['code'] = 200;
+        } elseif ($method === 'DELETE') { 
+            if ($param !== null) {
+                $param = $this->request->paramValidateInt($param);
+                $this->userModel->deleteUser($token, 'admin', $param); 
+            } else {
+                http_response_code(404);
+                throw new AppException('Not found', 404);               
+            }
+            $result['code'] = 204;
         } else {
             header('Allow: GET,POST,PATCH');
             http_response_code(405);

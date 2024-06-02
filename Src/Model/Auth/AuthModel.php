@@ -21,7 +21,7 @@ class AuthModel extends AbstractModel
     public function checkToken(?string $token): string
     {
         if ($token !== null) {
-            $sql = "SELECT id FROM Users WHERE token_api = :token";
+            $sql = "SELECT id FROM Users WHERE tokenApi = :token";
             $params = [
                 [
                     'key' => ':token',
@@ -66,7 +66,7 @@ class AuthModel extends AbstractModel
 
     private function getAdminValue(string $token): bool
     {
-        $sql = "SELECT isAdmin FROM Users WHERE token_api = :token";
+        $sql = "SELECT isAdmin FROM Users WHERE tokenApi = :token";
         $params = [
             [
                 'key' => ':token',

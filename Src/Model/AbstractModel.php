@@ -27,7 +27,7 @@ abstract class AbstractModel
 
     protected function getUserId(string $token): int
     {
-        $sql = "SELECT id from Users WHERE token_api = :token";
+        $sql = "SELECT id from Users WHERE tokenApi = :token";
         $params = [
             [
                 'key' => ':token',
@@ -87,7 +87,7 @@ abstract class AbstractModel
 
     protected function getUserGroupId(string $token): int
     {
-        $sql = "SELECT group_id from Users WHERE token_api = :token";
+        $sql = "SELECT groupId from Users WHERE tokenApi = :token";
         $params = [
             [
                 'key' => ':token',
@@ -97,7 +97,7 @@ abstract class AbstractModel
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
         if ($row) {
-            return (int) $row['group_id'];
+            return (int) $row['groupId'];
         }
         http_response_code(401);
         throw new AppException('Unauthorized', 401);
@@ -108,7 +108,7 @@ abstract class AbstractModel
         $sql = "
             SELECT id 
             FROM Users 
-            WHERE token_api = :token AND id = :id
+            WHERE tokenApi = :token AND id = :id
         ";
         $params = [
             [
@@ -127,16 +127,16 @@ abstract class AbstractModel
 
     protected function isItMyUser(string $token, int $id): bool
     {
-        $group_id = $this->getUserGroupId($token);
+        $groupId = $this->getUserGroupId($token);
         $sql = "
             SELECT id 
             FROM Users 
-            WHERE group_id = :group_id AND id = :id AND isAdmin = false
+            WHERE groupId = :groupId AND id = :id AND isAdmin = false
         ";
         $params = [
             [
-                'key' => ':group_id',
-                'value' => $group_id,
+                'key' => ':groupId',
+                'value' => $groupId,
                 'type' => \PDO::PARAM_INT,
             ],
             [
@@ -153,7 +153,7 @@ abstract class AbstractModel
         $sql = "
             SELECT id 
             FROM Users 
-            WHERE token_api = :token AND isAdmin = true
+            WHERE tokenApi = :token AND isAdmin = true
         ";
         $params = [
             [
@@ -164,8 +164,5 @@ abstract class AbstractModel
         ];
         return (bool) $this->db->selectProcess($sql, $params, 'fetch');
     }
-
-
-
 
 }

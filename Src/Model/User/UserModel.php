@@ -23,8 +23,8 @@ class UserModel extends AbstractModel
             http_response_code(401);
             throw new AppException('Unauthorized', 401);            
         }
-        $group_id = $this->getUserGroupId($token);
-        return $this->getUsersFromDB($params, $group_id);
+        $groupId = $this->getUserGroupId($token);
+        return $this->getUsersFromDB($params, $groupId);
     }
 
     /**
@@ -72,7 +72,7 @@ class UserModel extends AbstractModel
         }
         $this->user->setIsAdmin((bool) ($data->isAdmin ?? true));
         if (!$this->user->getIsAdmin()) {
-            $this->user->setGroupId((int) ($data->group_id ?? 0));
+            $this->user->setGroupId((int) ($data->groupId ?? 0));
             $this->user->setIsActive(false);
         } else {
             $this->user->setIsActive(true);
@@ -131,7 +131,7 @@ class UserModel extends AbstractModel
         {
             "login": "ada23m,
             "pass": "dupablada",
-            "group_id": null,
+            "groupId": null,
             "userData": {
                 "firstName": "Adam",
                 "lastName": "Wilk",
@@ -149,7 +149,7 @@ class UserModel extends AbstractModel
                 "nip": "123-456-78-90"
             }
         }
-{"login":"ada23m","pass":"dupablada","group_id":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
+{"login":"ada23m","pass":"dupablada","groupId":"null","data":{"firstName":"Adam","lastName":"Wilk","address":"Czarcia 5","postalCode":"11-111","city":"Old Town","phone":"12-333-444-555","email":"adam@aa.com"},"group":{"name":"F.H. Vip","address":"Dzwonkowa 4","postalCode":"11-222","city":"New Town","nip":"123-456-78-90"}}
         */
         
     }
@@ -158,9 +158,7 @@ class UserModel extends AbstractModel
         ?object $data, string $token, string $authorize, int $id
     ): ?array
     {
-
         echo json_encode($data) . "\n\n";
-
 
         $user = $this->getUser($id, $token, $authorize);
         if (!$user) {
@@ -170,24 +168,21 @@ class UserModel extends AbstractModel
 
         echo json_encode($user) . "\n\n";
 
-        $firstName = $data->firstName ?? $user['userData']['firstName'];
-        $lastName = $data->lastName ?? $user['userData']['lastName'];
-        $address = $data->address ?? $user['userData']['address'];
-        $postalCode = $data->postalCode ?? $user['userData']['postalCode'];
-        $city = $data->city ?? $user['userData']['city'];
-        $phone = $data->phone ?? $user['userData']['phone'];
-        $email = $data->email ?? $user['userData']['email'];
+        $this->userData->setFirstName((string) ($data->firstName ?? $user['userData']['firstName']));
+        $this->userData->setLastName((string) ($data->lastName ?? $user['userData']['lastName']));
+        $this->userData->setAddress((string) ($data->address ?? $user['userData']['address']));
+        $this->userData->setPostalCode((string) ($data->postalCode ?? $user['userData']['postalCode']));
+        $this->userData->setCity((string) ($data->city ?? $user['userData']['city']));
+        $this->userData->setPhone((string) ($data->phone ?? $user['userData']['phone']));
+        $this->userData->setEmail((string) ($data->email ?? $user['userData']['email']));
+        $this->user->setId((int) $user['id']);
+        $this->user->setIsActive((bool) ($data->isActive ?? $user['isActive']));
 
-        echo 'firstName: ' . $firstName . "\n";
-        echo 'lastName: ' . $lastName . "\n";
-        echo 'address: ' . $address . "\n";
-        echo 'postalCode: ' .$postalCode . "\n";
-        echo 'city: ' . $city . "\n";
-        echo 'phone: ' . $phone . "\n";
-        echo 'email: ' . $email . "\n";
-        
+        $rowCount = $this->editUserInDB($id);
+        return $this->getUserFromDB($id);
+                
 
-        return [];
+
 
         /*
         {
@@ -202,19 +197,32 @@ class UserModel extends AbstractModel
         */
     }
 
-    private function getUsersFromDB(?array $params, int $group_id): array
+    public function deleteUser(string $token, string $authorize, int $id)
+    {
+        if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
+            http_response_code(401);
+            throw new AppException('Unauthorized', 401);            
+        }
+        if ($this->isItMyUser($token, $id)) {
+            return $this->deleteUserFromDB($id);
+        } 
+        http_response_code(401);
+        throw new AppException('Unauthorized', 401);        
+    }
+
+    private function getUsersFromDB(?array $params, int $groupId): array
     {
         $result = [];
         $sql = "
             SELECT id, login, isActive, isAdmin, createdAt, updatedAt  
             FROM Users 
-            WHERE group_id = :group_id
+            WHERE groupId = :groupId
             LIMIT 
         " . ($params['offset'] ?? 0) . ", " . ($params['limit'] ?? 10);
         $params = [
             [
-                'key' => ':group_id',
-                'value' => $group_id,
+                'key' => ':groupId',
+                'value' => $groupId,
                 'type' => \PDO::PARAM_INT,
             ]
         ];
@@ -231,7 +239,7 @@ class UserModel extends AbstractModel
         $sql = "
             SELECT firstName, lastName, address, postalCode, city, phone, email, createdAt, updatedAt  
             FROM UserData 
-            WHERE user_id = :id
+            WHERE userId = :id
         ";
         $params = [
             [
@@ -275,23 +283,23 @@ class UserModel extends AbstractModel
         try {
             $this->db->getConn()->beginTransaction();
             $sql = "
-                INSERT INTO Users (login, pass, token_api, isActive, isAdmin)
-                VALUES (:login, :pass, :token_api, :isActive, :isAdmin)
+                INSERT INTO Users (login, pass, tokenApi, isActive, isAdmin)
+                VALUES (:login, :pass, :tokenApi, :isActive, :isAdmin)
             ";
             $stmt = $this->db->getConn()->prepare($sql);
             $stmt->bindValue(':login', $this->user->getLogin(), \PDO::PARAM_STR);
             $stmt->bindValue(':pass', md5($this->user->getPass()), \PDO::PARAM_STR);
-            $stmt->bindValue(':token_api', $this->user->getTokenApi(), \PDO::PARAM_STR);
+            $stmt->bindValue(':tokenApi', $this->user->getTokenApi(), \PDO::PARAM_STR);
             $stmt->bindValue(':isActive', $this->user->getIsActive(), \PDO::PARAM_BOOL);
             $stmt->bindValue(':isAdmin', $this->user->getIsAdmin(), \PDO::PARAM_BOOL);
             $stmt->execute();
             $userId = $this->db->getConn()->lastInsertId();
             $sql = "
-                INSERT INTO UserData (user_id, firstName, lastName, address, postalCode, city, phone, email) 
-                VALUES (:user_id, :firstName, :lastName, :address, :postalCode, :city, :phone, :email)
+                INSERT INTO UserData (userId, firstName, lastName, address, postalCode, city, phone, email) 
+                VALUES (:userId, :firstName, :lastName, :address, :postalCode, :city, :phone, :email)
             ";
             $stmt = $this->db->getConn()->prepare($sql);
-            $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
             $stmt->bindValue(':firstName', $this->userData->getFirstName(), \PDO::PARAM_STR);
             $stmt->bindValue(':lastName', $this->userData->getLastName(), \PDO::PARAM_STR);
             $stmt->bindValue(':address', $this->userData->getAddress(), \PDO::PARAM_STR);
@@ -303,11 +311,11 @@ class UserModel extends AbstractModel
 
             if ($this->user->getIsAdmin()) {
                 $sql = "
-                    INSERT INTO `Groups` (user_id, name, address, postalCode, city, nip) 
-                    VALUES (:user_id, :name, :address, :postalCode, :city, :nip)
+                    INSERT INTO `Groups` (userId, name, address, postalCode, city, nip) 
+                    VALUES (:userId, :name, :address, :postalCode, :city, :nip)
                 ";
                 $stmt = $this->db->getConn()->prepare($sql);
-                $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+                $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
                 $stmt->bindValue(':name', $this->group->getName(), \PDO::PARAM_STR);
                 $stmt->bindValue(':address', $this->group->getAddress(), \PDO::PARAM_STR);
                 $stmt->bindValue(':postalCode', $this->group->getPostalCode(), \PDO::PARAM_STR);
@@ -319,10 +327,10 @@ class UserModel extends AbstractModel
                 $groupId = $this->user->getGroupId();
             }
             $sql = "
-                UPDATE Users SET group_id = :group_id WHERE id = :id
+                UPDATE Users SET groupId = :groupId WHERE id = :id
             ";
             $stmt = $this->db->getConn()->prepare($sql);
-            $stmt->bindValue(':group_id', $groupId, \PDO::PARAM_INT);
+            $stmt->bindValue(':groupId', $groupId, \PDO::PARAM_INT);
             $stmt->bindValue(':id', $userId, \PDO::PARAM_INT);
             $stmt->execute();
             $this->db->getConn()->commit();
@@ -335,5 +343,146 @@ class UserModel extends AbstractModel
         }
     }
 
+    private function editUserInDB(int $id): int
+    {
+        try {
+            $this->db->getConn()->beginTransaction();
+            $sql = "
+                UPDATE UserData 
+                SET 
+                    firstName = :firstName, 
+                    lastName = :lastName, 
+                    address = :address, 
+                    postalCode = :postalCode, 
+                    city = :city, 
+                    phone = :phone, 
+                    email = :email
+                WHERE userId = :id
+            ";
+            $params = [
+                [
+                    'key' => ':firstName',
+                    'value' => $this->userData->getFirstName(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':lastName',
+                    'value' => $this->userData->getLastName(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':address',
+                    'value' => $this->userData->getAddress(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':postalCode',
+                    'value' => $this->userData->getPostalCode(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':city',
+                    'value' => $this->userData->getCity(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':phone',
+                    'value' => $this->userData->getPhone(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':email',
+                    'value' => $this->userData->getEmail(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':email',
+                    'value' => $this->userData->getEmail(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':id',
+                    'value' => $this->user->getId(),
+                    'type' => \PDO::PARAM_INT,
+                ],
+            ];
 
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+
+            $sql = "
+                UPDATE Users 
+                SET isActive = :isActive 
+                WHERE id = :id
+            ";
+            $params = [
+                [
+                    'key' => ':isActive',
+                    'value' => $this->user->getIsActive(),
+                    'type' => \PDO::PARAM_BOOL,
+                ],
+                [
+                    'key' => ':id',
+                    'value' => $this->user->getId(),
+                    'type' => \PDO::PARAM_INT,
+                ],
+            ];
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+
+            $this->db->getConn()->commit();
+            return (int) $stmt->rowCount();
+        }
+        catch (\PDOException $e) {
+            $this->db->getConn()->rollBack();
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
+    private function deleteUserFromDB(int $id): void
+    {
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ],
+        ];  
+        try {
+            $this->db->getConn()->beginTransaction();
+            $sql = "DELETE FROM Events WHERE userId = :id";
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+
+            $sql = "DELETE FROM UserData WHERE userId = :id";
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+
+            $sql = "DELETE FROM Users WHERE id = :id";
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+            $this->db->getConn()->commit();
+        }
+        catch (\PDOException $e) {
+            $this->db->getConn()->rollBack();
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
 }

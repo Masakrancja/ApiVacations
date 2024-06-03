@@ -10,7 +10,7 @@ use ApiVacations\Helpers\Logger;
 class UserModel extends AbstractModel
 {
     /**
-     * Get particulary all users from Database. Default first 10 users
+     * Get all users from Database. Default first 10 users
      *
      * @param array|null $params // keys: int limit, int offset
      * @param string $token // X-API-KEY token
@@ -20,8 +20,8 @@ class UserModel extends AbstractModel
     public function getUsers(?array $params, string $token, string $authorize): array
     {
         if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
-            http_response_code(401);
-            throw new AppException('Unauthorized', 401);            
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);            
         }
         $groupId = $this->getUserGroupId($token);
         return $this->getUsersFromDB($params, $groupId);
@@ -49,8 +49,8 @@ class UserModel extends AbstractModel
             }
         }
         if (!$canIenter) {
-            http_response_code(401);
-            throw new AppException('Unauthorized', 401);
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);
         }
         return $this->getUserFromDB($id);
     }
@@ -63,8 +63,6 @@ class UserModel extends AbstractModel
      */
     public function addUser(?object $data): ?array
     {
-        $result = new \StdClass;
-
         //User
         if ($data === null) {
             http_response_code(422);
@@ -131,16 +129,11 @@ class UserModel extends AbstractModel
         ?object $data, string $token, string $authorize, int $id
     ): ?array
     {
-        echo json_encode($data) . "\n\n";
-
         $user = $this->getUser($id, $token, $authorize);
         if (!$user) {
-            http_response_code(200);
+            http_response_code(404);
             throw new AppException('Not found', 404);
         }
-
-        echo json_encode($user) . "\n\n";
-
         $this->userData->setFirstName((string) ($data->firstName ?? $user['userData']['firstName']));
         $this->userData->setLastName((string) ($data->lastName ?? $user['userData']['lastName']));
         $this->userData->setAddress((string) ($data->address ?? $user['userData']['address']));
@@ -148,7 +141,6 @@ class UserModel extends AbstractModel
         $this->userData->setCity((string) ($data->city ?? $user['userData']['city']));
         $this->userData->setPhone((string) ($data->phone ?? $user['userData']['phone']));
         $this->userData->setEmail((string) ($data->email ?? $user['userData']['email']));
-        $this->user->setId((int) $user['id']);
         $this->user->setIsActive((bool) ($data->isActive ?? $user['isActive']));
 
         $rowCount = $this->editUserInDB($id);
@@ -158,25 +150,30 @@ class UserModel extends AbstractModel
     public function deleteUser(string $token, string $authorize, int $id)
     {
         if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
-            http_response_code(401);
-            throw new AppException('Unauthorized', 401);            
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);            
         }
         if ($this->isItMyUser($token, $id)) {
             return $this->deleteUserFromDB($id);
         } 
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);        
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);        
     }
 
     private function getUsersFromDB(?array $params, int $groupId): array
     {
         $result = [];
+        $offset = (int) ($params['offset'] ?? 0);
+        $offset = ($limit < 0) ? 0 : $offset;
+        $limit = (int) ($params['limit'] ?? 10);
+        $limit =  ($limit > 25) ? 10 : $limit;
+
         $sql = "
-            SELECT id, login, isActive, isAdmin, createdAt, updatedAt  
+            SELECT id, login, isActive, isAdmin, createdAt  
             FROM Users 
             WHERE groupId = :groupId
-            LIMIT 
-        " . ($params['offset'] ?? 0) . ", " . ($params['limit'] ?? 10);
+            LIMIT " . $offset . ", " . $limit
+        ;
         $params = [
             [
                 'key' => ':groupId',
@@ -186,7 +183,6 @@ class UserModel extends AbstractModel
         ];
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
         foreach($rows as $row) {
-            $row['userData'] = $this->getUserData((int) $row['id']);
             $result[] = $row;            
         }
         return $result;
@@ -210,8 +206,8 @@ class UserModel extends AbstractModel
         if ($row) {
             return $row;
         }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }
 
     private function getUserFromDB(int $id): ?array
@@ -354,13 +350,8 @@ class UserModel extends AbstractModel
                     'type' => \PDO::PARAM_STR,
                 ],
                 [
-                    'key' => ':email',
-                    'value' => $this->userData->getEmail(),
-                    'type' => \PDO::PARAM_STR,
-                ],
-                [
                     'key' => ':id',
-                    'value' => $this->user->getId(),
+                    'value' => $id,
                     'type' => \PDO::PARAM_INT,
                 ],
             ];
@@ -384,7 +375,7 @@ class UserModel extends AbstractModel
                 ],
                 [
                     'key' => ':id',
-                    'value' => $this->user->getId(),
+                    'value' => $id,
                     'type' => \PDO::PARAM_INT,
                 ],
             ];

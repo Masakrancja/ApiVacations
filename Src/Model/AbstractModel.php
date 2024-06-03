@@ -8,6 +8,7 @@ use ApiVacations\Exceptions\AppException;
 use ApiVacations\Model\User\User;
 use ApiVacations\Model\User\UserData;
 use ApiVacations\Model\Group\Group;
+use ApiVacations\Model\Event\Event;
 
 abstract class AbstractModel
 {
@@ -15,6 +16,7 @@ abstract class AbstractModel
     protected User $user;
     protected UserData $userData;
     protected Group $group;
+    protected Event $event;
 
 
     public function __construct()
@@ -23,6 +25,7 @@ abstract class AbstractModel
         $this->user = new User;
         $this->userData = new UserData;
         $this->group = new Group;
+        $this->event = new Event;
     }
 
     protected function getUserId(string $token): int
@@ -39,8 +42,8 @@ abstract class AbstractModel
         if ($row) {
             return (int) $row['id'];
         }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }
 
     protected function isGroupId(int $id): bool
@@ -99,8 +102,8 @@ abstract class AbstractModel
         if ($row) {
             return (int) $row['groupId'];
         }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }
 
     protected function isItMe(string $token, int $id): bool
@@ -163,6 +166,28 @@ abstract class AbstractModel
             ]
         ];
         return (bool) $this->db->selectProcess($sql, $params, 'fetch');
+    }
+
+    protected function checkReason(int $id): int
+    {
+        $sql = "
+            SELECT id
+            FROM Reasons
+            WHERE id = :id
+        ";
+        $params = [
+            [
+                "key"=> ":id",
+                "value" => $id,
+                "type"=> \PDO::PARAM_INT,
+            ],
+        ];
+        $row =  $this->db->selectProcess($sql, $params, "fetch");
+        if ($row) {
+            return $id;
+        }
+        http_response_code(422);
+        throw new AppException('reasonId is incorrect', 422);        
     }
 
 }

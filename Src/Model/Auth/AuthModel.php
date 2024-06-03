@@ -50,8 +50,8 @@ class AuthModel extends AbstractModel
         ) {
             return 'user';
         }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }
 
     private function isAdminToken(string $token): bool
@@ -78,7 +78,7 @@ class AuthModel extends AbstractModel
         if ($row) {
             return (bool) $row["isAdmin"];
         }
-        http_response_code(401);
-        throw new AppException('Unauthorized', 401);
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }    
 }

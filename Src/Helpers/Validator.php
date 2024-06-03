@@ -61,5 +61,30 @@ class Validator
     {
         return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
     }
+
+    public static function dateTypeValidate(string $value): bool
+    {
+        return (bool) preg_match('~^\d{4}-\d{2}-\d{2}$~', $value);
+    }
+
+    public static function dateValueValidate(string $value): bool
+    {
+        if (preg_match('~^(\d{4})-(\d{2})-(\d{2})$~', $value, $matches)) {
+            $year = (int) $matches[1];
+            $month = (int) $matches[2];
+            $day = (int) $matches[3];
+            return checkdate($month, $day, $year);
+        }
+        return false;
+    }
+
+
+
+    public static function dateRangeValidate(
+        string $value, string $from, string $to
+    ): bool
+    {
+        return ($value >= $from && $value <= $to);
+    }
     
 }

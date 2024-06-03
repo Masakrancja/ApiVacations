@@ -3,6 +3,7 @@ phpDocumentor -d ./Src/ -i ./Src/Config/ -t ./docs/
 
 
 
+        //http api.vacations.local/users?limit=100\&offset=1 X-API-KEY:wfsdfasdfdf name=JAN
 
         /*
         {

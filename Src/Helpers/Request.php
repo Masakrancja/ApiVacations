@@ -7,7 +7,7 @@ use ApiVacations\Exceptions\AppException;
 class Request
 {
 
-    private array $possibleParamKeys = ['offset', 'limit'];
+    private array $possibleParamKeys = ['offset', 'limit', 'userid'];
 
     public function getMethod(): string
     {

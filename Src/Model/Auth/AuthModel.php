@@ -7,7 +7,29 @@ use ApiVacations\Exceptions\AppException;
 
 class AuthModel extends AbstractModel
 {
-    public function getToken(): ?string
+    public function getAuth(?object $data): array
+    {
+        echo json_encode($data) . "\n";
+
+        $login = $data->login ?? null;
+        $pass = $data->pass ?? null;
+        if ($login && $pass) {
+            $this->user->setLogin((string) $login);
+            $this->user->setPass((string) $pass);
+
+            echo 'login: ' . $this->user->getLogin() . "\n";
+            echo 'pass: ' . $this->user->getPass() . "\n";
+
+            $result = $this->getAuthData($login, $pass);
+            if ($result) {
+                return $result;
+            }
+        }
+        http_response_code(401);
+        throw new AppException('Unauthorized', 401);
+    }
+
+    public function getTokenFromHeader(): ?string
     {
         $headers = apache_request_headers();
         foreach ($headers as $key => $header) {
@@ -80,5 +102,31 @@ class AuthModel extends AbstractModel
         }
         http_response_code(403);
         throw new AppException('Forbidden', 403);
-    }    
+    }   
+    
+    private function getAuthData(string $login, string $pass): ?array
+    {
+        $sql = "
+            SELECT id, groupId, login, tokenApi, isActive, isAdmin 
+            FROM Users 
+            WHERE login = :login AND pass = :pass
+        ";
+        $params = [
+            [
+                "key"=> ":login",
+                "value"=> $login,
+                "type"=> \PDO::PARAM_STR,
+            ],
+            [
+                "key"=> ":pass",
+                "value"=> md5($pass),
+                "type"=> \PDO::PARAM_STR,                
+            ],
+        ];
+        $row = $this->db->selectProcess($sql, $params, "fetch");
+        if ($row) {
+            return $row;          
+        }
+        return null;
+    }
 }

@@ -17,7 +17,7 @@ class User
     private ?string $createdAt = null;
     private ?string $updatedAt = null;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -27,7 +27,7 @@ class User
         $this->id = $id;
     }
 
-    public function getGroupId(): int
+    public function getGroupId(): ?int
     {
         return $this->groupId;
     }
@@ -98,7 +98,7 @@ class User
         $this->isAdmin = $isAdmin;
     }
 
-    public function getCreatedAt(): string
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
@@ -108,7 +108,7 @@ class User
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): string
+    public function getUpdatedAt(): ?string
     {
         return $this->updatedAt;
     }

@@ -171,6 +171,23 @@ abstract class AbstractModel
         return (bool) $this->db->selectProcess($sql, $params, 'fetch');
     }
 
+    protected function isUserActive(string $token): bool
+    {
+        $sql = "
+        SELECT id 
+        FROM Users 
+        WHERE tokenApi = :token AND isActive = true
+    ";
+    $params = [
+        [
+            'key' => ':token',
+            'value' => $token,
+            'type' => \PDO::PARAM_STR,
+        ]
+    ];
+    return (bool) $this->db->selectProcess($sql, $params, 'fetch');       
+    }
+
     protected function checkReason(int $id): int
     {
         $sql = "

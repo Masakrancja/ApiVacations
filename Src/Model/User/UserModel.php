@@ -27,6 +27,27 @@ class UserModel extends AbstractModel
         return $this->getUsersFromDB($params, $groupId);
     }
 
+    public function getAllUserCount(
+        string $token, string $authorize
+    ): int
+    {
+        if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);            
+        }
+        $groupId = $this->getUserGroupId($token);
+        $sql = "SELECT COUNT(*) AS count FROM Users WHERE groupId = :groupId";
+        $params = [
+            [
+                'key' => ':groupId',
+                'value' => $groupId,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (int) ($row['count'] ?? 0);
+    }
+
     /**
      * Get particular user
      *
@@ -134,6 +155,10 @@ class UserModel extends AbstractModel
             http_response_code(404);
             throw new AppException('Not found', 404);
         }
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
+        }
         $this->userData->setFirstName((string) ($data->firstName ?? $user['userData']['firstName']));
         $this->userData->setLastName((string) ($data->lastName ?? $user['userData']['lastName']));
         $this->userData->setAddress((string) ($data->address ?? $user['userData']['address']));
@@ -147,15 +172,21 @@ class UserModel extends AbstractModel
         return $this->getUserFromDB($id);
     }
 
-    public function deleteUser(string $token, string $authorize, int $id)
+    public function deleteUser(
+        string $token, string $authorize, int $id
+    ): void
     {
         if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
             http_response_code(403);
             throw new AppException('Forbidden', 403);            
         }
-        if ($this->isItMyUser($token, $id)) {
-            return $this->deleteUserFromDB($id);
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
         } 
+        if ($this->isItMyUser($token, $id)) {
+            $this->deleteUserFromDB($id);
+        }
         http_response_code(403);
         throw new AppException('Forbidden', 403);        
     }
@@ -164,8 +195,8 @@ class UserModel extends AbstractModel
     {
         $result = [];
         $offset = (int) ($params['offset'] ?? 0);
-        $offset = ($limit < 0) ? 0 : $offset;
         $limit = (int) ($params['limit'] ?? 10);
+        $offset = ($offset < 0) ? 0 : $offset;
         $limit =  ($limit > 25) ? 10 : $limit;
 
         $sql = "

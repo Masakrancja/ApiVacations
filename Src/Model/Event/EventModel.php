@@ -22,8 +22,8 @@ class EventModel extends AbstractModel
     public function getEvents(?array $params, string $token, string $authorize): array
     {
         $offset = (int) ($params['offset'] ?? 0);
-        $offset = ($limit < 0) ? 0 : $offset;
         $limit = (int) ($params['limit'] ?? 10);
+        $offset = ($offset < 0) ? 0 : $offset;
         $limit =  ($limit > 25) ? 10 : $limit;
 
         $userId = ($params['userid'] ?? null) ? (int) $params['userid'] : null;
@@ -77,8 +77,6 @@ class EventModel extends AbstractModel
 
     public function addEvent(?object $data, string $token, string $authorize): ?array
     {
-        echo json_encode($data) . "\n";
-     
         if ($authorize !== 'user' OR $this->isAdmin($token)) {
             http_response_code(403);
             throw new AppException('Forbidden', 403);            
@@ -87,6 +85,11 @@ class EventModel extends AbstractModel
             http_response_code(422);
             throw new AppException('Empty data', 422);
         } 
+
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
+        }
 
         $this->event->setUserId(
             $this->getUserId($token)
@@ -128,9 +131,10 @@ class EventModel extends AbstractModel
             http_response_code(404);
             throw new AppException('Not found', 404);
         }
-        echo json_encode($data) . "\n";
-        echo json_encode($event) . "\n";
-
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
+        }
 
         if ($this->isAdmin($token)) {
             if (
@@ -158,25 +162,38 @@ class EventModel extends AbstractModel
             if ($this->event->getDateFrom() > $this->event->getDateTo()) {
                 throw new AppException('dateFrom must be less or equal than dateTo', 422);
             }
+
             $this->event->setDays(
-                $this>calculateDays(
+                $this->calculateDays(
                     $this->event->getDateFrom(), $this->event->getDateTo()
                 )
             );
             $this->event->setNotice($data->notice ?? $event['notice']);
-
-
             $rowCount = $this->editEventInDBforUser($id);
             echo 'rowCount: ' . $rowCount ."\n";
-            return $this->getEventFromDB($id, false);
+            return $this->getEventFromDB($id, true);
         }
 
     }
 
-
-
-
-
+    public function deleteEvent(
+        string $token, string $authorize, int $id
+    ): void
+    {
+        if ($authorize !== 'user' OR $this->isAdmin($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);            
+        }
+        if (!$this->getEvent($id, $token, $authorize)) {
+            http_response_code(404);
+            throw new AppException('Not found', 404);            
+        }
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
+        }
+        $this->deleteEventFromDB($id);
+    }
 
     private function getEventsFromDBAsAdmin(
         int $offset, int $limit, int $groupId, ?int $userId
@@ -408,15 +425,40 @@ class EventModel extends AbstractModel
         }
     }
 
+    private function deleteEventFromDB(int $id): void
+    {
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ],
+        ];  
+        try {
+            $sql = "DELETE FROM Events WHERE id = :id";
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
     private function calculateDays(
         string $dateFrom, string $dateTo
     ): int
     {
-        return (int) 
+        return (int) (
             floor(
-                (strtotime($dateFrom) - strtotime($thidateTo)) / 86400
+                (strtotime($dateTo) - strtotime($dateFrom)) / 86400
             ) 
-            + 1;
+            + 1
+        );
+
     }
 
 }

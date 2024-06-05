@@ -66,6 +66,10 @@ class GroupModel extends AbstractModel
             http_response_code(403);
             throw new AppException('Forbidden', 403);
         }
+        if (!$this->isUserActive($token)) {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);  
+        }
         $this->group->setName((string) ($data->name ?? $group['name']));
         $this->group->setAddress((string) ($data->address ?? $group['address']));
         $this->group->setPostalCode((string) ($data->postalCode ?? $group['postalCode']));
@@ -74,7 +78,7 @@ class GroupModel extends AbstractModel
         return $this->getGroupFromDB($id);
     }
 
-    private function getGroupsFromDB(?array $params): array
+    private function getGroupsFromDB(): array
     {
         $result = [];
         $sql = "

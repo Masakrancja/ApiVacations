@@ -25,5 +25,6 @@ abstract class AbstractController
         $this->userModel = new UserModel();
         $this->groupModel = new GroupModel();
         $this->eventModel = new EventModel();
+        $this->reasonModel = new ReasonModel();
     }
 }

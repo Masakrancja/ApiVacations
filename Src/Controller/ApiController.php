@@ -11,9 +11,9 @@ class ApiController extends AbstractController
         [$path, $param] = $this->request->getUriTable();
         $method = $this->request->getMethod();
         $token = null;
-        if (!($method === 'POST' AND $path === 'users')) {
+        if (!($method === 'POST' AND ($path === 'users' OR $path === 'auth'))) {
             $token = $this->authModel->checkToken(
-                $this->authModel->getToken()
+                $this->authModel->getTokenFromHeader()
             );
         }
 
@@ -22,19 +22,29 @@ class ApiController extends AbstractController
 
         switch($path) {
             case 'users':
-                $this->UsersControler($rawData, $method, $token, $param, $params);
+                $this->UsersControler(
+                    $rawData, $method, $token, $param, $params
+                );
                 break;
             case 'groups':
-                $this->GroupsControler($rawData, $method, $token, $param, $params);
+                $this->GroupsControler(
+                    $rawData, $method, $token, $param, $params
+                );
                 break;
             case 'events':
-                $this->EventsControler($rawData, $method, $token, $param, $params);
+                $this->EventsControler(
+                    $rawData, $method, $token, $param, $params
+                );
                 break;
             case 'reasons':
-                $this->ReasonsControler();
+                $this->ReasonsControler(
+                    $rawData, $method, $token, $param, $params
+                );
                 break;   
             case 'auth':
-                $this->AuthControler();
+                $this->AuthControler(
+                    $rawData, $method, $token, $param, $params
+                );
                 break;
             default:
                 http_response_code(404);
@@ -60,7 +70,10 @@ class ApiController extends AbstractController
                 }
             } else {
                 $result['response'] = $this->userModel->getUsers(
-                    'admin'
+                    $params, $token, 'admin'
+                );
+                $result['allRows'] = $this->userModel->getAllUserCount(
+                    $token, 'admin'
                 );
             }
             $result['code'] = 200;
@@ -174,7 +187,14 @@ class ApiController extends AbstractController
             }
             $result['code'] = 200;
         } elseif ($method === 'DELETE') {
-
+            if ($param !== null) {
+                $param = $this->request->paramValidateInt($param);
+                $this->eventModel->deleteEvent($token, 'user', $param); 
+            } else {
+                http_response_code(404);
+                throw new AppException('Not found', 404);               
+            }
+            $result['code'] = 204;
         } else {
             header('Allow: GET,POST,PATCH, DELETE');
             http_response_code(405);
@@ -185,13 +205,44 @@ class ApiController extends AbstractController
         echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
     }
 
-    private function ReasonsControler()
+    private function ReasonsControler(
+        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
+    ): void
     {
-        echo '{"Reasons":"Reasons"}' . "\n";
+        $result = [];
+        if ($method === 'GET') {
+            $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
+            $result['response'] = $this->reasonModel->getReasons(
+                $authorize
+            );
+            $result['code'] = 200;
+        } else {
+            header('Allow: GET');
+            http_response_code(405);
+            throw new AppException('Method not allowed', 405);
+        }
+        http_response_code($result['code']);
+        $result['status'] = 'OK';
+        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
     }
 
-    private function AuthControler()
+    private function AuthControler(
+        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
+    ): void
     {
-        echo '{"Auth":"Auth"}' . "\n";
+        $result = [];
+        if ($method === 'POST') {
+            $result['response'] = $this->authModel->getAuth(
+                $rawData
+            );
+            $result['code'] = 201;
+        } else {
+            header('Allow: POST');
+            http_response_code(405);
+            throw new AppException('Method not allowed', 405);
+        }
+        http_response_code($result['code']);
+        $result['status'] = 'OK';
+        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
     }
 }

@@ -22,7 +22,7 @@ class Request
     public function getUriTable(): array
     {
         $result = [];
-        $uri = $this->getRedirectUrl();
+        $uri = strtolower($this->getRedirectUrl());
         if (($pos = strpos($uri, '?')) !== false) {
             $uri = substr($uri, 0, $pos);
         } 

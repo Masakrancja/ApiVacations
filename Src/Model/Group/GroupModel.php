@@ -10,7 +10,7 @@ use ApiVacations\Helpers\Logger;
 class GroupModel extends AbstractModel
 {
     /**
-     * Get all users from Database. Default first 10 users
+     * Get all groups from Database. Default first 10 users
      *
      * @param array|null $params // keys: int limit, int offset
      * @param string $token // X-API-KEY token

@@ -177,9 +177,21 @@
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/ApiVacations-Model-AbstractModel.html#property_event">$event</a>
+    <span>
+                        &nbsp;: <a href="classes/ApiVacations-Model-Event-Event.html"><abbr title="\ApiVacations\Model\Event\Event">Event</abbr></a>            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/ApiVacations-Model-AbstractModel.html#property_group">$group</a>
     <span>
                         &nbsp;: <a href="classes/ApiVacations-Model-Group-Group.html"><abbr title="\ApiVacations\Model\Group\Group">Group</abbr></a>            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/ApiVacations-Model-AbstractModel.html#property_reason">$reason</a>
+    <span>
+                        &nbsp;: <a href="classes/ApiVacations-Model-Reason-Reason.html"><abbr title="\ApiVacations\Model\Reason\Reason">Reason</abbr></a>            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
@@ -218,14 +230,16 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/ApiVacations-Model-User-UserModel.html#method_deleteUser">deleteUser()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
+<dd>Delete user</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/ApiVacations-Model-User-UserModel.html#method_editUserData">editUserData()</a>
+    <a href="classes/ApiVacations-Model-User-UserModel.html#method_editUser">editUser()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;|null    </span>
 </dt>
+<dd>Edit user data</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/ApiVacations-Model-User-UserModel.html#method_getUser">getUser()</a>
@@ -239,7 +253,13 @@
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get particulary all users from Database. Default first 10 users</dd>
+<dd>Get all users from Database. Default first 10 users</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/ApiVacations-Model-AbstractModel.html#method_checkReason">checkReason()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserGroupId">getUserGroupId()</a>
@@ -284,6 +304,12 @@
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserActive">isUserActive()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserLogin">isUserLogin()</a>
     <span>
                                 &nbsp;: bool    </span>
@@ -303,6 +329,12 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/ApiVacations-Model-User-UserModel.html#method_editUserInDB">editUserInDB()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a href="classes/ApiVacations-Model-User-UserModel.html#method_getAllUserCount">getAllUserCount()</a>
     <span>
                                 &nbsp;: int    </span>
 </dt>
@@ -355,7 +387,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">14</span>
+    <span class="phpdocumentor-element-found-in__line">16</span>
 
     </aside>
 
@@ -364,6 +396,41 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type"><a href="classes/ApiVacations-Helpers-DB.html"><abbr title="\ApiVacations\Helpers\DB">DB</abbr></a></span>
     <span class="phpdocumentor-signature__name">$db</span>
+    </code>
+
+    
+    
+    
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_event">
+        $event
+        <a href="classes/ApiVacations-Model-AbstractModel.html#property_event" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">20</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/ApiVacations-Model-Event-Event.html"><abbr title="\ApiVacations\Model\Event\Event">Event</abbr></a></span>
+    <span class="phpdocumentor-signature__name">$event</span>
     </code>
 
     
@@ -390,7 +457,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
@@ -399,6 +466,41 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
         <span class="phpdocumentor-signature__type"><a href="classes/ApiVacations-Model-Group-Group.html"><abbr title="\ApiVacations\Model\Group\Group">Group</abbr></a></span>
     <span class="phpdocumentor-signature__name">$group</span>
+    </code>
+
+    
+    
+    
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_reason">
+        $reason
+        <a href="classes/ApiVacations-Model-AbstractModel.html#property_reason" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">21</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/ApiVacations-Model-Reason-Reason.html"><abbr title="\ApiVacations\Model\Reason\Reason">Reason</abbr></a></span>
+    <span class="phpdocumentor-signature__name">$reason</span>
     </code>
 
     
@@ -425,7 +527,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
@@ -460,7 +562,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
@@ -500,7 +602,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">24</span>
 
     </aside>
 
@@ -533,7 +635,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">64</span>
+    <span class="phpdocumentor-element-found-in__line">67</span>
 
     </aside>
 
@@ -581,14 +683,15 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">158</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Delete user</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">deleteUser</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">deleteUser</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -630,22 +733,23 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_editUserData">
-        editUserData()
-        <a href="classes/ApiVacations-Model-User-UserModel.html#method_editUserData" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_editUser">
+        editUser()
+        <a href="classes/ApiVacations-Model-User-UserModel.html#method_editUser" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">130</span>
+    <span class="phpdocumentor-element-found-in__line">140</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Edit user data</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">editUserData</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span></code>
+                    <span class="phpdocumentor-signature__name">editUser</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -706,7 +810,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 
     </aside>
 
@@ -778,7 +882,7 @@
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get particulary all users from Database. Default first 10 users</p>
+        <p class="phpdocumentor-summary">Get all users from Database. Default first 10 users</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -834,6 +938,53 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_checkReason">
+        checkReason()
+        <a href="classes/ApiVacations-Model-AbstractModel.html#method_checkReason" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">191</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">checkReason</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$id</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">int</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getUserGroupId">
         getUserGroupId()
         <a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserGroupId" class="headerlink"><i class="fas fa-link"></i></a>
@@ -842,7 +993,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">88</span>
+    <span class="phpdocumentor-element-found-in__line">94</span>
 
     </aside>
 
@@ -889,7 +1040,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">28</span>
+    <span class="phpdocumentor-element-found-in__line">34</span>
 
     </aside>
 
@@ -936,7 +1087,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">151</span>
+    <span class="phpdocumentor-element-found-in__line">157</span>
 
     </aside>
 
@@ -983,7 +1134,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">46</span>
+    <span class="phpdocumentor-element-found-in__line">52</span>
 
     </aside>
 
@@ -1030,7 +1181,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">60</span>
+    <span class="phpdocumentor-element-found-in__line">66</span>
 
     </aside>
 
@@ -1077,7 +1228,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">106</span>
+    <span class="phpdocumentor-element-found-in__line">112</span>
 
     </aside>
 
@@ -1131,7 +1282,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">128</span>
+    <span class="phpdocumentor-element-found-in__line">134</span>
 
     </aside>
 
@@ -1177,6 +1328,53 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_isUserActive">
+        isUserActive()
+        <a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserActive" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">174</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">isUserActive</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$token</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_isUserLogin">
         isUserLogin()
         <a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserLogin" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1185,7 +1383,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/AbstractModel.php"><a href="files/src-model-abstractmodel.html"><abbr title="Src/Model/AbstractModel.php">AbstractModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">74</span>
+    <span class="phpdocumentor-element-found-in__line">80</span>
 
     </aside>
 
@@ -1232,7 +1430,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">239</span>
+    <span class="phpdocumentor-element-found-in__line">283</span>
 
     </aside>
 
@@ -1269,7 +1467,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">407</span>
+    <span class="phpdocumentor-element-found-in__line">446</span>
 
     </aside>
 
@@ -1312,7 +1510,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">304</span>
+    <span class="phpdocumentor-element-found-in__line">348</span>
 
     </aside>
 
@@ -1351,6 +1549,53 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getAllUserCount">
+        getAllUserCount()
+        <a href="classes/ApiVacations-Model-User-UserModel.html#method_getAllUserCount" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">219</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getAllUserCount</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$groupId</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$groupId</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">int</span>
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getUserData">
         getUserData()
         <a href="classes/ApiVacations-Model-User-UserModel.html#method_getUserData" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1359,7 +1604,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">195</span>
+    <span class="phpdocumentor-element-found-in__line">239</span>
 
     </aside>
 
@@ -1406,7 +1651,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">217</span>
+    <span class="phpdocumentor-element-found-in__line">261</span>
 
     </aside>
 
@@ -1453,7 +1698,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/User/UserModel.php"><a href="files/src-model-user-usermodel.html"><abbr title="Src/Model/User/UserModel.php">UserModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">171</span>
+    <span class="phpdocumentor-element-found-in__line">191</span>
 
     </aside>
 
@@ -1607,7 +1852,9 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                                                     <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_db">$db<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_event">$event<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
                                                     <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_group">$group<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_reason">$reason<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
                                                     <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_user">$user<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
                                                     <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_userData">$userData<a href="classes/ApiVacations-Model-User-UserModel.html"></li>
                                             </ul>
@@ -1619,9 +1866,10 @@
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method___construct">__construct()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_addUser">addUser()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_deleteUser">deleteUser()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_editUserData">editUserData()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_editUser">editUser()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getUser">getUser()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getUsers">getUsers()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_checkReason">checkReason()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserGroupId">getUserGroupId()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserId">getUserId()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isAdmin">isAdmin()</a></li>
@@ -1629,10 +1877,12 @@
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isGroupNip">isGroupNip()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isItMe">isItMe()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isItMyUser">isItMyUser()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserActive">isUserActive()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserLogin">isUserLogin()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_addUserToDB">addUserToDB()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_deleteUserFromDB">deleteUserFromDB()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_editUserInDB">editUserInDB()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getAllUserCount">getAllUserCount()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getUserData">getUserData()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getUserFromDB">getUserFromDB()</a></li>
                                             <li><a href="classes/ApiVacations-Model-User-UserModel.html#method_getUsersFromDB">getUsersFromDB()</a></li>

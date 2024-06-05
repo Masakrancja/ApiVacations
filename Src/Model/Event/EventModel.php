@@ -9,6 +9,11 @@ use ApiVacations\Helpers\Logger;
 
 class EventModel extends AbstractModel
 {
+    /**
+     * Possible statuses in Events
+     *
+     * @var array
+     */
     private array $possibleEventStatuses = ['approved', 'pending', 'cancelled'];
 
     /**
@@ -34,28 +39,42 @@ class EventModel extends AbstractModel
             }
             $userId = (int) $userId;
         }
+
         if ($authorize === 'admin') {
             $groupId = $this->getUserGroupId($token);
-            return $this->getEventsFromDBAsAdmin(
-                $offset, $limit, $groupId, $userId
-            );
+            return [
+                $this->getEventsFromDBAsAdmin(
+                    $offset, $limit, $groupId, $userId
+                ),
+                $this->getCountAllEventsFromDBAsAdmin(
+                    $groupId, $userId
+                )
+            ];
         }
         if ($authorize === 'user') {
             $userId = $this->getUserId($token);
             return $this->getEventsFromDBAsUser(
                 $offset, $limit, $userId
             );
+            return [
+                $this->getEventsFromDBAsUser(
+                    $offset, $limit, $userId
+                ),
+                $this->getCountAllEventsFromDBAsUser(
+                    $userId
+                )
+            ];
         }
         http_response_code(403);
         throw new AppException('Forbidden', 403);
     }
 
-        /**
-     * Get particular user
+    /**
+     * Get particular event
      *
-     * @param integer $id // User ID
-     * @param string $token // X-API-KEY token
-     * @param string $authorize // 'admin' or 'user'
+     * @param integer $id
+     * @param string $token
+     * @param string $authorize
      * @return array|null
      */
     public function getEvent(int $id, string $token, string $authorize): ?array
@@ -75,6 +94,14 @@ class EventModel extends AbstractModel
         throw new AppException('Forbidden', 403);
     }
 
+    /**
+     * Add new event
+     *
+     * @param object|null $data
+     * @param string $token
+     * @param string $authorize
+     * @return array|null
+     */
     public function addEvent(?object $data, string $token, string $authorize): ?array
     {
         if ($authorize !== 'user' OR $this->isAdmin($token)) {
@@ -122,6 +149,15 @@ class EventModel extends AbstractModel
         return $this->getEventFromDB($eventId, true);
     }
 
+    /**
+     * Edit given event
+     *
+     * @param object|null $data
+     * @param string $token
+     * @param string $authorize
+     * @param integer $id
+     * @return array|null
+     */
     public function editEvent(
         ?object $data, string $token, string $authorize, int $id
     ): ?array
@@ -135,7 +171,6 @@ class EventModel extends AbstractModel
             http_response_code(403);
             throw new AppException('Forbidden', 403);  
         }
-
         if ($this->isAdmin($token)) {
             if (
                 isset($data->status) AND 
@@ -162,7 +197,6 @@ class EventModel extends AbstractModel
             if ($this->event->getDateFrom() > $this->event->getDateTo()) {
                 throw new AppException('dateFrom must be less or equal than dateTo', 422);
             }
-
             $this->event->setDays(
                 $this->calculateDays(
                     $this->event->getDateFrom(), $this->event->getDateTo()
@@ -176,6 +210,14 @@ class EventModel extends AbstractModel
 
     }
 
+    /**
+     * Delete given event
+     *
+     * @param string $token
+     * @param string $authorize
+     * @param integer $id
+     * @return void
+     */
     public function deleteEvent(
         string $token, string $authorize, int $id
     ): void
@@ -228,6 +270,32 @@ class EventModel extends AbstractModel
         return $result;
     }
 
+    private function getCountAllEventsFromDBAsAdmin(
+        int $groupId, ?int $userId
+    ): int
+    {
+        $sql = "
+            SELECT COUNT(*) AS count   
+            FROM Events 
+            WHERE groupId = :groupId 
+        ";        
+        $params[] = [
+            'key' => ':groupId',
+            'value' => $groupId,
+            'type' => \PDO::PARAM_INT,
+        ];
+        if ($userId) {
+            $sql .= " AND userId = :userId ";
+            $params[] = [
+                'key' => ':userId',
+                'value' => $userId,
+                'type' => \PDO::PARAM_INT,
+            ];
+        }        
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (int) ($row['count'] ?? 0);
+    }
+
     private function getEventsFromDBAsUser(
         int $offset, int $limit, int $userId
     ): array
@@ -253,6 +321,24 @@ class EventModel extends AbstractModel
         return $result;
     }
 
+    private function getCountAllEventsFromDBAsUser(
+        int $userId
+    ): int
+    {
+        $sql = "
+            SELECT COUNT(*) AS count   
+            FROM Events 
+            WHERE userId = :userId 
+        ";
+        $params[] = [
+            'key' => ':userId',
+            'value' => $userId,
+            'type' => \PDO::PARAM_INT,
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (int) ($row['count'] ?? 0);
+    }
+
     private function getEventUserId(int $id): int
     {
         $sql = "
@@ -275,7 +361,9 @@ class EventModel extends AbstractModel
         throw new AppException('Not found', 404);
     }
 
-    private function getEventFromDB(int $id, bool $notice=false): ?array
+    private function getEventFromDB(
+        int $id, bool $notice=false
+    ): ?array
     {
         if ($notice) {
             $sql = "

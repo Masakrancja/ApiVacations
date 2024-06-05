@@ -109,12 +109,12 @@
                                         <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/apivacations.html">ApiVacations</a></li>
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/apivacations-model.html">Model</a></li>
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/apivacations-model-auth.html">Auth</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/apivacations-model-reason.html">Reason</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    AuthModel
+    ReasonModel
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/ApiVacations-Model-AbstractModel.html"><abbr title="\ApiVacations\Model\AbstractModel">AbstractModel</abbr></a>
@@ -136,9 +136,9 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Reason/ReasonModel.php"><a href="files/src-model-reason-reasonmodel.html"><abbr title="Src/Model/Reason/ReasonModel.php">ReasonModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">8</span>
+    <span class="phpdocumentor-element-found-in__line">10</span>
 
     </aside>
 
@@ -152,7 +152,7 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -166,7 +166,7 @@
 
 <h4 id="toc-properties">
     Properties
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
@@ -210,7 +210,7 @@
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
@@ -221,32 +221,11 @@
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_checkToken">checkToken()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>Check if given token in correct</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuth">getAuth()</a>
+    <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasons">getReasons()</a>
     <span>
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
-<dd>Get authorization yserdata</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthorize">getAuthorize()</a>
-    <span>
-                                &nbsp;: string    </span>
-</dt>
-<dd>return credentials by given token</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getTokenFromHeader">getTokenFromHeader()</a>
-    <span>
-                                &nbsp;: string|null    </span>
-</dt>
-<dd>Get token from header</dd>
+<dd>Get all reasons</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/ApiVacations-Model-AbstractModel.html#method_checkReason">checkReason()</a>
@@ -309,27 +288,9 @@
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAdminValue">getAdminValue()</a>
+    <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasonsFromDB">getReasonsFromDB()</a>
     <span>
-                                &nbsp;: bool    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthData">getAuthData()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;|null    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isAdminToken">isAdminToken()</a>
-    <span>
-                                &nbsp;: bool    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isUserToken">isUserToken()</a>
-    <span>
-                                &nbsp;: bool    </span>
+                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 
     </dl>
@@ -342,7 +303,7 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/ApiVacations-Model-Auth-AuthModel.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -560,7 +521,7 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/ApiVacations-Model-Auth-AuthModel.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -602,23 +563,23 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_checkToken">
-        checkToken()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_checkToken" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getReasons">
+        getReasons()
+        <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasons" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Reason/ReasonModel.php"><a href="files/src-model-reason-reasonmodel.html"><abbr title="Src/Model/Reason/ReasonModel.php">ReasonModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">54</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Check if given token in correct</p>
+        <p class="phpdocumentor-summary">Get all reasons</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">checkToken</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+                    <span class="phpdocumentor-signature__name">getReasons</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$authorize</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -626,56 +587,8 @@
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getAuth">
-        getAuth()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuth" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">16</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get authorization yserdata</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getAuth</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$data</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object|null</span>
+                <span class="phpdocumentor-signature__argument__name">$authorize</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
@@ -689,103 +602,6 @@
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
         <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getAuthorize">
-        getAuthorize()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthorize" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">81</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">return credentials by given token</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getAuthorize</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$scopes</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$scopes</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string</span>
-                    &mdash;
-                <section class="phpdocumentor-description"><p>// 'admin' or 'user'</p>
-</section>
-
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getTokenFromHeader">
-        getTokenFromHeader()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getTokenFromHeader" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">37</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get token from header</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getTokenFromHeader</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|null</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">string|null</span>
             </section>
 
 </article>
@@ -1279,192 +1095,34 @@
             -private
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getAdminValue">
-        getAdminValue()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAdminValue" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getReasonsFromDB">
+        getReasonsFromDB()
+        <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasonsFromDB" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Reason/ReasonModel.php"><a href="files/src-model-reason-reasonmodel.html"><abbr title="Src/Model/Reason/ReasonModel.php">ReasonModel.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">107</span>
+    <span class="phpdocumentor-element-found-in__line">27</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getAdminValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+                    <span class="phpdocumentor-signature__name">getReasonsFromDB</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
+    
     
 
     
 
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">bool</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_getAuthData">
-        getAuthData()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthData" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">125</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">getAuthData</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$login</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pass</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$login</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$pass</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_isAdminToken">
-        isAdminToken()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isAdminToken" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">97</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">isAdminToken</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">bool</span>
-            </section>
-
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_isUserToken">
-        isUserToken()
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isUserToken" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="Src/Model/Auth/AuthModel.php"><a href="files/src-model-auth-authmodel.html"><abbr title="Src/Model/Auth/AuthModel.php">AuthModel.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">102</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">isUserToken</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$token</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$token</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-
-    
-
-            <section>
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">bool</span>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
             </section>
 
 </article>
@@ -1474,7 +1132,7 @@
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/Src/Model/Auth/AuthModel.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/Src/Model/Reason/ReasonModel.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -1573,20 +1231,20 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/ApiVacations-Model-Reason-ReasonModel.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/ApiVacations-Model-Reason-ReasonModel.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_db">$db<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_event">$event<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_group">$group<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_reason">$reason<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_user">$user<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
-                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_userData">$userData<a href="classes/ApiVacations-Model-Auth-AuthModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_db">$db<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_event">$event<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_group">$group<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_reason">$reason<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_user">$user<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
+                                                    <li><a href="classes/ApiVacations-Model-AbstractModel.html#property_userData">$userData<a href="classes/ApiVacations-Model-Reason-ReasonModel.html"></li>
                                             </ul>
                 </li>
             
@@ -1594,10 +1252,7 @@
             <li>
                 <ul class="phpdocumentor-list -clean">
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method___construct">__construct()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_checkToken">checkToken()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuth">getAuth()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthorize">getAuthorize()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getTokenFromHeader">getTokenFromHeader()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasons">getReasons()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_checkReason">checkReason()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserGroupId">getUserGroupId()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_getUserId">getUserId()</a></li>
@@ -1608,10 +1263,7 @@
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isItMyUser">isItMyUser()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserActive">isUserActive()</a></li>
                                             <li><a href="classes/ApiVacations-Model-AbstractModel.html#method_isUserLogin">isUserLogin()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAdminValue">getAdminValue()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthData">getAuthData()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isAdminToken">isAdminToken()</a></li>
-                                            <li><a href="classes/ApiVacations-Model-Auth-AuthModel.html#method_isUserToken">isUserToken()</a></li>
+                                            <li><a href="classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasonsFromDB">getReasonsFromDB()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1631,7 +1283,7 @@
     </section>
 </section>
         </div>
-        <a href="classes/ApiVacations-Model-Auth-AuthModel.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/ApiVacations-Model-Reason-ReasonModel.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

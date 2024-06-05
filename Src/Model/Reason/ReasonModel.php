@@ -9,6 +9,12 @@ use ApiVacations\Helpers\Logger;
 
 class ReasonModel extends AbstractModel
 {
+    /**
+     * Get all reasons
+     *
+     * @param string $authorize
+     * @return array
+     */
     public function getReasons(string $authorize): array
     {
         if ($authorize === 'admin' OR $authorize === 'user') {

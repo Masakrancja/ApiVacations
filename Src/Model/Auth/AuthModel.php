@@ -7,19 +7,19 @@ use ApiVacations\Exceptions\AppException;
 
 class AuthModel extends AbstractModel
 {
+    /**
+     * Get authorization yserdata
+     *
+     * @param object|null $data
+     * @return array
+     */
     public function getAuth(?object $data): array
     {
-        echo json_encode($data) . "\n";
-
         $login = $data->login ?? null;
         $pass = $data->pass ?? null;
         if ($login && $pass) {
             $this->user->setLogin((string) $login);
             $this->user->setPass((string) $pass);
-
-            echo 'login: ' . $this->user->getLogin() . "\n";
-            echo 'pass: ' . $this->user->getPass() . "\n";
-
             $result = $this->getAuthData($login, $pass);
             if ($result) {
                 return $result;
@@ -29,6 +29,11 @@ class AuthModel extends AbstractModel
         throw new AppException('Unauthorized', 401);
     }
 
+    /**
+     * Get token from header
+     *
+     * @return string|null
+     */
     public function getTokenFromHeader(): ?string
     {
         $headers = apache_request_headers();
@@ -40,6 +45,12 @@ class AuthModel extends AbstractModel
         return null;
     }
 
+    /**
+     * Check if given token in correct
+     *
+     * @param string|null $token
+     * @return string
+     */
     public function checkToken(?string $token): string
     {
         if ($token !== null) {
@@ -60,6 +71,13 @@ class AuthModel extends AbstractModel
         throw new AppException('Unauthorized', 401);
     }
 
+    /**
+     * return credentials by given token
+     *
+     * @param string $token
+     * @param array $scopes
+     * @return string // 'admin' or 'user'
+     */
     public function getAuthorize(string $token, array $scopes): string
     {
         if (

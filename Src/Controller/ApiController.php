@@ -69,12 +69,13 @@ class ApiController extends AbstractController
                     throw new AppException('Not found', 404);
                 }
             } else {
-                $result['response'] = $this->userModel->getUsers(
+                [
+                    $result['response'], 
+                    $result['allRows'],
+                ] = $this->userModel->getUsers(
                     $params, $token, 'admin'
                 );
-                $result['allRows'] = $this->userModel->getAllUserCount(
-                    $token, 'admin'
-                );
+
             }
             $result['code'] = 200;
         } elseif ($method === 'POST') {
@@ -84,7 +85,7 @@ class ApiController extends AbstractController
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
                 $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
-                $result['response'] = $this->userModel->editUserData($rawData, $token, $authorize, $param); 
+                $result['response'] = $this->userModel->editUser($rawData, $token, $authorize, $param); 
             } else {
                 http_response_code(404);
                 throw new AppException('Not found', 404);               
@@ -166,7 +167,10 @@ class ApiController extends AbstractController
                     throw new AppException('Not found', 404);
                 }
             } else {
-                $result['response'] = $this->eventModel->getEvents(
+                [
+                    $result['response'], 
+                    $result['allRows'],
+                ] = $this->eventModel->getEvents(
                     $params, $token, $authorize
                 );
             }

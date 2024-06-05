@@ -24,28 +24,10 @@ class UserModel extends AbstractModel
             throw new AppException('Forbidden', 403);            
         }
         $groupId = $this->getUserGroupId($token);
-        return $this->getUsersFromDB($params, $groupId);
-    }
-
-    public function getAllUserCount(
-        string $token, string $authorize
-    ): int
-    {
-        if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
-            http_response_code(403);
-            throw new AppException('Forbidden', 403);            
-        }
-        $groupId = $this->getUserGroupId($token);
-        $sql = "SELECT COUNT(*) AS count FROM Users WHERE groupId = :groupId";
-        $params = [
-            [
-                'key' => ':groupId',
-                'value' => $groupId,
-                'type' => \PDO::PARAM_INT,
-            ]
+        return [
+            $this->getUsersFromDB($params, $groupId),
+            $this->getAllUserCount($groupId),
         ];
-        $row = $this->db->selectProcess($sql, $params, 'fetch');
-        return (int) ($row['count'] ?? 0);
     }
 
     /**
@@ -146,7 +128,16 @@ class UserModel extends AbstractModel
         return $this->getUserFromDB($userId);
     }
 
-    public function editUserData(
+    /**
+     * Edit user data
+     *
+     * @param object|null $data
+     * @param string $token
+     * @param string $authorize
+     * @param integer $id
+     * @return array|null
+     */
+    public function editUser(
         ?object $data, string $token, string $authorize, int $id
     ): ?array
     {
@@ -167,11 +158,17 @@ class UserModel extends AbstractModel
         $this->userData->setPhone((string) ($data->phone ?? $user['userData']['phone']));
         $this->userData->setEmail((string) ($data->email ?? $user['userData']['email']));
         $this->user->setIsActive((bool) ($data->isActive ?? $user['isActive']));
-
-        $rowCount = $this->editUserInDB($id);
         return $this->getUserFromDB($id);
     }
 
+    /**
+     * Delete user
+     *
+     * @param string $token
+     * @param string $authorize
+     * @param integer $id
+     * @return void
+     */
     public function deleteUser(
         string $token, string $authorize, int $id
     ): void
@@ -217,6 +214,26 @@ class UserModel extends AbstractModel
             $result[] = $row;            
         }
         return $result;
+    }
+
+    private function getAllUserCount(
+        int $groupId
+    ): int
+    {
+        $sql = "
+            SELECT COUNT(*) AS count 
+            FROM Users 
+            WHERE groupId = :groupId
+        ";
+        $params = [
+            [
+                'key' => ':groupId',
+                'value' => $groupId,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return (int) ($row['count'] ?? 0);
     }
 
     private function getUserData(int $id): array

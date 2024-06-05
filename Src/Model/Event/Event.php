@@ -14,7 +14,7 @@ class Event
     private string $dateFrom;
     private string $dateTo;
     private int $days;
-    private bool $isApproved = false;
+    private string $status = 'pending';
     private string $notice;
     private ?string $createdAt;
     private string $updatedAt;
@@ -54,9 +54,9 @@ class Event
         return $this->days;
     }
 
-    public function getIsApproved(): bool
+    public function getStatus(): string
     {
-        return $this->isApproved;
+        return $this->status;
     }
 
     public function getNotice(): string
@@ -133,9 +133,9 @@ class Event
         $this->days = $days;
     }
 
-    public function setIsApproved(bool $isApproved)
+    public function setStatus(string $status)
     {
-        $this->isApproved = $isApproved;
+        $this->status = $status;
     }
 
     public function setNotice(string $notice)

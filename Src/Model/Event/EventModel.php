@@ -9,6 +9,8 @@ use ApiVacations\Helpers\Logger;
 
 class EventModel extends AbstractModel
 {
+    private array $possibleEventStatuses = ['approved', 'pending', 'cancelled'];
+
     /**
      * Get all events from Database. Default first 10 events
      *
@@ -105,11 +107,11 @@ class EventModel extends AbstractModel
             throw new AppException('dateFrom must be less or equal than dateTo', 422);
         }
         $this->event->setDays(
-            (int) floor(
-            (strtotime($this->event->getDateTo()) - strtotime($this->event->getDateFrom())) 
-            / 86400) + 1
+            $this>calculateDays(
+                $this->event->getDateFrom(), $this->event->getDateTo()
+            )
         );
-        $this->event->setIsApproved(false);
+        $this->event->status('pending');
         $this->event->setNotice(
             (string) ($data->notice ?? null)
         );
@@ -117,6 +119,59 @@ class EventModel extends AbstractModel
         return $this->getEventFromDB($eventId, true);
     }
 
+    public function editEvent(
+        ?object $data, string $token, string $authorize, int $id
+    ): ?array
+    {
+        $event = $this->getEvent($id, $token, $authorize);
+        if (!$event) {
+            http_response_code(404);
+            throw new AppException('Not found', 404);
+        }
+        echo json_encode($data) . "\n";
+        echo json_encode($event) . "\n";
+
+
+        if ($this->isAdmin($token)) {
+            if (
+                isset($data->status) AND 
+                !in_array($data->status, $this->possibleEventStatuses)
+            ) {
+                http_response_code(422);
+                throw new AppException(
+                    'Incorrect status. Possible only: ' . 
+                    implode(', ', $this->possibleEventStatuses), 
+                    422
+                );
+            }
+            $this->event->setStatus((string) ($data->status ?? $event['status']));
+            $rowCount = $this->editEventInDBforAdmin($id);
+            return $this->getEventFromDB($id, false);
+        } else {
+            $this->event->setReasonId(
+                $this->checkReason(
+                    (int) ($data->reasonId ?? $event['reasonId'])
+                )
+            );
+            $this->event->setDateFrom($data->dateFrom ?? $event['dateFrom']);
+            $this->event->setDateTo($data->dateTo ?? $event['dateTo']);
+            if ($this->event->getDateFrom() > $this->event->getDateTo()) {
+                throw new AppException('dateFrom must be less or equal than dateTo', 422);
+            }
+            $this->event->setDays(
+                $this>calculateDays(
+                    $this->event->getDateFrom(), $this->event->getDateTo()
+                )
+            );
+            $this->event->setNotice($data->notice ?? $event['notice']);
+
+
+            $rowCount = $this->editEventInDBforUser($id);
+            echo 'rowCount: ' . $rowCount ."\n";
+            return $this->getEventFromDB($id, false);
+        }
+
+    }
 
 
 
@@ -130,7 +185,7 @@ class EventModel extends AbstractModel
         $result = [];
         $params = [];
         $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, isApproved, createdAt, updatedAt   
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, createdAt, updatedAt   
             FROM Events 
             WHERE groupId = :groupId 
         ";
@@ -163,7 +218,7 @@ class EventModel extends AbstractModel
         $result = [];
         $params = [];
         $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, isApproved, notice, createdAt, updatedAt   
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, createdAt, updatedAt   
             FROM Events 
             WHERE userId = :userId 
         ";
@@ -207,11 +262,11 @@ class EventModel extends AbstractModel
     {
         if ($notice) {
             $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, isApproved, notice, createdAt, updatedAt  
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, createdAt, updatedAt  
         ";
         } else {
             $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, isApproved, createdAt, updatedAt  
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, createdAt, updatedAt  
         ";
         }
 
@@ -237,8 +292,8 @@ class EventModel extends AbstractModel
     private function addEventToDB(): int
     {
         $sql = "
-            INSERT INTO Events (userId, groupId, reasonId, dateFrom, dateTo, days, isApproved, notice) 
-            Values (:userId, :groupId, :reasonId, :dateFrom, :dateTo, :days, :isApproved, :notice)
+            INSERT INTO Events (userId, groupId, reasonId, dateFrom, dateTo, days, status, notice) 
+            Values (:userId, :groupId, :reasonId, :dateFrom, :dateTo, :days, :status, :notice)
         ";
         try {
             $stmt = $this->db->getConn()->prepare($sql);
@@ -248,7 +303,7 @@ class EventModel extends AbstractModel
             $stmt->bindValue(":dateFrom", $this->event->getDateFrom(), \PDO::PARAM_STR);
             $stmt->bindValue(":dateTo", $this->event->getDateTo(), \PDO::PARAM_STR);
             $stmt->bindValue(":days", $this->event->getDays(), \PDO::PARAM_INT);
-            $stmt->bindValue(":isApproved", $this->event->getIsApproved(), \PDO::PARAM_BOOL);
+            $stmt->bindValue(":status", $this->event->getStatus(), \PDO::PARAM_STR);
             $stmt->bindValue(":notice", $this->event->getNotice(), \PDO::PARAM_STR);
             $stmt->execute();
             return (int) $this->db->getConn()->lastInsertId();
@@ -257,6 +312,111 @@ class EventModel extends AbstractModel
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
+    }
+
+    private function editEventInDBforAdmin(int $id): int
+    {
+        try {
+            $sql = "
+                UPDATE `Events` 
+                SET 
+                    status = :status 
+                WHERE id = :id
+            ";
+            $params = [
+                [
+                    'key' => ':status',
+                    'value' => $this->event->getStatus(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':id',
+                    'value' => $id,
+                    'type' => \PDO::PARAM_INT,
+                ],
+            ];
+
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+            return (int) $stmt->rowCount();
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
+    private function editEventInDBforUser(int $id): int
+    {
+        try {
+            $sql = "
+                UPDATE `Events` 
+                SET 
+                    reasonId = :reasonId,
+                    dateFrom = :dateFrom,
+                    dateTo = :dateTo,
+                    days = :days,
+                    notice = :notice
+                WHERE id = :id
+            ";
+            $params = [
+                [
+                    'key' => ':reasonId',
+                    'value' => $this->event->getReasonId(),
+                    'type' => \PDO::PARAM_INT,
+                ],
+                [
+                    'key' => ':dateFrom',
+                    'value' => $this->event->getDateFrom(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':dateTo',
+                    'value' => $this->event->getDateTo(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':days',
+                    'value' => $this->event->getDays(),
+                    'type' => \PDO::PARAM_INT,
+                ],
+                [
+                    'key' => ':notice',
+                    'value' => $this->event->getNotice(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':id',
+                    'value' => $id,
+                    'type' => \PDO::PARAM_INT,
+                ],
+            ];
+
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+            return (int) $stmt->rowCount();
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
+    private function calculateDays(
+        string $dateFrom, string $dateTo
+    ): int
+    {
+        return (int) 
+            floor(
+                (strtotime($dateFrom) - strtotime($thidateTo)) / 86400
+            ) 
+            + 1;
     }
 
 }

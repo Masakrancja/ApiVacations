@@ -9,6 +9,7 @@ use ApiVacations\Model\User\User;
 use ApiVacations\Model\User\UserData;
 use ApiVacations\Model\Group\Group;
 use ApiVacations\Model\Event\Event;
+use ApiVacations\Model\Reason\Reason;
 
 abstract class AbstractModel
 {
@@ -17,6 +18,7 @@ abstract class AbstractModel
     protected UserData $userData;
     protected Group $group;
     protected Event $event;
+    protected Reason $reason;
 
 
     public function __construct()
@@ -26,6 +28,7 @@ abstract class AbstractModel
         $this->userData = new UserData;
         $this->group = new Group;
         $this->event = new Event;
+        $this->reason = new Reason;
     }
 
     protected function getUserId(string $token): int

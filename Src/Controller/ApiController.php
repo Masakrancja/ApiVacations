@@ -3,29 +3,9 @@ declare(strict_types=1);
 namespace ApiVacations\Controller;
 
 use ApiVacations\Controller\AbstractController;
-use ApiVacations\Debug\Dump;
 use ApiVacations\Exceptions\AppException;
-use ApiVacations\Helpers\Request;
-use ApiVacations\Model\Auth\AuthModel;
-use ApiVacations\Model\User\UserModel;
-use ApiVacations\Model\Group\GroupModel;
-use ApiVacations\Model\Event\EventModel;
 class ApiController extends AbstractController
 {
-    private AuthModel $authModel;
-    private UserModel $userModel;
-    private GroupModel $groupModel;
-    private EventModel $eventModel;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-        $this->authModel = new AuthModel;
-        $this->userModel = new UserModel;
-        $this->groupModel = new GroupModel;
-        $this->eventModel = new EventModel;
-    }
-
     public function run(): void
     {
         [$path, $param] = $this->request->getUriTable();
@@ -184,7 +164,15 @@ class ApiController extends AbstractController
             );
             $result['code'] = 201;
         } elseif ($method === 'PATCH') {
-
+            if ($param !== null) {
+                $param = $this->request->paramValidateInt($param);
+                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
+                $result['response'] = $this->eventModel->editEvent($rawData, $token, $authorize, $param); 
+            } else {
+                http_response_code(404);
+                throw new AppException('Not found', 404);               
+            }
+            $result['code'] = 200;
         } elseif ($method === 'DELETE') {
 
         } else {

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace ApiVacations;
 header("Content-type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Origin: *");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

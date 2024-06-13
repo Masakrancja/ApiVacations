@@ -17,13 +17,9 @@ class GroupModel extends AbstractModel
      * @param string $authorize // 'admin' or 'user'
      * @return array
      */
-    public function getGroups(string $authorize): array
+    public function getGroups(): array
     {
-        if ($authorize === 'admin' OR $authorize === 'user') {
-            return $this->getGroupsFromDB();
-        }
-        http_response_code(403);
-        throw new AppException('Forbidden', 403);
+        return $this->getGroupsFromDB();
     }
 
     /**
@@ -34,13 +30,9 @@ class GroupModel extends AbstractModel
      * @param string $authorize // 'admin' or 'user'
      * @return array|null
      */
-    public function getGroup(int $id, string $token, string $authorize): ?array
+    public function getGroup(int $id): ?array
     {
-        if ($authorize === 'admin' OR $authorize === 'user') {
-            return $this->getGroupFromDB($id);
-        }
-        http_response_code(403);
-        throw new AppException('Forbidden', 403);
+        return $this->getGroupFromDB($id);
     }
 
     /**
@@ -57,7 +49,7 @@ class GroupModel extends AbstractModel
     ): ?array
     {
         $groupId = $this->getUserGroupId($token);
-        $group = $this->getGroup($id, $token, $authorize);
+        $group = $this->getGroup($id);
         if (!$group) {
             http_response_code(404);
             throw new AppException('Not found', 404);            

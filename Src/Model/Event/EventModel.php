@@ -53,9 +53,6 @@ class EventModel extends AbstractModel
         }
         if ($authorize === 'user') {
             $userId = $this->getUserId($token);
-            return $this->getEventsFromDBAsUser(
-                $offset, $limit, $userId
-            );
             return [
                 $this->getEventsFromDBAsUser(
                     $offset, $limit, $userId
@@ -137,11 +134,12 @@ class EventModel extends AbstractModel
             throw new AppException('dateFrom must be less or equal than dateTo', 422);
         }
         $this->event->setDays(
-            $this>calculateDays(
+            $this->calculateDays(
                 $this->event->getDateFrom(), $this->event->getDateTo()
             )
         );
-        $this->event->status('pending');
+
+        $this->event->setStatus('pending');
         $this->event->setNotice(
             (string) ($data->notice ?? null)
         );

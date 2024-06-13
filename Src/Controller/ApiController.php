@@ -11,7 +11,18 @@ class ApiController extends AbstractController
         [$path, $param] = $this->request->getUriTable();
         $method = $this->request->getMethod();
         $token = null;
-        if (!($method === 'POST' AND ($path === 'users' OR $path === 'auth'))) {
+
+        $authorizeAllowed = true;
+        if ($method === 'POST' AND $path === 'users') {
+            $authorizeAllowed = false;
+        }
+        if ($method === 'POST' AND $path === 'auth') {
+            $authorizeAllowed = false;
+        }
+        if ($method === 'GET' AND $path === 'groups') {
+            $authorizeAllowed = false;
+        }
+        if ($authorizeAllowed) {
             $token = $this->authModel->checkToken(
                 $this->authModel->getTokenFromHeader()
             );
@@ -116,20 +127,15 @@ class ApiController extends AbstractController
     {
         $result = [];
         if ($method === 'GET') {
-            $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $result['response'] = $this->groupModel->getGroup(
-                    $param, $token, $authorize
-                );
+                $result['response'] = $this->groupModel->getGroup($param);
                 if ($result['response'] === null) {
                     http_response_code(404);
                     throw new AppException('Not found', 404);
                 }
             } else {
-                $result['response'] = $this->groupModel->getGroups(
-                    $params, $token, $authorize
-                );
+                $result['response'] = $this->groupModel->getGroups();
             }
             $result['code'] = 200;
         } elseif ($method === 'PATCH') {

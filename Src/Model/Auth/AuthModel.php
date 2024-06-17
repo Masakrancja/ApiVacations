@@ -29,20 +29,22 @@ class AuthModel extends AbstractModel
         throw new AppException('Unauthorized', 401);
     }
 
+    public function getMe(?string $token): ?array
+    {
+        if ($token) {
+            return $this->getAuthDataByToken($token);
+        }
+        return null;
+    }
+
     /**
      * Get token from header
      *
      * @return string|null
      */
-    public function getTokenFromHeader(): ?string
+    public function getTokenFromParams($params): ?string
     {
-        $headers = apache_request_headers();
-        foreach ($headers as $key => $header) {
-            if ($key === 'X-API-KEY') {
-                return $header;
-            }
-        }
-        return null;
+        return $params['token'] ?? null;
     }
 
     /**
@@ -139,6 +141,25 @@ class AuthModel extends AbstractModel
                 "key"=> ":pass",
                 "value"=> md5($pass),
                 "type"=> \PDO::PARAM_STR,                
+            ],
+        ];
+        $row = $this->db->selectProcess($sql, $params, "fetch");
+        if ($row) {
+            return $row;          
+        }
+        return null;
+    }
+
+    private function getAuthDataByToken(string $token): ?array
+    {
+        $sql = "SELECT id, groupId, login, isActive, isAdmin
+                FROM Users
+                WHERE tokenApi = :token";
+        $params = [
+            [
+                "key"=> ":token",
+                "value"=> $token,
+                "type"=> \PDO::PARAM_STR,
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, "fetch");

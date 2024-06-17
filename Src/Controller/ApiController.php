@@ -9,7 +9,10 @@ class ApiController extends AbstractController
     public function run(): void
     {
         [$path, $param] = $this->request->getUriTable();
+
         $method = $this->request->getMethod();
+        $params = $this->request->getParams();
+        $rawData = $this->request->getRawData();
         $token = null;
 
         $authorizeAllowed = true;
@@ -24,13 +27,9 @@ class ApiController extends AbstractController
         }
         if ($authorizeAllowed) {
             $token = $this->authModel->checkToken(
-                $this->authModel->getTokenFromHeader()
+                $this->authModel->getTokenFromParams($params)
             );
         }
-
-        $params = $this->request->getParams();
-        $rawData = $this->request->getRawData();
-
         switch($path) {
             case 'users':
                 $this->UsersControler(
@@ -246,8 +245,11 @@ class ApiController extends AbstractController
                 $rawData
             );
             $result['code'] = 201;
+        } elseif ($method === 'GET') {
+            $result['response'] = $this->authModel->getMe($token);
+            $result['code'] = 200;
         } else {
-            header('Allow: POST');
+            header('Allow: GET,POST,OPTIONS');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
         }

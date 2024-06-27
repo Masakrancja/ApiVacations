@@ -103,7 +103,7 @@ class EventModel extends AbstractModel
     {
         if ($authorize !== 'user' OR $this->isAdmin($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);            
+            throw new AppException('Forbidden. Tylko pracownik może tworzyć urlopy', 403);            
         }
         if ($data === null) {
             http_response_code(422);
@@ -112,7 +112,7 @@ class EventModel extends AbstractModel
 
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
+            throw new AppException('Forbidden. Pracownik nieaktywny', 403);  
         }
 
         $this->event->setUserId(

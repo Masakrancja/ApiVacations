@@ -202,7 +202,6 @@ class EventModel extends AbstractModel
             );
             $this->event->setNotice($data->notice ?? $event['notice']);
             $rowCount = $this->editEventInDBforUser($id);
-            echo 'rowCount: ' . $rowCount ."\n";
             return $this->getEventFromDB($id, true);
         }
 
@@ -263,6 +262,7 @@ class EventModel extends AbstractModel
         $sql .= " LIMIT " . $offset . ", " . $limit;
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
         foreach($rows as $row) {
+            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
             $result[] = $row;            
         }
         return $result;
@@ -314,6 +314,7 @@ class EventModel extends AbstractModel
         $sql .= " LIMIT " . $offset . ", " . $limit;
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
         foreach($rows as $row) {
+            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
             $result[] = $row;            
         }
         return $result;
@@ -357,6 +358,24 @@ class EventModel extends AbstractModel
         }
         http_response_code(404);
         throw new AppException('Not found', 404);
+    }
+
+    private function getReasonName(int $reasonId): string
+    {
+        $sql = "
+            SELECT name 
+            FROM Reasons 
+            WHERE id = :reasonId
+        ";
+        $params = [
+            [
+                "key"=> ":reasonId",
+                "value"=> $reasonId,
+                "type"=> \PDO::PARAM_INT,
+            ],
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return ($row['name'] ?? '');
     }
 
     private function getEventFromDB(

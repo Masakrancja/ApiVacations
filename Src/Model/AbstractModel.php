@@ -207,7 +207,7 @@ abstract class AbstractModel
             return $id;
         }
         http_response_code(422);
-        throw new AppException('reasonId is incorrect', 422);        
+        throw new AppException('Niepoprawny powód urlopu', 422);        
     }
 
 }

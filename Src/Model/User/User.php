@@ -35,7 +35,7 @@ class User
     public function setGroupId(int $groupId): void
     {
         if (!Validator::intValidate($groupId, 1)) {
-            throw new AppException('Group not exist', 422);
+            throw new AppException('Nie wybrano firmy', 422);
         }
         $this->groupId = $groupId;
     }
@@ -49,7 +49,7 @@ class User
     {
         $login = Validator::stringSanitize($login);
         if (!Validator::stringValidate($login, 5, 20)) {
-            throw new AppException("Login length must be between 5 - 20", 422);
+            throw new AppException("Login musi zawierać od 5 do 20 znaków", 422);
         }
         $this->login = $login;
     }
@@ -63,7 +63,7 @@ class User
     {
         $pass = Validator::stringSanitize($pass);
         if (!Validator::stringValidate($pass, 4, 20)) {
-            throw new AppException("Password length must be between 4 - 20", 422);
+            throw new AppException("Login musi zawierać od 4 do 20 znaków", 422);
         }
         $this->pass = $pass;
     }

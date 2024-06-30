@@ -76,7 +76,7 @@ class Group
     {
         $name = Validator::stringSanitize($name);
         if (!Validator::stringValidate($name, 3, 20)) {
-            throw new AppException("Group name length must be between 3 - 20", 422);
+            throw new AppException("Nazwa firmy musi być w przedziale od 3 do 20 znaków", 422);
         }
         $this->name = $name;
     }
@@ -85,7 +85,7 @@ class Group
     {
         $address = Validator::stringSanitize($address);
         if (!Validator::stringValidate($address, 5, 20)) {
-            throw new AppException("Address length must be between 5 - 20", 422);
+            throw new AppException("Adres musi być w przedziale od 5 do 20 znaków", 422);
         }
         $this->address = $address;
     }
@@ -94,7 +94,7 @@ class Group
     {
         $postalCode = Validator::stringSanitize($postalCode);
         if (!Validator::stringValidate($postalCode, 0, 10)) {
-            throw new AppException("Postal code length must be less or equal 10", 422);
+            throw new AppException("Kod pocztowy musi mieć nie więcej niż 10 znaków", 422);
         }
         $this->postalCode = $postalCode;
     }
@@ -103,7 +103,7 @@ class Group
     {
         $city = Validator::stringSanitize($city);
         if (!Validator::stringValidate($city, 2, 20)) {
-            throw new AppException("Name of city length must be between 2 - 20", 422);
+            throw new AppException("Nazwa miasta musi mieć od 2 do 20 znaków", 422);
         }
         $this->city = $city;
     }
@@ -112,7 +112,7 @@ class Group
     {
         $nip = preg_replace('~\D~', '', Validator::stringSanitize($nip));
         if (!Validator::stringValidate($nip, 10, 11)) {
-            throw new AppException("Nip field must have 10 or 11 digits", 422);
+            throw new AppException("Nip firmy może mieć 10 lub 11 cyfr", 422);
         }
         $this->nip = $nip;
     }

@@ -131,7 +131,7 @@ class EventModel extends AbstractModel
             (string) ($data->dateTo ?? null)
         );
         if ($this->event->getDateFrom() > $this->event->getDateTo()) {
-            throw new AppException('dateFrom must be less or equal than dateTo', 422);
+            throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
         }
         $this->event->setDays(
             $this->calculateDays(
@@ -193,7 +193,7 @@ class EventModel extends AbstractModel
             $this->event->setDateFrom($data->dateFrom ?? $event['dateFrom']);
             $this->event->setDateTo($data->dateTo ?? $event['dateTo']);
             if ($this->event->getDateFrom() > $this->event->getDateTo()) {
-                throw new AppException('dateFrom must be less or equal than dateTo', 422);
+                throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
             }
             $this->event->setDays(
                 $this->calculateDays(
@@ -360,24 +360,6 @@ class EventModel extends AbstractModel
         throw new AppException('Not found', 404);
     }
 
-    private function getReasonName(int $reasonId): string
-    {
-        $sql = "
-            SELECT name 
-            FROM Reasons 
-            WHERE id = :reasonId
-        ";
-        $params = [
-            [
-                "key"=> ":reasonId",
-                "value"=> $reasonId,
-                "type"=> \PDO::PARAM_INT,
-            ],
-        ];
-        $row = $this->db->selectProcess($sql, $params, 'fetch');
-        return ($row['name'] ?? '');
-    }
-
     private function getEventFromDB(
         int $id, bool $notice=false
     ): ?array
@@ -406,9 +388,28 @@ class EventModel extends AbstractModel
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
         if ($row) {
+            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
             return $row;
         }
         return null;           
+    }
+
+    private function getReasonName(int $reasonId): string
+    {
+        $sql = "
+            SELECT name 
+            FROM Reasons 
+            WHERE id = :reasonId
+        ";
+        $params = [
+            [
+                "key"=> ":reasonId",
+                "value"=> $reasonId,
+                "type"=> \PDO::PARAM_INT,
+            ],
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        return ($row['name'] ?? '');
     }
 
     private function addEventToDB(): int

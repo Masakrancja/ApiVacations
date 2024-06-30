@@ -50,7 +50,6 @@ class AuthModel extends AbstractModel
     public function getTokenFromHeader(): ?string
     {
         $headers = apache_request_headers();
-        // echo json_encode($headers);
         foreach ($headers as $key => $header) {
             if ($key === 'Authorization') {
                 return str_replace('Bearer ', '', $header);

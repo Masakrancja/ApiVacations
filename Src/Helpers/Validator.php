@@ -34,7 +34,7 @@ class Validator
     }
 
     /**
-     * Validate ineger. Check mix and max value
+     * Validate integer. Check mix and max value
      *
      * @param integer $value
      * @param integer $min
@@ -77,8 +77,6 @@ class Validator
         }
         return false;
     }
-
-
 
     public static function dateRangeValidate(
         string $value, string $from, string $to

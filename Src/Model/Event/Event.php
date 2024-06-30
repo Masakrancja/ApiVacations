@@ -98,15 +98,15 @@ class Event
     {
         $dateFrom = Validator::stringSanitize($dateFrom);
         if (!Validator::dateTypeValidate($dateFrom)) {
-            throw new AppException("Date format must be: YYYY-MM-DD", 422);
+            throw new AppException("Niepoprawny format daty rozpoczęcia urlopu", 422);
         }
         if (!Validator::dateValueValidate($dateFrom)) {
-            throw new AppException("Incorrect date value", 422);
+            throw new AppException("Niepoprawna data rozpoczęcia urlopu", 422);
         }
         $from = Date("Y-m-d", time() - 90 * 86400);
         $to = Date("Y-m-d", time() + 90 * 86400);
         if (!Validator::dateRangeValidate($dateFrom, $from, $to)) {
-            throw new AppException("Date value must be in range: " . $from . " - " . $to , 422);
+            throw new AppException("Data rozpoczęcia urlopu musi być z zakresu: " . $from . " - " . $to , 422);
         }
         $this->dateFrom = $dateFrom;
     }
@@ -115,15 +115,15 @@ class Event
     {
         $dateTo = Validator::stringSanitize($dateTo);
         if (!Validator::dateTypeValidate($dateTo)) {
-            throw new AppException("Date format must be: YYYY-MM-DD", 422);
+            throw new AppException("Niepoprawny format daty zakończenia urlopu", 422);
         }
         if (!Validator::dateValueValidate($dateTo)) {
-            throw new AppException("Incorrect date value", 422);
+            throw new AppException("Niepoprawna data zakończenia urlopu", 422);
         }
         $from = Date("Y-m-d", time() - 90 * 86400);
         $to = Date("Y-m-d", time() + 90 * 86400);
         if (!Validator::dateRangeValidate($dateTo, $from, $to)) {
-            throw new AppException("Date value must be in range: " . $from . " - " . $to , 422);
+            throw new AppException("Data zakończenia urlopu musi być z zakresu: " . $from . " - " . $to , 422);
         }
         $this->dateTo = $dateTo;
     }

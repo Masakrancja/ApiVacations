@@ -27,11 +27,9 @@ class ApiController extends AbstractController
         }
         if ($authorizeAllowed) {
             $token = $this->authModel->checkToken(
-                //$this->authModel->getTokenFromParams($params)
                 $this->authModel->getTokenFromHeader()
             );
         }
-
 
         switch($path) {
             case 'users':

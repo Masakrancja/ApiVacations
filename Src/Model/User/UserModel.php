@@ -106,7 +106,7 @@ class UserModel extends AbstractModel
         if (!$this->user->getIsAdmin()) {
             if (!$this->isGroupId($this->user->getGroupId())) {
                 http_response_code(422);
-                throw new AppException('Selected group not exist', 422);
+                throw new AppException('Wybrana grupa nie istnieje', 422);
             }
         }
 
@@ -114,14 +114,14 @@ class UserModel extends AbstractModel
         if ($this->user->getIsAdmin()) {
             if ($this->isGroupNip($this->group->getNip())) {
                 http_response_code(422);
-                throw new AppException('Group with NIP: ' . $this->group->getNip() . ' exist' , 422);                
+                throw new AppException('Firma z NIP-em: ' . $this->group->getNip() . ' już jest dodana ' , 422);                
             }
         }
 
         //Sprawdzenie czy login już jest wykorzystany
         if ($this->isUserLogin($this->user->getLogin())) {
             http_response_code(422);
-            throw new AppException('Login: ' . $this->user->getLogin() . ' exist' , 422);                
+            throw new AppException('Wybrany login: ' . $this->user->getLogin() . ' już istnieje' , 422);                
         }
         
         $userId = $this->addUserToDB();

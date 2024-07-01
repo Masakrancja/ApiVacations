@@ -44,3 +44,10 @@ phpDocumentor -d ./Src/ -i ./Src/Config/ --visibility=public -t ./docs/
         */
 
         
+Aby działało trzeba w apache2 włączyć:
+moduł rewrite
+moduł headers
+
+sudo a2enmod rewrite
+sudo a2enmod rewrite
+systemctl restart apache2

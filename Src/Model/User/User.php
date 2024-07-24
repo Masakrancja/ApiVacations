@@ -63,7 +63,7 @@ class User
     {
         $pass = Validator::stringSanitize($pass);
         if (!Validator::stringValidate($pass, 4, 20)) {
-            throw new AppException("Login musi zawierać od 4 do 20 znaków", 422);
+            throw new AppException("Hasło musi zawierać od 4 do 20 znaków", 422);
         }
         $this->pass = $pass;
     }

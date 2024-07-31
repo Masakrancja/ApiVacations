@@ -158,6 +158,7 @@ class UserModel extends AbstractModel
         $this->userData->setPhone((string) ($data->phone ?? $user['userData']['phone']));
         $this->userData->setEmail((string) ($data->email ?? $user['userData']['email']));
         $this->user->setIsActive((bool) ($data->isActive ?? $user['isActive']));
+        $this->editUserInDB($id);
         return $this->getUserFromDB($id);
     }
 

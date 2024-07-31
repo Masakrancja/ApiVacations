@@ -51,3 +51,11 @@ moduł headers
 sudo a2enmod rewrite
 sudo a2enmod rewrite
 systemctl restart apache2
+
+
+Zapytania:
+
+//Admin
+http GET http://api.vacations.local/users "Authorization: Bearer abcbbfaea4e618fa7f88cb6b47c6969c"
+
+

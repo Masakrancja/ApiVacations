@@ -30,9 +30,8 @@ class EventModel extends AbstractModel
         $limit = (int) ($params['limit'] ?? 10);
         $offset = ($offset < 0) ? 0 : $offset;
         $limit =  ($limit > 25) ? 10 : $limit;
-
-        $userId = ($params['userid'] ?? null) ? (int) $params['userid'] : null;
-        if ($userId) {
+        $userId = (isset($params['userid'])) ? (int) $params['userid'] : null;
+        if ($userId !== null) {
             if (!$this->isItMyUser($token, (int) $userId)) {
                 http_response_code(404);
                 throw new AppException('Not found', 404);

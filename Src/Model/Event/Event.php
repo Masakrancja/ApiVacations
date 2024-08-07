@@ -16,6 +16,7 @@ class Event
     private int $days;
     private string $status = 'pending';
     private string $notice;
+    private string $wantCancel = 'no';
     private ?string $createdAt;
     private string $updatedAt;
 
@@ -62,6 +63,11 @@ class Event
     public function getNotice(): string
     {
         return $this->notice;
+    }
+
+    public function getWantCancel(): string
+    {
+        return $this->wantCancel;
     }
 
     public function getCreatedAt(): string
@@ -141,6 +147,11 @@ class Event
     public function setNotice(string $notice)
     {
         $this->notice = Validator::stringSanitize($notice);
+    }
+
+    public function setWantCancel(string $wantCancel)
+    {
+        $this->wantCancel = $wantCancel;
     }
 
     public function setCreatedAt(string $createdAt)

@@ -142,6 +142,21 @@ class EventModel extends AbstractModel
         $this->event->setNotice(
             (string) ($data->notice ?? null)
         );
+        $result = $this->checkUsedDates(
+            $this->getUserId($token), 
+            $this->event->getDateFrom(), 
+            $this->event->getDateTo()
+        );
+        if (!empty($result)) {
+            $c = count($result);
+            if ($c > 1) {
+                $msg = 'Dni: ' . implode(', ', $result) . ' zostały już wybrane jako urlopowe.';
+            } else {
+                $msg = 'Dzień ' . $result[0] . ' został już wybrany jako urlopowy.';
+            }
+            $msg .= ' Wybierz inny zakres dat.';
+            throw new AppException($msg, 422);
+        }
         $eventId = $this->addEventToDB();
         return $this->getEventFromDB($eventId, true);
     }
@@ -160,6 +175,7 @@ class EventModel extends AbstractModel
     ): ?array
     {
         $event = $this->getEvent($id, $token, $authorize);
+
         if (!$event) {
             http_response_code(404);
             throw new AppException('Not found', 404);
@@ -184,26 +200,48 @@ class EventModel extends AbstractModel
             $rowCount = $this->editEventInDBforAdmin($id);
             return $this->getEventFromDB($id, false);
         } else {
-            $this->event->setReasonId(
-                $this->checkReason(
-                    (int) ($data->reasonId ?? $event['reasonId'])
-                )
-            );
-            $this->event->setDateFrom($data->dateFrom ?? $event['dateFrom']);
-            $this->event->setDateTo($data->dateTo ?? $event['dateTo']);
-            if ($this->event->getDateFrom() > $this->event->getDateTo()) {
-                throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
-            }
-            $this->event->setDays(
-                $this->calculateDays(
-                    $this->event->getDateFrom(), $this->event->getDateTo()
-                )
-            );
-            $this->event->setNotice($data->notice ?? $event['notice']);
-            $rowCount = $this->editEventInDBforUser($id);
-            return $this->getEventFromDB($id, true);
-        }
+            if (isset($data->wantCancel)) {
+                if ($event['status'] === 'approved') {
+                    if ($event['dateFrom'] > Date("Y-m-d"))  {
+                        if ($data->wantCancel === 'yes') {
+                            $this->event->setWantCancel($data->wantCancel);
+                            $rowCount = $this->setEventWantCancel($id);
+                        }
+                        return $this->getEventFromDB($id, true);
+                    } else {
+                        throw new AppException('Prośbę o anulowanie urlopu można tylko wysyłać do nierozpoczętych jeszcze urlopów.', 422);
+                    }
+                } else {
+                    throw new AppException('Prośbę o anulowanie urlopu można tylko wysyłać do urlopów zaakceptowanych.', 422);
+                }
+            } else {
+                if ($event['status'] === 'approved') {
+                    throw new AppException('Nie można edytować zaakceptowanego urlopu.', 422);
+                } elseif ($event['status'] === 'cancelled') {
+                    throw new AppException('Nie można edytować anulowanego urlopu.', 422);
+                } else {
+                    $this->event->setReasonId(
+                        $this->checkReason(
+                            (int) ($data->reasonId ?? $event['reasonId'])
+                        )
+                    );
 
+                    $this->event->setDateFrom($data->dateFrom ?? $event['dateFrom']);
+                    $this->event->setDateTo($data->dateTo ?? $event['dateTo']);
+                    if ($this->event->getDateFrom() > $this->event->getDateTo()) {
+                        throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
+                    }
+                    $this->event->setDays(
+                        $this->calculateDays(
+                            $this->event->getDateFrom(), $this->event->getDateTo()
+                        )
+                    );
+                    $this->event->setNotice($data->notice ?? $event['notice']);
+                    $rowCount = $this->editEventInDBforUser($id);
+                    return $this->getEventFromDB($id, true);
+                }
+            }
+        }
     }
 
     /**
@@ -240,7 +278,7 @@ class EventModel extends AbstractModel
         $result = [];
         $params = [];
         $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, createdAt, updatedAt   
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, wantCancel, createdAt, updatedAt   
             FROM Events 
             WHERE groupId = :groupId 
         ";
@@ -300,7 +338,7 @@ class EventModel extends AbstractModel
         $result = [];
         $params = [];
         $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, createdAt, updatedAt   
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, wantCancel, createdAt, updatedAt   
             FROM Events 
             WHERE userId = :userId 
         ";
@@ -365,11 +403,11 @@ class EventModel extends AbstractModel
     {
         if ($notice) {
             $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, createdAt, updatedAt  
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, wantCancel, createdAt, updatedAt  
         ";
         } else {
             $sql = "
-            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, createdAt, updatedAt  
+            SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, wantCancel, createdAt, updatedAt  
         ";
         }
 
@@ -442,7 +480,8 @@ class EventModel extends AbstractModel
             $sql = "
                 UPDATE `Events` 
                 SET 
-                    status = :status 
+                    status = :status,
+                    wantCancel = 'no'
                 WHERE id = :id
             ";
             $params = [
@@ -530,6 +569,41 @@ class EventModel extends AbstractModel
         }
     }
 
+    private function setEventWantCancel($id): int
+    {
+        try {
+            $sql = "
+                UPDATE `Events` 
+                SET 
+                    wantCancel = :wantCancel
+                WHERE id = :id
+            ";
+            $params = [
+                [
+                    'key' => ':wantCancel',
+                    'value' => $this->event->getWantCancel(),
+                    'type' => \PDO::PARAM_STR,
+                ],
+                [
+                    'key' => ':id',
+                    'value' => $id,
+                    'type' => \PDO::PARAM_INT,
+                ],
+            ];
+
+            $stmt = $this->db->getConn()->prepare($sql);
+            foreach ($params as $param) {
+                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            }
+            $stmt->execute();
+            return (int) $stmt->rowCount();
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
     private function deleteEventFromDB(int $id): void
     {
         $params = [
@@ -565,5 +639,54 @@ class EventModel extends AbstractModel
         );
 
     }
+
+    private function checkUsedDates(
+        int $id, string $dateFrom, string $dateTo
+    ): array
+    {
+        $result = [];
+        $allDays = $this->getAllDays($dateFrom, $dateTo);
+
+        $sql = "
+            SELECT dateFrom, dateTo 
+            FROM Events 
+            WHERE userId = :id
+            ";
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $rows = $this->db->selectProcess($sql, $params, 'fetchAll') ;
+        foreach ($rows as $row) {
+            $commonDays = array_intersect(
+                $allDays, 
+                $this->getAllDays($row['dateFrom'], $row['dateTo'])
+            );
+            foreach ($commonDays as $commonDay) {
+                if (!in_array($commonDay, $result)) {
+                    $result[] = $commonDay;
+                }
+            }
+        }
+        return $result;
+    }
+
+    private function getAllDays(string $dateFrom, string $dateTo): array
+    {
+        $result = [];
+        if ($dateFrom > $dateTo) {
+            return $result;
+        }
+        $date = $dateFrom;     
+        while ($date <= $dateTo) {
+            $result[] = $date;
+            $date = Date("Y-m-d", strtotime($date) + 24 * 60 * 60);
+        }
+        return $result;
+    }
+
 
 }

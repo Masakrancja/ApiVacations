@@ -35,7 +35,7 @@ class AuthModel extends AbstractModel
     public function refreshToken(?string $token): array
     {
         if ($this->isTokenValid($token)) {
-            $userId = $this->getUserIdByToken($token);
+            $userId = $this->getUserId($token);
             $sql = "
                 SELECT login, pass 
                 FROM Users 
@@ -81,7 +81,7 @@ class AuthModel extends AbstractModel
     {
         date_default_timezone_set('Europe/Warsaw');
         if ($this->isTokenValid($token)) {
-            $userId = $this->getUserIdByToken($token);
+            $userId = $this->getUserId($token);
             if ($userId !== null) {
                 $sql = "SELECT id, groupId, login, isActive, isAdmin
                 FROM Users
@@ -165,7 +165,7 @@ class AuthModel extends AbstractModel
 
     private function getAdminValue(string $token): bool
     {
-        $userId = $this->getUserIdByToken($token);
+        $userId = $this->getUserId($token);
         $sql = "SELECT isAdmin FROM Users WHERE id = :userId";
         $params = [
             [
@@ -252,56 +252,4 @@ class AuthModel extends AbstractModel
             throw new DatabaseException('Server error', 500);
         }
     }
-
-    private function getUserIdByToken(string $token): int
-    {
-        if (!$this->isTokenValid($token)) {
-            return null;
-        }
-        $sql = "
-            SELECT userId 
-            FROM Tokens 
-            WHERE token = :token
-        ";
-        $params = [
-            [
-                "key"=> ":token",
-                "value"=> $token,
-                "type"=> \PDO::PARAM_STR,                
-            ],
-        ];
-        $row = $this->db->selectProcess($sql, $params, "fetch");
-        if ($row) {
-            return $row['userId'];
-        }
-        http_response_code(403);
-        throw new AppException('Forbidden', 403);
-    }
-
-    private function isTokenValid(?string $token): bool
-    {
-        if ($token) {
-            $sql = "
-                SELECT validAt 
-                FROM Tokens
-                WHERE token = :token
-            ";
-            $params = [
-                [
-                    "key"=> ":token",
-                    "value"=> $token,
-                    "type"=> \PDO::PARAM_STR,
-                ],
-            ];
-            $row = $this->db->selectProcess($sql, $params, "fetch");
-            if ($row) {
-                $date = Date("Y-m-d H:i:s");
-                if ($row['validAt'] >= $date) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 }

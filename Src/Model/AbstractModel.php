@@ -31,24 +31,6 @@ abstract class AbstractModel
         $this->reason = new Reason;
     }
 
-    protected function getUserId(string $token): int
-    {
-        $sql = "SELECT id from Users WHERE tokenApi = :token";
-        $params = [
-            [
-                'key' => ':token',
-                'value' => $token,
-                'type' => \PDO::PARAM_STR,
-            ]
-        ];
-        $row = $this->db->selectProcess($sql, $params, 'fetch');
-        if ($row) {
-            return (int) $row['id'];
-        }
-        http_response_code(403);
-        throw new AppException('Forbidden', 403);
-    }
-
     protected function isGroupId(int $id): bool
     {
         $sql = "SELECT id FROM `Groups` WHERE id = :id";
@@ -93,12 +75,13 @@ abstract class AbstractModel
 
     protected function getUserGroupId(string $token): int
     {
-        $sql = "SELECT groupId from Users WHERE tokenApi = :token";
+        $userId = $this->getUserId($token);
+        $sql = "SELECT groupId from Users WHERE id = :userId";
         $params = [
             [
-                'key' => ':token',
-                'value' => $token,
-                'type' => \PDO::PARAM_STR,
+                'key' => ':userId',
+                'value' => $userId,
+                'type' => \PDO::PARAM_INT
             ]
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
@@ -111,24 +94,8 @@ abstract class AbstractModel
 
     protected function isItMe(string $token, int $id): bool
     {
-        $sql = "
-            SELECT id 
-            FROM Users 
-            WHERE tokenApi = :token AND id = :id
-        ";
-        $params = [
-            [
-                'key' => ':token',
-                'value' => $token,
-                'type' => \PDO::PARAM_STR,
-            ],
-            [
-                'key' => ':id',
-                'value' => $id,
-                'type' => \PDO::PARAM_INT,
-            ],
-        ];
-        return (bool) $this->db->selectProcess($sql, $params, 'fetch');
+        $userId = $this->getUserId($token);
+        return $userId === $id;
     }
 
     protected function isItMyUser(string $token, int $id): bool
@@ -156,16 +123,17 @@ abstract class AbstractModel
 
     protected function isAdmin(string $token): bool
     {
+        $userId = $this->getUserId($token);
         $sql = "
             SELECT id 
             FROM Users 
-            WHERE tokenApi = :token AND isAdmin = true
+            WHERE id = :userId AND isAdmin = true
         ";
         $params = [
             [
-                'key' => ':token',
-                'value' => $token,
-                'type' => \PDO::PARAM_STR,
+                'key' => ':userId',
+                'value' => $userId,
+                'type' => \PDO::PARAM_INT
             ]
         ];
         return (bool) $this->db->selectProcess($sql, $params, 'fetch');
@@ -173,19 +141,20 @@ abstract class AbstractModel
 
     protected function isUserActive(string $token): bool
     {
+        $userId = $this->getUserId($token);
         $sql = "
-        SELECT id 
-        FROM Users 
-        WHERE tokenApi = :token AND isActive = true
-    ";
-    $params = [
-        [
-            'key' => ':token',
-            'value' => $token,
-            'type' => \PDO::PARAM_STR,
-        ]
-    ];
-    return (bool) $this->db->selectProcess($sql, $params, 'fetch');       
+            SELECT id 
+            FROM Users 
+            WHERE id = :userId AND isActive = true
+        ";
+        $params = [
+            [
+                'key' => ':userId',
+                'value' => $userId,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        return (bool) $this->db->selectProcess($sql, $params, 'fetch');       
     }
 
     protected function checkReason(int $id): int
@@ -209,5 +178,57 @@ abstract class AbstractModel
         http_response_code(422);
         throw new AppException('Niepoprawny powód urlopu', 422);        
     }
+
+    protected function getUserId(string $token): int
+    {
+        if (!$this->isTokenValid($token)) {
+            return null;
+        }
+        $sql = "
+            SELECT userId 
+            FROM Tokens 
+            WHERE token = :token
+        ";
+        $params = [
+            [
+                "key"=> ":token",
+                "value"=> $token,
+                "type"=> \PDO::PARAM_STR,                
+            ],
+        ];
+        $row = $this->db->selectProcess($sql, $params, "fetch");
+        if ($row) {
+            return $row['userId'];
+        }
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
+    }
+
+    protected function isTokenValid(?string $token): bool
+    {
+        if ($token) {
+            $sql = "
+                SELECT validAt 
+                FROM Tokens
+                WHERE token = :token
+            ";
+            $params = [
+                [
+                    "key"=> ":token",
+                    "value"=> $token,
+                    "type"=> \PDO::PARAM_STR,
+                ],
+            ];
+            $row = $this->db->selectProcess($sql, $params, "fetch");
+            if ($row) {
+                $date = Date("Y-m-d H:i:s");
+                if ($row['validAt'] >= $date) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 }

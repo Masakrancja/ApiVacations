@@ -11,7 +11,6 @@ class User
     private ?int $groupId = null;
     private string $login;
     private string $pass;
-    private string $tokenApi;
     private bool $isActive = false;
     private bool $isAdmin = false;
     private ?string $createdAt = null;
@@ -66,16 +65,6 @@ class User
             throw new AppException("Hasło musi zawierać od 4 do 20 znaków", 422);
         }
         $this->pass = $pass;
-    }
-
-    public function getTokenApi(): string
-    {
-        return $this->tokenApi;
-    }
-
-    public function setTokenApi(string $tokenApi): void
-    {
-        $this->tokenApi = $tokenApi;
     }
 
     public function getIsActive(): bool

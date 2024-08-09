@@ -13,7 +13,7 @@ class UserModel extends AbstractModel
      * Get all users from Database. Default first 10 users
      *
      * @param array|null $params // keys: int limit, int offset
-     * @param string $token // X-API-KEY token
+     * @param string $token // Bearer
      * @param string $authorize // 'admin' or 'user'
      * @return array
      */
@@ -34,7 +34,7 @@ class UserModel extends AbstractModel
      * Get particular user
      *
      * @param integer $id // User ID
-     * @param string $token // X-API-KEY token
+     * @param string $token // Bearer
      * @param string $authorize // 'admin' or 'user'
      * @return array|null
      */
@@ -80,9 +80,6 @@ class UserModel extends AbstractModel
         }
         $this->user->setLogin((string) ($data->login ?? ''));
         $this->user->setPass((string) ($data->pass ?? ''));
-        $this->user->setTokenApi(md5(
-            $this->user->getLogin() .$this->user->getPass()
-        ));
 
         //UserData
         $this->userData->setFirstName((string) ($data->userData->firstName ?? ''));
@@ -286,13 +283,12 @@ class UserModel extends AbstractModel
         try {
             $this->db->getConn()->beginTransaction();
             $sql = "
-                INSERT INTO Users (login, pass, tokenApi, isActive, isAdmin)
-                VALUES (:login, :pass, :tokenApi, :isActive, :isAdmin)
+                INSERT INTO Users (login, pass, isActive, isAdmin)
+                VALUES (:login, :pass, :isActive, :isAdmin)
             ";
             $stmt = $this->db->getConn()->prepare($sql);
             $stmt->bindValue(':login', $this->user->getLogin(), \PDO::PARAM_STR);
             $stmt->bindValue(':pass', md5($this->user->getPass()), \PDO::PARAM_STR);
-            $stmt->bindValue(':tokenApi', $this->user->getTokenApi(), \PDO::PARAM_STR);
             $stmt->bindValue(':isActive', $this->user->getIsActive(), \PDO::PARAM_BOOL);
             $stmt->bindValue(':isAdmin', $this->user->getIsAdmin(), \PDO::PARAM_BOOL);
             $stmt->execute();

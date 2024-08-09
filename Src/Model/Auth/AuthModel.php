@@ -4,17 +4,20 @@ namespace ApiVacations\Model\Auth;
 
 use ApiVacations\Model\AbstractModel;
 use ApiVacations\Exceptions\AppException;
+use ApiVacations\Exceptions\DatabaseException;
+use ApiVacations\Helpers\Logger;
 
 class AuthModel extends AbstractModel
 {
     /**
-     * Get authorization yserdata
+     * Create new token. Token is valid 15 min.
      *
      * @param object|null $data
      * @return array
      */
-    public function getAuth(?object $data): array
+    public function createAuth(?object $data): array
     {
+        date_default_timezone_set('Europe/Warsaw');
         $login = $data->login ?? null;
         $pass = $data->pass ?? null;
         if ($login && $pass) {
@@ -29,22 +32,75 @@ class AuthModel extends AbstractModel
         throw new AppException('Unauthorized', 401);
     }
 
-    public function getMe(?string $token): ?array
+    public function refreshToken(?string $token): array
     {
-        if ($token) {
-            return $this->getAuthDataByToken($token);
+        if ($this->isTokenValid($token)) {
+            $userId = $this->getUserIdByToken($token);
+            $sql = "
+                SELECT login, pass 
+                FROM Users 
+                WHERE id = :userId
+            ";
+            $params = [
+                [
+                    "key"=> ":userId",
+                    "value"=> $userId,
+                    "type"=> \PDO::PARAM_INT,
+                ],
+            ];
+            $row = $this->db->selectProcess($sql, $params, "fetch");
+            if ($row) {
+                $validAt = Date("Y-m-d H:i:s", time() + 15 * 60);
+                $newToken = md5(time() . $userId . $row['login'] . $row['pass']);
+                $sql = "
+                    UPDATE Tokens 
+                    SET 
+                        token = :newToken,
+                        validAt = :validAt
+                    WHERE token = :token
+                ";
+                try {
+                    $stmt = $this->db->getConn()->prepare($sql);
+                    $stmt->bindValue(':newToken', $newToken, \PDO::PARAM_STR);
+                    $stmt->bindValue(':validAt', $validAt, \PDO::PARAM_STR);
+                    $stmt->bindValue(':token', $token, \PDO::PARAM_STR);
+                    $stmt->execute();
+                    return ['token' => $newToken, 'validAt' => $validAt];
+                }
+                catch (\PDOException $e) {
+                    Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+                    throw new DatabaseException('Server error', 500);
+                }
+            }
         }
-        return null;
+        http_response_code(401);
+        throw new AppException('Unauthorized', 401);
     }
 
-    /**
-     * Get token from header
-     *
-     * @return string|null
-     */
-    public function getTokenFromParams($params): ?string
+    public function getAuth(?string $token): array
     {
-        return $params['token'] ?? null;
+        date_default_timezone_set('Europe/Warsaw');
+        if ($this->isTokenValid($token)) {
+            $userId = $this->getUserIdByToken($token);
+            if ($userId !== null) {
+                $sql = "SELECT id, groupId, login, isActive, isAdmin
+                FROM Users
+                WHERE id = :userId";
+                $params = [
+                    [
+                        "key"=> ":userId",
+                        "value"=> $userId,
+                        "type"=> \PDO::PARAM_INT,
+                    ],
+                ];
+                $row = $this->db->selectProcess($sql, $params, "fetch");
+                if ($row) {
+                    return $row;          
+                }
+            }
+        }
+        http_response_code(401);
+        throw new AppException('Unauthorized', 401);
     }
 
     public function getTokenFromHeader(): ?string
@@ -60,23 +116,13 @@ class AuthModel extends AbstractModel
 
     /**
      * Check if given token in correct
-     *
      * @param string|null $token
      * @return string
      */
     public function checkToken(?string $token): string
     {
         if ($token !== null) {
-            $sql = "SELECT id FROM Users WHERE tokenApi = :token";
-            $params = [
-                [
-                    'key' => ':token',
-                    'value' => $token,
-                    'type' => \PDO::PARAM_STR,
-                ]
-            ];
-            $row = $this->db->selectProcess($sql, $params, 'fetch');
-            if ($row) {
+            if ($this->isTokenValid($token)) {
                 return $token;
             }
         }
@@ -119,12 +165,13 @@ class AuthModel extends AbstractModel
 
     private function getAdminValue(string $token): bool
     {
-        $sql = "SELECT isAdmin FROM Users WHERE tokenApi = :token";
+        $userId = $this->getUserIdByToken($token);
+        $sql = "SELECT isAdmin FROM Users WHERE id = :userId";
         $params = [
             [
-                'key' => ':token',
-                'value' => $token,
-                'type' => \PDO::PARAM_STR,
+                'key' => ':userId',
+                'value' => $userId,
+                'type' => \PDO::PARAM_INT,
             ]
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
@@ -138,7 +185,7 @@ class AuthModel extends AbstractModel
     private function getAuthData(string $login, string $pass): ?array
     {
         $sql = "
-            SELECT id, groupId, login, tokenApi, isActive, isAdmin 
+            SELECT id, groupId, login, isActive, isAdmin 
             FROM Users 
             WHERE login = :login AND pass = :pass
         ";
@@ -156,27 +203,105 @@ class AuthModel extends AbstractModel
         ];
         $row = $this->db->selectProcess($sql, $params, "fetch");
         if ($row) {
+            $this->deleteInactiveTokens($row['id']);
+            [$token, $validAt] = $this->createToken($row['id'], $login, md5($pass));
+            $row['token'] = $token;
+            $row['validAt'] = $validAt;
             return $row;          
         }
         return null;
     }
 
-    private function getAuthDataByToken(string $token): ?array
+    private function deleteInactiveTokens(int $userId): void
     {
-        $sql = "SELECT id, groupId, login, isActive, isAdmin
-                FROM Users
-                WHERE tokenApi = :token";
+        $valid = Date("Y-m-d H:i:s");
+        $sql = "
+            DELETE FROM `Tokens`
+            WHERE userId = :userId AND validAt < :valid
+        ";
+        try {
+            $stmt = $this->db->getConn()->prepare($sql);
+            $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':valid', $valid, \PDO::PARAM_STR);
+            $stmt->execute();
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
+    private function createToken(int $userId, string $login, string $pass): array
+    {
+        $validAt = Date("Y-m-d H:i:s", time() + 15 * 60);
+        $token = md5(time() . $userId . $login . $pass);
+        $sql = "
+            INSERT INTO `Tokens` (userId, token, validAt)
+            VALUES (:userId, :token, :validAt)
+        ";
+        try {
+            $stmt = $this->db->getConn()->prepare($sql);
+            $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $stmt->bindValue(':token', $token, \PDO::PARAM_STR);
+            $stmt->bindValue(':validAt', $validAt, \PDO::PARAM_STR);
+            $stmt->execute();
+            return [$token, $validAt];
+        }
+        catch (\PDOException $e) {
+            Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
+            throw new DatabaseException('Server error', 500);
+        }
+    }
+
+    private function getUserIdByToken(string $token): int
+    {
+        if (!$this->isTokenValid($token)) {
+            return null;
+        }
+        $sql = "
+            SELECT userId 
+            FROM Tokens 
+            WHERE token = :token
+        ";
         $params = [
             [
                 "key"=> ":token",
                 "value"=> $token,
-                "type"=> \PDO::PARAM_STR,
+                "type"=> \PDO::PARAM_STR,                
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, "fetch");
         if ($row) {
-            return $row;          
+            return $row['userId'];
         }
-        return null;
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
     }
+
+    private function isTokenValid(?string $token): bool
+    {
+        if ($token) {
+            $sql = "
+                SELECT validAt 
+                FROM Tokens
+                WHERE token = :token
+            ";
+            $params = [
+                [
+                    "key"=> ":token",
+                    "value"=> $token,
+                    "type"=> \PDO::PARAM_STR,
+                ],
+            ];
+            $row = $this->db->selectProcess($sql, $params, "fetch");
+            if ($row) {
+                $date = Date("Y-m-d H:i:s");
+                if ($row['validAt'] >= $date) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

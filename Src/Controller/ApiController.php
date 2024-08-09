@@ -242,15 +242,18 @@ class ApiController extends AbstractController
     {
         $result = [];
         if ($method === 'POST') {
-            $result['response'] = $this->authModel->getAuth(
+            $result['response'] = $this->authModel->createAuth(
                 $rawData
             );
             $result['code'] = 201;
+        } elseif ($method === 'PATCH') {
+            $result['response'] = $this->authModel->refreshToken($token);
+            $result['code'] = 200;   
         } elseif ($method === 'GET') {
-            $result['response'] = $this->authModel->getMe($token);
+            $result['response'] = $this->authModel->getAuth($token);
             $result['code'] = 200;
         } else {
-            header('Allow: GET,POST,OPTIONS');
+            header('Allow: GET,POST,PATCH,OPTIONS');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
         }

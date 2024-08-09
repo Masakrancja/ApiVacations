@@ -59,3 +59,21 @@ Zapytania:
 http GET http://api.vacations.local/users "Authorization: Bearer abcbbfaea4e618fa7f88cb6b47c6969c"
 
 
+post /auth
+
+{
+    "code": 201,
+    "response": {
+        "groupId": 11,
+        "id": 31,
+        "isActive": 1,
+        "isAdmin": 0,
+        "login": "worker1a",
+        "token": "ead957d099a982236805812aaf143a79",
+        "validAt": "2024-08-31 18:02:04"
+    },
+    "status": "OK"
+}
+
+
+

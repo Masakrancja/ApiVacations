@@ -1,0 +1,558 @@
+API DOCS Vacations
+
+
+1. Authorization
+
+  ----------------------------------------------------
+
+  Title: Create new access token
+  
+  Request:
+    Method: POST
+    URI: /auth
+    body: {
+      login: 'string' 
+      pass: 'string' 
+    }
+
+  Response: 
+    {
+      "code": 201,
+      "response": {
+        "groupId": int,
+        "id": int,
+        "isActive": bool,
+        "isAdmin": bool,
+        "login": "string",
+        "token": "string",
+        "validAt": "datetime" //Format: Y-m-d H:i:s
+      },
+      "status": "OK"
+    }
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+  ----------------------------------------------------
+
+  Title: Get simple information about token's owner
+
+  Request:
+    Method: GET
+    URI: /auth
+    header: "Authorization: Bearer {USER_OR_ADMIN_TOKEN}"
+  
+  Response:
+    {
+      "code": 200,
+      "response": {
+        "groupId": int,
+        "id": int,
+        "isActive": bool,
+        "isAdmin": bool,
+        "login": "string"
+      },
+      "status": "OK"
+    }
+
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+    
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }    
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }    
+
+  ----------------------------------------------------
+
+  Title: Refresh access token
+
+  Request:
+    Method: PATCH
+    URI: /auth
+    header: "Authorization: Bearer {USER_OR_ADMIN_TOKEN}"
+
+  Response:
+    {
+      "code": 200,
+      "response": {
+          "token": "string",
+          "validAt": "datetime"
+      },
+      "status": "OK"
+    }
+
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+  ----------------------------------------------------
+
+2. Users
+
+  Title: Create new user 
+
+  Request:
+    Method: POST
+    URI: /users
+    body for create workers:
+    {
+      "login":"string",
+      "pass":"string", 
+      "isAdmin":false,
+      "userData":
+        {
+          "firstName":"string", 
+          "lastName":"string", 
+          "address":"string", 
+          "postalCode":"string", 
+          "city":"string", 
+          "phone":"string", 
+          "email":"string"
+        }, 
+        "groupId":int
+    }
+
+    body for create owners:
+    {
+      "login":"string",
+      "pass":"string", 
+      "isAdmin":true,
+      "userData":
+        {
+          "firstName":"string", 
+          "lastName":"string", 
+          "address":"string", 
+          "postalCode":"string", 
+          "city":"string", 
+          "phone":"string", 
+          "email":"string"
+        }, 
+      "group": 
+        {
+          "name":"string", 
+          "address":"string", 
+          "postalCode":"string", 
+          "city":"string", 
+          "nip":"string"
+        }
+    }
+
+  Response:
+  {
+    "code": 201,
+    "response": {
+      "createdAt": "datetime",
+      "id": int,
+      "isActive": bool,
+      "isAdmin": bool,
+      "login": "string",
+      "updatedAt": "datetime",
+      "userData": {
+        "address": "string",
+        "city": "string",
+        "createdAt": "datetime",
+        "email": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "phone": "string",
+        "postalCode": "string",
+        "updatedAt": "datetime"
+      }
+    },
+    "status": "OK"
+  }
+
+  {
+    "code": 405,
+    "message": "Method not allowed",
+    "status": "error"
+  }
+
+  {
+    "code": 422,
+    "message": "string",
+    "status": "error"
+  }
+
+  {
+    "code": 500,
+    "message": "Server Error",
+    "status": "error"
+  }  
+
+Title: Get users
+  Request:
+    Method: GET
+    URI: /users
+    header: "Authorization: Bearer {ADMIN_TOKEN}"
+    queryparams: {
+      "offset": int,
+      "limit": int
+    }
+
+  Response:
+    {
+      "allRows": int,
+      "code": 200,
+      "response": [
+        {
+          "createdAt": "datetime",
+          "id": int,
+          "isActive": bool,
+          "isAdmin": bool,
+          "login": "string"
+        }
+      ],
+      "status": "OK"
+    }
+
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+
+    {
+      "code": 403,
+      "message": "Forbidden",
+      "status": "error"
+    }
+
+    {
+      "code": 404,
+      "message": "Not Found",
+      "status": "error"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }    
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+Title: Get full info about particular user
+
+  Request:
+    Method: GET
+    URI: /users/{id}
+    header: "Authorization: Bearer {USER_OR_ADMIN_TOKEN}"
+
+  Response:
+    {
+      "code": 200,
+      "response": {
+        "createdAt": "datetime",
+        "id": int,
+        "isActive": bool,
+        "isAdmin": bool,
+        "login": "string",
+        "updatedAt": "datetime",
+        "userData": {
+          "address": "string",
+          "city": "string",
+          "createdAt": "datetime",
+          "email": "string",
+          "firstName": "string",
+          "lastName": "string",
+          "phone": "string",
+          "postalCode": "string",
+          "updatedAt": "datetime"
+        }
+      },
+      "status": "OK"
+    }
+    
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+
+    {
+      "code": 403,
+      "message": "Forbidden",
+      "status": "error"
+    }
+
+    {
+      "code": 404,
+      "message": "Not Found",
+      "status": "error"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+Title: Edit user data
+
+  Request:
+    Method: PATCH
+    URI: /users/{id}
+    header: "Authorization: Bearer {USER_OR_ADMIN_TOKEN}"
+    body: {
+      {
+        "firstName":"string",
+        "lastName":"string",
+        "address":"string",
+        "postalCode":"string",
+        "city":"string",
+        "isActive":bool //Work only with {ADMIN_TOKEN}
+      }
+    }
+
+  Response:
+    {
+      "code": 200,
+      "response": {
+        "createdAt": "datetime",
+        "id": int,
+        "isActive": bool,
+        "isAdmin": bool,
+        "login": "string",
+        "updatedAt": "datetime",
+        "userData": {
+          "address": "string",
+          "city": "string",
+          "createdAt": "datetime",
+          "email": "string",
+          "firstName": "string",
+          "lastName": "string",
+          "phone": "string",
+          "postalCode": "string",
+          "updatedAt": "datetime"
+        }
+      },
+      "status": "OK"
+    }
+
+    {
+      "code": 401,
+      "message": "Unauthorized",
+      "status": "error"
+    }
+
+    {
+      "code": 403,
+      "message": "Forbidden",
+      "status": "error"
+    }
+
+    {
+      "code": 404,
+      "message": "Not Found",
+      "status": "error"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }
+
+    {
+      "code": 422,
+      "message": "string",
+      "status": "error"
+    }
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+  Title: Delete user
+
+    Request:
+      Method: DELETE
+      URI: /users/{id}
+      header: "Authorization: Bearer {ADMIN_TOKEN}"
+
+    Response:
+      204 No Content
+
+      {
+        "code": 401,
+        "message": "Unauthorized",
+        "status": "error"
+      }
+
+      {
+        "code": 403,
+        "message": "Forbidden",
+        "status": "error"
+      }
+
+      {
+        "code": 404,
+        "message": "Not Found",
+        "status": "error"
+      }
+
+      {
+        "code": 405,
+        "message": "Method not allowed",
+        "status": "error"
+      }
+
+      {
+        "code": 422,
+        "message": "string",
+        "status": "error"
+      }
+
+      {
+        "code": 500,
+        "message": "Server Error",
+        "status": "error"
+      }
+
+  ----------------------------------------------------
+
+3. Groups
+
+  Title: Get simple information about all groups
+
+  Request:
+    Method: GET
+    URI: /groups
+
+  Response:
+    {
+      "code": 200,
+      "response": [
+          {
+              "id": int,
+              "name": "string"
+          }
+      ],
+      "status": "OK"
+    }
+
+    {
+      "code": 405,
+      "message": "Method not allowed",
+      "status": "error"
+    }
+
+    {
+      "code": 500,
+      "message": "Server Error",
+      "status": "error"
+    }
+
+  Title: Get full information about particulary group
+
+    Request:
+      Method: GET
+      URI: /groups
+      header: "Authorization: Bearer {USER_OR_ADMIN_TOKEN}"
+
+    Response:
+      {
+        "code": 200,
+        "response": {
+          "address": "string",
+          "city": "string",
+          "createdAt": "datetime",
+          "id": int,
+          "name": "string",
+          "nip": "string",
+          "postalCode": "string",
+          "updatedAt": "datetime",
+          "userId": int //id owner's group
+        },
+        "status": "OK"
+      }
+
+      {
+        "code": 401,
+        "message": "Unauthorized",
+        "status": "error"
+      }
+
+      {
+        "code": 404,
+        "message": "Not Found",
+        "status": "error"
+      }
+
+      {
+        "code": 405,
+        "message": "Method not allowed",
+        "status": "error"
+      }
+
+      {
+        "code": 500,
+        "message": "Server Error",
+        "status": "error"
+      }
+
+  ----------------------------------------------------
+
+4. Events
+
+  ----------------------------------------------------
+
+5. Reasons
+
+  ----------------------------------------------------
+
+
+
+

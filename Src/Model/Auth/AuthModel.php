@@ -50,7 +50,7 @@ class AuthModel extends AbstractModel
             ];
             $row = $this->db->selectProcess($sql, $params, "fetch");
             if ($row) {
-                $validAt = Date("Y-m-d H:i:s", time() + 15 * 60);
+                $validAt = Date("Y-m-d H:i:s", time() + 60 * 60);
                 $newToken = md5(time() . $userId . $row['login'] . $row['pass']);
                 $sql = "
                     UPDATE Tokens 
@@ -233,7 +233,7 @@ class AuthModel extends AbstractModel
 
     private function createToken(int $userId, string $login, string $pass): array
     {
-        $validAt = Date("Y-m-d H:i:s", time() + 15 * 60);
+        $validAt = Date("Y-m-d H:i:s", time() + 60 * 60);
         $token = md5(time() . $userId . $login . $pass);
         $sql = "
             INSERT INTO `Tokens` (userId, token, validAt)

@@ -181,9 +181,11 @@ class UserModel extends AbstractModel
         } 
         if ($this->isItMyUser($token, $id)) {
             $this->deleteUserFromDB($id);
+        } else {
+            http_response_code(403);
+            throw new AppException('Forbidden', 403);   
         }
-        http_response_code(403);
-        throw new AppException('Forbidden', 403);        
+     
     }
 
     private function getUsersFromDB(?array $params, int $groupId): array
@@ -407,29 +409,30 @@ class UserModel extends AbstractModel
             }
             $stmt->execute();
 
-            $sql = "
-                UPDATE Users 
-                SET isActive = :isActive 
-                WHERE id = :id
-            ";
-            $params = [
-                [
-                    'key' => ':isActive',
-                    'value' => $this->user->getIsActive(),
-                    'type' => \PDO::PARAM_BOOL,
-                ],
-                [
-                    'key' => ':id',
-                    'value' => $id,
-                    'type' => \PDO::PARAM_INT,
-                ],
-            ];
-            $stmt = $this->db->getConn()->prepare($sql);
-            foreach ($params as $param) {
-                $stmt->bindValue($param['key'], $param['value'], $param['type']);
+            if ($this->user->getIsAdmin()) {
+                $sql = "
+                    UPDATE Users 
+                    SET isActive = :isActive 
+                    WHERE id = :id
+                ";
+                $params = [
+                    [
+                        'key' => ':isActive',
+                        'value' => $this->user->getIsActive(),
+                        'type' => \PDO::PARAM_BOOL,
+                    ],
+                    [
+                        'key' => ':id',
+                        'value' => $id,
+                        'type' => \PDO::PARAM_INT,
+                    ],
+                ];
+                $stmt = $this->db->getConn()->prepare($sql);
+                foreach ($params as $param) {
+                    $stmt->bindValue($param['key'], $param['value'], $param['type']);
+                }
+                $stmt->execute();
             }
-            $stmt->execute();
-
             $this->db->getConn()->commit();
             return (int) $stmt->rowCount();
         }

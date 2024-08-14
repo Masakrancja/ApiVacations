@@ -211,6 +211,7 @@ class UserModel extends AbstractModel
         ];
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
         foreach($rows as $row) {
+            $row['fullName'] = $this->getUserFullName($row['id']);
             $result[] = $row;            
         }
         return $result;
@@ -253,6 +254,28 @@ class UserModel extends AbstractModel
         $row = $this->db->selectProcess($sql, $params, 'fetch');
         if ($row) {
             return $row;
+        }
+        http_response_code(403);
+        throw new AppException('Forbidden', 403);
+    }
+
+    private function getUserFullName(int $id): string
+    {
+        $sql = "
+            SELECT firstName, lastName  
+            FROM UserData 
+            WHERE userId = :id
+        ";
+        $params = [
+            [
+                'key' => ':id',
+                'value' => $id,
+                'type' => \PDO::PARAM_INT,
+            ]
+        ];
+        $row = $this->db->selectProcess($sql, $params, 'fetch');
+        if ($row) {
+            return $row['firstName'] . ' ' . $row['lastName'];
         }
         http_response_code(403);
         throw new AppException('Forbidden', 403);

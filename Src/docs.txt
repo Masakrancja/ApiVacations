@@ -236,6 +236,7 @@ Title: Get users
       "response": [
         {
           "createdAt": "datetime",
+          "fullName": "string",
           "id": int,
           "isActive": bool,
           "isAdmin": bool,

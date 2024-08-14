@@ -1,3 +1,10 @@
+Błąd: mozna deaktywować konto jako user
+http PATCH http://api.vacations.local/users/31 "Authorization: Bearer 4b8967463ecb064a5a8e443b5ae498e0" <<< '{"isActive": 0}'
+
+
+
+
+
 phpDocumentator:
 phpDocumentor -d ./Src/ -i ./Src/Config/ --visibility=public -t ./docs/
 

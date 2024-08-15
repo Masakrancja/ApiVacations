@@ -204,7 +204,7 @@ class EventModel extends AbstractModel
             if (isset($data->wantCancel)) {
                 if ($event['status'] === 'approved') {
                     if ($event['dateFrom'] > Date("Y-m-d"))  {
-                        if ($data->wantCancel === 'yes') {
+                        if (in_array($data->wantCancel, ["no", "yes"])) {
                             $this->event->setWantCancel($data->wantCancel);
                             $rowCount = $this->setEventWantCancel($id);
                         }

@@ -148,6 +148,7 @@ class EventModel extends AbstractModel
             $this->event->getDateTo()
         );
         if (!empty($result)) {
+            sort($result);
             $c = count($result);
             if ($c > 1) {
                 $msg = 'Dni: ' . implode(', ', $result) . ' zostały już wybrane jako urlopowe.';
@@ -228,6 +229,7 @@ class EventModel extends AbstractModel
 
                     $this->event->setDateFrom($data->dateFrom ?? $event['dateFrom']);
                     $this->event->setDateTo($data->dateTo ?? $event['dateTo']);
+
                     if ($this->event->getDateFrom() > $this->event->getDateTo()) {
                         throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
                     }
@@ -237,6 +239,26 @@ class EventModel extends AbstractModel
                         )
                     );
                     $this->event->setNotice($data->notice ?? $event['notice']);
+
+                    $result = $this->checkUsedDates(
+                        $this->getUserId($token), 
+                        $this->event->getDateFrom(), 
+                        $this->event->getDateTo(),
+                        $id
+                    );
+        
+                    if (!empty($result)) {
+                        sort($result);
+                        $c = count($result);
+                        if ($c > 1) {
+                            $msg = 'Dni: ' . implode(', ', $result) . ' zostały już wybrane jako urlopowe.';
+                        } else {
+                            $msg = 'Dzień ' . $result[0] . ' został już wybrany jako urlopowy.';
+                        }
+                        $msg .= ' Wybierz inny zakres dat.';
+                        throw new AppException($msg, 422);
+                    }
+
                     $rowCount = $this->editEventInDBforUser($id);
                     return $this->getEventFromDB($id, true);
                 }
@@ -637,30 +659,34 @@ class EventModel extends AbstractModel
             ) 
             + 1
         );
-
     }
 
     private function checkUsedDates(
-        int $id, string $dateFrom, string $dateTo
+        int $userId, string $dateFrom, string $dateTo, ?int $eventId = null
     ): array
     {
         $result = [];
         $allDays = $this->getAllDays($dateFrom, $dateTo);
 
         $sql = "
-            SELECT dateFrom, dateTo 
+            SELECT id, dateFrom, dateTo 
             FROM Events 
-            WHERE userId = :id
+            WHERE userId = :userId
             ";
         $params = [
             [
-                'key' => ':id',
-                'value' => $id,
+                'key' => ':userId',
+                'value' => $userId,
                 'type' => \PDO::PARAM_INT,
             ]
         ];
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll') ;
         foreach ($rows as $row) {
+            if ($eventId !== null) {
+                if ($row['id'] === $eventId) {
+                    continue;
+                }
+            }
             $commonDays = array_intersect(
                 $allDays, 
                 $this->getAllDays($row['dateFrom'], $row['dateTo'])

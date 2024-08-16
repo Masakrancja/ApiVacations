@@ -155,7 +155,7 @@ class UserModel extends AbstractModel
         $this->userData->setPhone((string) ($data->phone ?? $user['userData']['phone']));
         $this->userData->setEmail((string) ($data->email ?? $user['userData']['email']));
         $this->user->setIsActive((bool) ($data->isActive ?? $user['isActive']));
-        $this->editUserInDB($id);
+        $this->editUserInDB($id, $this->isAdmin($token));
         return $this->getUserFromDB($id);
     }
 
@@ -367,7 +367,7 @@ class UserModel extends AbstractModel
         }
     }
 
-    private function editUserInDB(int $id): int
+    private function editUserInDB(int $id, bool $admin=false): int
     {
         try {
             $this->db->getConn()->beginTransaction();
@@ -432,7 +432,7 @@ class UserModel extends AbstractModel
             }
             $stmt->execute();
 
-            if ($this->user->getIsAdmin()) {
+            if ($admin) {
                 $sql = "
                     UPDATE Users 
                     SET isActive = :isActive 

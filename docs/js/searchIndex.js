@@ -11,36 +11,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Controller-AbstractController.html#method___construct"
         },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024request",
-            "name": "request",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_request"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024authModel",
-            "name": "authModel",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_authModel"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024userModel",
-            "name": "userModel",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_userModel"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024groupModel",
-            "name": "groupModel",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_groupModel"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024eventModel",
-            "name": "eventModel",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_eventModel"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\AbstractController\u003A\u003A\u0024reasonModel",
-            "name": "reasonModel",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-AbstractController.html#property_reasonModel"
-        },                {
             "fqsen": "\\ApiVacations\\Controller\\ApiController",
             "name": "ApiController",
             "summary": "",
@@ -50,31 +20,6 @@ Search.appendIndex(
             "name": "run",
             "summary": "",
             "url": "classes/ApiVacations-Controller-ApiController.html#method_run"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\ApiController\u003A\u003AUsersControler\u0028\u0029",
-            "name": "UsersControler",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-ApiController.html#method_UsersControler"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\ApiController\u003A\u003AGroupsControler\u0028\u0029",
-            "name": "GroupsControler",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-ApiController.html#method_GroupsControler"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\ApiController\u003A\u003AEventsControler\u0028\u0029",
-            "name": "EventsControler",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-ApiController.html#method_EventsControler"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\ApiController\u003A\u003AReasonsControler\u0028\u0029",
-            "name": "ReasonsControler",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-ApiController.html#method_ReasonsControler"
-        },                {
-            "fqsen": "\\ApiVacations\\Controller\\ApiController\u003A\u003AAuthControler\u0028\u0029",
-            "name": "AuthControler",
-            "summary": "",
-            "url": "classes/ApiVacations-Controller-ApiController.html#method_AuthControler"
         },                {
             "fqsen": "\\ApiVacations\\Controller\\App",
             "name": "App",
@@ -116,11 +61,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Helpers-DB.html"
         },                {
-            "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-DB.html#method___construct"
-        },                {
             "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003AgetInstance\u0028\u0029",
             "name": "getInstance",
             "summary": "",
@@ -136,25 +76,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Helpers-DB.html#method_selectProcess"
         },                {
-            "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003Avalidate\u0028\u0029",
-            "name": "validate",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-DB.html#method_validate"
-        },                {
             "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003A\u0024connect",
             "name": "connect",
             "summary": "",
             "url": "classes/ApiVacations-Helpers-DB.html#property_connect"
-        },                {
-            "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003A\u0024instance",
-            "name": "instance",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-DB.html#property_instance"
-        },                {
-            "fqsen": "\\ApiVacations\\Helpers\\DB\u003A\u003A\u0024config",
-            "name": "config",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-DB.html#property_config"
         },                {
             "fqsen": "\\ApiVacations\\Helpers\\Logger",
             "name": "Logger",
@@ -226,16 +151,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Helpers-Request.html#method_getRawData"
         },                {
-            "fqsen": "\\ApiVacations\\Helpers\\Request\u003A\u003AgetRedirectUrl\u0028\u0029",
-            "name": "getRedirectUrl",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-Request.html#method_getRedirectUrl"
-        },                {
-            "fqsen": "\\ApiVacations\\Helpers\\Request\u003A\u003A\u0024possibleParamKeys",
-            "name": "possibleParamKeys",
-            "summary": "",
-            "url": "classes/ApiVacations-Helpers-Request.html#property_possibleParamKeys"
-        },                {
             "fqsen": "\\ApiVacations\\Helpers\\Validator",
             "name": "Validator",
             "summary": "",
@@ -253,7 +168,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\ApiVacations\\Helpers\\Validator\u003A\u003AintValidate\u0028\u0029",
             "name": "intValidate",
-            "summary": "Validate\u0020ineger.\u0020Check\u0020mix\u0020and\u0020max\u0020value",
+            "summary": "Validate\u0020integer.\u0020Check\u0020mix\u0020and\u0020max\u0020value",
             "url": "classes/ApiVacations-Helpers-Validator.html#method_intValidate"
         },                {
             "fqsen": "\\ApiVacations\\Helpers\\Validator\u003A\u003AemailValidate\u0028\u0029",
@@ -286,99 +201,29 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-AbstractModel.html#method___construct"
         },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AgetUserId\u0028\u0029",
-            "name": "getUserId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_getUserId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisGroupId\u0028\u0029",
-            "name": "isGroupId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isGroupId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisGroupNip\u0028\u0029",
-            "name": "isGroupNip",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isGroupNip"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisUserLogin\u0028\u0029",
-            "name": "isUserLogin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isUserLogin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AgetUserGroupId\u0028\u0029",
-            "name": "getUserGroupId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_getUserGroupId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisItMe\u0028\u0029",
-            "name": "isItMe",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isItMe"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisItMyUser\u0028\u0029",
-            "name": "isItMyUser",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isItMyUser"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisAdmin\u0028\u0029",
-            "name": "isAdmin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isAdmin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AisUserActive\u0028\u0029",
-            "name": "isUserActive",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_isUserActive"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003AcheckReason\u0028\u0029",
-            "name": "checkReason",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#method_checkReason"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024db",
-            "name": "db",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_db"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024user",
-            "name": "user",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_user"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024userData",
-            "name": "userData",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_userData"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024group",
-            "name": "group",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_group"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024event",
-            "name": "event",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_event"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\AbstractModel\u003A\u003A\u0024reason",
-            "name": "reason",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-AbstractModel.html#property_reason"
-        },                {
             "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel",
             "name": "AuthModel",
             "summary": "",
             "url": "classes/ApiVacations-Model-Auth-AuthModel.html"
         },                {
+            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AcreateAuth\u0028\u0029",
+            "name": "createAuth",
+            "summary": "Create\u0020new\u0020token.\u0020Token\u0020is\u0020valid\u002015\u0020min.",
+            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_createAuth"
+        },                {
+            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003ArefreshToken\u0028\u0029",
+            "name": "refreshToken",
+            "summary": "",
+            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_refreshToken"
+        },                {
             "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AgetAuth\u0028\u0029",
             "name": "getAuth",
-            "summary": "Get\u0020authorization\u0020yserdata",
+            "summary": "",
             "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuth"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AgetTokenFromHeader\u0028\u0029",
             "name": "getTokenFromHeader",
-            "summary": "Get\u0020token\u0020from\u0020header",
+            "summary": "",
             "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_getTokenFromHeader"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AcheckToken\u0028\u0029",
@@ -390,26 +235,6 @@ Search.appendIndex(
             "name": "getAuthorize",
             "summary": "return\u0020credentials\u0020by\u0020given\u0020token",
             "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthorize"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AisAdminToken\u0028\u0029",
-            "name": "isAdminToken",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_isAdminToken"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AisUserToken\u0028\u0029",
-            "name": "isUserToken",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_isUserToken"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AgetAdminValue\u0028\u0029",
-            "name": "getAdminValue",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_getAdminValue"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Auth\\AuthModel\u003A\u003AgetAuthData\u0028\u0029",
-            "name": "getAuthData",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Auth-AuthModel.html#method_getAuthData"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Event\\Event",
             "name": "Event",
@@ -460,6 +285,11 @@ Search.appendIndex(
             "name": "getNotice",
             "summary": "",
             "url": "classes/ApiVacations-Model-Event-Event.html#method_getNotice"
+        },                {
+            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003AgetWantCancel\u0028\u0029",
+            "name": "getWantCancel",
+            "summary": "",
+            "url": "classes/ApiVacations-Model-Event-Event.html#method_getWantCancel"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003AgetCreatedAt\u0028\u0029",
             "name": "getCreatedAt",
@@ -516,6 +346,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-Event-Event.html#method_setNotice"
         },                {
+            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003AsetWantCancel\u0028\u0029",
+            "name": "setWantCancel",
+            "summary": "",
+            "url": "classes/ApiVacations-Model-Event-Event.html#method_setWantCancel"
+        },                {
             "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003AsetCreatedAt\u0028\u0029",
             "name": "setCreatedAt",
             "summary": "",
@@ -525,61 +360,6 @@ Search.appendIndex(
             "name": "setUpdatedAt",
             "summary": "",
             "url": "classes/ApiVacations-Model-Event-Event.html#method_setUpdatedAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_id"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024userId",
-            "name": "userId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_userId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024groupId",
-            "name": "groupId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_groupId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024reasonId",
-            "name": "reasonId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_reasonId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024dateFrom",
-            "name": "dateFrom",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_dateFrom"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024dateTo",
-            "name": "dateTo",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_dateTo"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024days",
-            "name": "days",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_days"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024status",
-            "name": "status",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_status"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024notice",
-            "name": "notice",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_notice"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024createdAt",
-            "name": "createdAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_createdAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\Event\u003A\u003A\u0024updatedAt",
-            "name": "updatedAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-Event.html#property_updatedAt"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Event\\EventModel",
             "name": "EventModel",
@@ -610,66 +390,6 @@ Search.appendIndex(
             "name": "deleteEvent",
             "summary": "Delete\u0020given\u0020event",
             "url": "classes/ApiVacations-Model-Event-EventModel.html#method_deleteEvent"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetEventsFromDBAsAdmin\u0028\u0029",
-            "name": "getEventsFromDBAsAdmin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getEventsFromDBAsAdmin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetCountAllEventsFromDBAsAdmin\u0028\u0029",
-            "name": "getCountAllEventsFromDBAsAdmin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getCountAllEventsFromDBAsAdmin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetEventsFromDBAsUser\u0028\u0029",
-            "name": "getEventsFromDBAsUser",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getEventsFromDBAsUser"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetCountAllEventsFromDBAsUser\u0028\u0029",
-            "name": "getCountAllEventsFromDBAsUser",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getCountAllEventsFromDBAsUser"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetEventUserId\u0028\u0029",
-            "name": "getEventUserId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getEventUserId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AgetEventFromDB\u0028\u0029",
-            "name": "getEventFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_getEventFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AaddEventToDB\u0028\u0029",
-            "name": "addEventToDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_addEventToDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AeditEventInDBforAdmin\u0028\u0029",
-            "name": "editEventInDBforAdmin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_editEventInDBforAdmin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AeditEventInDBforUser\u0028\u0029",
-            "name": "editEventInDBforUser",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_editEventInDBforUser"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AdeleteEventFromDB\u0028\u0029",
-            "name": "deleteEventFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_deleteEventFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003AcalculateDays\u0028\u0029",
-            "name": "calculateDays",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#method_calculateDays"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Event\\EventModel\u003A\u003A\u0024possibleEventStatuses",
-            "name": "possibleEventStatuses",
-            "summary": "Possible\u0020statuses\u0020in\u0020Events",
-            "url": "classes/ApiVacations-Model-Event-EventModel.html#property_possibleEventStatuses"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Group\\Group",
             "name": "Group",
@@ -766,51 +486,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-Group-Group.html#method_setUpdatedAt"
         },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_id"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024userId",
-            "name": "userId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_userId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024name",
-            "name": "name",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_name"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024address",
-            "name": "address",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_address"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024postalCode",
-            "name": "postalCode",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_postalCode"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024city",
-            "name": "city",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_city"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024nip",
-            "name": "nip",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_nip"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024createdAt",
-            "name": "createdAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_createdAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\Group\u003A\u003A\u0024updatedAt",
-            "name": "updatedAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-Group.html#property_updatedAt"
-        },                {
             "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel",
             "name": "GroupModel",
             "summary": "",
@@ -830,21 +505,6 @@ Search.appendIndex(
             "name": "editGroup",
             "summary": "Edit\u0020particular\u0020group",
             "url": "classes/ApiVacations-Model-Group-GroupModel.html#method_editGroup"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel\u003A\u003AgetGroupsFromDB\u0028\u0029",
-            "name": "getGroupsFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-GroupModel.html#method_getGroupsFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel\u003A\u003AgetGroupFromDB\u0028\u0029",
-            "name": "getGroupFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-GroupModel.html#method_getGroupFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel\u003A\u003AeditGroupInDB\u0028\u0029",
-            "name": "editGroupInDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Group-GroupModel.html#method_editGroupInDB"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Reason\\Reason",
             "name": "Reason",
@@ -891,26 +551,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-Reason-Reason.html#method_setUpdatedAt"
         },                {
-            "fqsen": "\\ApiVacations\\Model\\Reason\\Reason\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Reason-Reason.html#property_id"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Reason\\Reason\u003A\u003A\u0024name",
-            "name": "name",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Reason-Reason.html#property_name"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Reason\\Reason\u003A\u003A\u0024createdAt",
-            "name": "createdAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Reason-Reason.html#property_createdAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Reason\\Reason\u003A\u003A\u0024updatedAt",
-            "name": "updatedAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Reason-Reason.html#property_updatedAt"
-        },                {
             "fqsen": "\\ApiVacations\\Model\\Reason\\ReasonModel",
             "name": "ReasonModel",
             "summary": "",
@@ -920,11 +560,6 @@ Search.appendIndex(
             "name": "getReasons",
             "summary": "Get\u0020all\u0020reasons",
             "url": "classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasons"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\Reason\\ReasonModel\u003A\u003AgetReasonsFromDB\u0028\u0029",
-            "name": "getReasonsFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-Reason-ReasonModel.html#method_getReasonsFromDB"
         },                {
             "fqsen": "\\ApiVacations\\Model\\User\\User",
             "name": "User",
@@ -971,16 +606,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-User-User.html#method_setPass"
         },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AgetTokenApi\u0028\u0029",
-            "name": "getTokenApi",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#method_getTokenApi"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AsetTokenApi\u0028\u0029",
-            "name": "setTokenApi",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#method_setTokenApi"
-        },                {
             "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AgetIsActive\u0028\u0029",
             "name": "getIsActive",
             "summary": "",
@@ -1020,51 +645,6 @@ Search.appendIndex(
             "name": "setUpdatedAt",
             "summary": "",
             "url": "classes/ApiVacations-Model-User-User.html#method_setUpdatedAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_id"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024groupId",
-            "name": "groupId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_groupId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024login",
-            "name": "login",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_login"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024pass",
-            "name": "pass",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_pass"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024tokenApi",
-            "name": "tokenApi",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_tokenApi"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024isActive",
-            "name": "isActive",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_isActive"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024isAdmin",
-            "name": "isAdmin",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_isAdmin"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024createdAt",
-            "name": "createdAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_createdAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003A\u0024updatedAt",
-            "name": "updatedAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-User.html#property_updatedAt"
         },                {
             "fqsen": "\\ApiVacations\\Model\\User\\UserData",
             "name": "UserData",
@@ -1181,61 +761,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/ApiVacations-Model-User-UserData.html#method_setUpdatedAt"
         },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024id",
-            "name": "id",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_id"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024userId",
-            "name": "userId",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_userId"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024firstName",
-            "name": "firstName",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_firstName"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024lastName",
-            "name": "lastName",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_lastName"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024address",
-            "name": "address",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_address"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024postalCode",
-            "name": "postalCode",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_postalCode"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024city",
-            "name": "city",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_city"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024phone",
-            "name": "phone",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_phone"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024email",
-            "name": "email",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_email"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024createdAt",
-            "name": "createdAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_createdAt"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserData\u003A\u003A\u0024updatedAt",
-            "name": "updatedAt",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserData.html#property_updatedAt"
-        },                {
             "fqsen": "\\ApiVacations\\Model\\User\\UserModel",
             "name": "UserModel",
             "summary": "",
@@ -1265,41 +790,6 @@ Search.appendIndex(
             "name": "deleteUser",
             "summary": "Delete\u0020user",
             "url": "classes/ApiVacations-Model-User-UserModel.html#method_deleteUser"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetUsersFromDB\u0028\u0029",
-            "name": "getUsersFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_getUsersFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetAllUserCount\u0028\u0029",
-            "name": "getAllUserCount",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_getAllUserCount"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetUserData\u0028\u0029",
-            "name": "getUserData",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_getUserData"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetUserFromDB\u0028\u0029",
-            "name": "getUserFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_getUserFromDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AaddUserToDB\u0028\u0029",
-            "name": "addUserToDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_addUserToDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AeditUserInDB\u0028\u0029",
-            "name": "editUserInDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_editUserInDB"
-        },                {
-            "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AdeleteUserFromDB\u0028\u0029",
-            "name": "deleteUserFromDB",
-            "summary": "",
-            "url": "classes/ApiVacations-Model-User-UserModel.html#method_deleteUserFromDB"
         },                {
             "fqsen": "\\",
             "name": "\\",

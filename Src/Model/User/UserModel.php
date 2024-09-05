@@ -19,9 +19,9 @@ class UserModel extends AbstractModel
      */
     public function getUsers(?array $params, string $token, string $authorize): array
     {
-        if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
+        if ($authorize !== 'admin' or !$this->isAdmin($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);            
+            throw new AppException('Forbidden', 403);
         }
         $groupId = $this->getUserGroupId($token);
         return [
@@ -42,9 +42,9 @@ class UserModel extends AbstractModel
     {
         $canIenter = false;
         if ($authorize === 'admin') {
-            if ($this->isItMyUser($token, $id) OR $this->isItMe($token, $id)) {
+            if ($this->isItMyUser($token, $id) or $this->isItMe($token, $id)) {
                 $canIenter = true;
-            } 
+            }
         }
         if ($authorize === 'user') {
             if ($this->isItMe($token, $id)) {
@@ -83,8 +83,8 @@ class UserModel extends AbstractModel
 
         //UserData
         $this->userData->setFirstName((string) ($data->userData->firstName ?? ''));
-        $this->userData->setLastName((string) ($data->userData->lastName ??''));
-        $this->userData->setAddress((string) ($data->userData->address ??''));
+        $this->userData->setLastName((string) ($data->userData->lastName ?? ''));
+        $this->userData->setAddress((string) ($data->userData->address ?? ''));
         $this->userData->setPostalCode((string) ($data->userData->postalCode ?? ''));
         $this->userData->setCity((string) ($data->userData->city ?? ''));
         $this->userData->setPhone((string) ($data->userData->phone ?? ''));
@@ -95,7 +95,7 @@ class UserModel extends AbstractModel
             $this->group->setName((string) ($data->group->name ?? ''));
             $this->group->setAddress((string) ($data->group->address ?? ''));
             $this->group->setPostalCode((string) ($data->group->postalCode ?? ''));
-            $this->group->setCity((string)  ($data->group->city ?? ''));
+            $this->group->setCity((string) ($data->group->city ?? ''));
             $this->group->setNip((string) ($data->group->nip ?? ''));
         }
 
@@ -111,16 +111,16 @@ class UserModel extends AbstractModel
         if ($this->user->getIsAdmin()) {
             if ($this->isGroupNip($this->group->getNip())) {
                 http_response_code(422);
-                throw new AppException('Firma z NIP-em: ' . $this->group->getNip() . ' już jest dodana ' , 422);                
+                throw new AppException('Firma z NIP-em: ' . $this->group->getNip() . ' już jest dodana ', 422);
             }
         }
 
         //Sprawdzenie czy login już jest wykorzystany
         if ($this->isUserLogin($this->user->getLogin())) {
             http_response_code(422);
-            throw new AppException('Wybrany login: ' . $this->user->getLogin() . ' już istnieje' , 422);                
+            throw new AppException('Wybrany login: ' . $this->user->getLogin() . ' już istnieje', 422);
         }
-        
+
         $userId = $this->addUserToDB();
         return $this->getUserFromDB($userId);
     }
@@ -135,9 +135,11 @@ class UserModel extends AbstractModel
      * @return array|null
      */
     public function editUser(
-        ?object $data, string $token, string $authorize, int $id
-    ): ?array
-    {
+        ?object $data,
+        string $token,
+        string $authorize,
+        int $id
+    ): ?array {
         $user = $this->getUser($id, $token, $authorize);
         if (!$user) {
             http_response_code(404);
@@ -145,7 +147,7 @@ class UserModel extends AbstractModel
         }
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
+            throw new AppException('Forbidden', 403);
         }
         $this->userData->setFirstName((string) ($data->firstName ?? $user['userData']['firstName']));
         $this->userData->setLastName((string) ($data->lastName ?? $user['userData']['lastName']));
@@ -168,24 +170,25 @@ class UserModel extends AbstractModel
      * @return void
      */
     public function deleteUser(
-        string $token, string $authorize, int $id
-    ): void
-    {
-        if ($authorize !== 'admin' OR !$this->isAdmin($token)) {
+        string $token,
+        string $authorize,
+        int $id
+    ): void {
+        if ($authorize !== 'admin' or !$this->isAdmin($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);            
+            throw new AppException('Forbidden', 403);
         }
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
-        } 
+            throw new AppException('Forbidden', 403);
+        }
         if ($this->isItMyUser($token, $id)) {
             $this->deleteUserFromDB($id);
         } else {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);   
+            throw new AppException('Forbidden', 403);
         }
-     
+
     }
 
     private function getUsersFromDB(?array $params, int $groupId): array
@@ -194,7 +197,7 @@ class UserModel extends AbstractModel
         $offset = (int) ($params['offset'] ?? 0);
         $limit = (int) ($params['limit'] ?? 10);
         $offset = ($offset < 0) ? 0 : $offset;
-        $limit =  ($limit > 25) ? 10 : $limit;
+        $limit = ($limit > 25) ? 10 : $limit;
 
         $sql = "
             SELECT id, login, isActive, isAdmin, createdAt  
@@ -210,17 +213,16 @@ class UserModel extends AbstractModel
             ]
         ];
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $row['fullName'] = $this->getUserFullName($row['id']);
-            $result[] = $row;            
+            $result[] = $row;
         }
         return $result;
     }
 
     private function getAllUserCount(
         int $groupId
-    ): int
-    {
+    ): int {
         $sql = "
             SELECT COUNT(*) AS count 
             FROM Users 
@@ -300,7 +302,7 @@ class UserModel extends AbstractModel
             $row['userData'] = $this->getUserData((int) $row['id']);
             return $row;
         }
-        return null;           
+        return null;
     }
 
     private function addUserToDB(): int
@@ -359,15 +361,14 @@ class UserModel extends AbstractModel
             $stmt->execute();
             $this->db->getConn()->commit();
             return (int) $userId;
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $this->db->getConn()->rollBack();
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
     }
 
-    private function editUserInDB(int $id, bool $admin=false): int
+    private function editUserInDB(int $id, bool $admin = false): int
     {
         try {
             $this->db->getConn()->beginTransaction();
@@ -458,8 +459,7 @@ class UserModel extends AbstractModel
             }
             $this->db->getConn()->commit();
             return (int) $stmt->rowCount();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $this->db->getConn()->rollBack();
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
@@ -474,7 +474,7 @@ class UserModel extends AbstractModel
                 'value' => $id,
                 'type' => \PDO::PARAM_INT,
             ],
-        ];  
+        ];
         try {
             $this->db->getConn()->beginTransaction();
             $sql = "DELETE FROM Events WHERE userId = :id";
@@ -498,8 +498,7 @@ class UserModel extends AbstractModel
             }
             $stmt->execute();
             $this->db->getConn()->commit();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             $this->db->getConn()->rollBack();
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);

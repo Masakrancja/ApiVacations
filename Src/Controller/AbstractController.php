@@ -10,14 +10,14 @@ use ApiVacations\Model\Event\EventModel;
 use ApiVacations\Model\Reason\ReasonModel;
 
 abstract class AbstractController
-{    
+{
     protected Request $request;
     protected AuthModel $authModel;
     protected UserModel $userModel;
     protected GroupModel $groupModel;
     protected EventModel $eventModel;
     protected ReasonModel $reasonModel;
-    
+
     public function __construct()
     {
         $this->request = new Request();

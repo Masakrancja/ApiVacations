@@ -37,7 +37,7 @@ class Logger
     {
         $result = '';
         foreach ($context as $key => $value) {
-            $result .=  date("Y-m-d H:i:s") . ' - ' . $key . ' : ' . $value . "\n";
+            $result .= date("Y-m-d H:i:s") . ' - ' . $key . ' : ' . $value . "\n";
         }
         return $result;
     }

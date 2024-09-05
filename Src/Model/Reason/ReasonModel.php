@@ -3,9 +3,7 @@ declare(strict_types=1);
 namespace ApiVacations\Model\Reason;
 
 use ApiVacations\Model\AbstractModel;
-use ApiVacations\Exceptions\DatabaseException;
 use ApiVacations\Exceptions\AppException;
-use ApiVacations\Helpers\Logger;
 
 class ReasonModel extends AbstractModel
 {
@@ -17,7 +15,7 @@ class ReasonModel extends AbstractModel
      */
     public function getReasons(string $authorize): array
     {
-        if ($authorize === 'admin' OR $authorize === 'user') {
+        if ($authorize === 'admin' or $authorize === 'user') {
             return $this->getReasonsFromDB();
         }
         http_response_code(403);
@@ -33,8 +31,8 @@ class ReasonModel extends AbstractModel
             ORDER BY name ASC 
         ";
         $rows = $this->db->selectProcess($sql, [], 'fetchAll');
-        foreach($rows as $row) {
-            $result[] = $row;            
+        foreach ($rows as $row) {
+            $result[] = $row;
         }
         return $result;
     }

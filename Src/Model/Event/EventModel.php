@@ -20,7 +20,7 @@ class EventModel extends AbstractModel
      * Get all events from Database. Default first 10 events
      *
      * @param array|null $params // keys: int limit, int offset
-     * @param string $token // X-API-KEY token
+     * @param string $token // token
      * @param string $authorize // 'admin' or 'user'
      * @return array
      */
@@ -29,7 +29,7 @@ class EventModel extends AbstractModel
         $offset = (int) ($params['offset'] ?? 0);
         $limit = (int) ($params['limit'] ?? 10);
         $offset = ($offset < 0) ? 0 : $offset;
-        $limit =  ($limit > 25) ? 10 : $limit;
+        $limit = ($limit > 25) ? 10 : $limit;
         $userId = (isset($params['userid'])) ? (int) $params['userid'] : null;
         if ($userId !== null) {
             if (!$this->isItMyUser($token, (int) $userId)) {
@@ -43,10 +43,14 @@ class EventModel extends AbstractModel
             $groupId = $this->getUserGroupId($token);
             return [
                 $this->getEventsFromDBAsAdmin(
-                    $offset, $limit, $groupId, $userId
+                    $offset,
+                    $limit,
+                    $groupId,
+                    $userId
                 ),
                 $this->getCountAllEventsFromDBAsAdmin(
-                    $groupId, $userId
+                    $groupId,
+                    $userId
                 )
             ];
         }
@@ -54,7 +58,9 @@ class EventModel extends AbstractModel
             $userId = $this->getUserId($token);
             return [
                 $this->getEventsFromDBAsUser(
-                    $offset, $limit, $userId
+                    $offset,
+                    $limit,
+                    $userId
                 ),
                 $this->getCountAllEventsFromDBAsUser(
                     $userId
@@ -79,7 +85,7 @@ class EventModel extends AbstractModel
         if ($authorize === 'admin') {
             if ($this->isItMyUser($token, $userId)) {
                 return $this->getEventFromDB($id, false);
-            } 
+            }
         }
         if ($authorize === 'user') {
             if ($this->isItMe($token, $userId)) {
@@ -100,18 +106,18 @@ class EventModel extends AbstractModel
      */
     public function addEvent(?object $data, string $token, string $authorize): ?array
     {
-        if ($authorize !== 'user' OR $this->isAdmin($token)) {
+        if ($authorize !== 'user' or $this->isAdmin($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden. Tylko pracownik może tworzyć urlopy', 403);            
+            throw new AppException('Forbidden. Tylko pracownik może tworzyć urlopy', 403);
         }
         if ($data === null) {
             http_response_code(422);
             throw new AppException('Empty data', 422);
-        } 
+        }
 
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden. Pracownik nieaktywny', 403);  
+            throw new AppException('Forbidden. Pracownik nieaktywny', 403);
         }
 
         $this->event->setUserId(
@@ -134,7 +140,8 @@ class EventModel extends AbstractModel
         }
         $this->event->setDays(
             $this->calculateDays(
-                $this->event->getDateFrom(), $this->event->getDateTo()
+                $this->event->getDateFrom(),
+                $this->event->getDateTo()
             )
         );
 
@@ -143,8 +150,8 @@ class EventModel extends AbstractModel
             (string) ($data->notice ?? null)
         );
         $result = $this->checkUsedDates(
-            $this->getUserId($token), 
-            $this->event->getDateFrom(), 
+            $this->getUserId($token),
+            $this->event->getDateFrom(),
             $this->event->getDateTo()
         );
         if (!empty($result)) {
@@ -172,9 +179,11 @@ class EventModel extends AbstractModel
      * @return array|null
      */
     public function editEvent(
-        ?object $data, string $token, string $authorize, int $id
-    ): ?array
-    {
+        ?object $data,
+        string $token,
+        string $authorize,
+        int $id
+    ): ?array {
         $event = $this->getEvent($id, $token, $authorize);
 
         if (!$event) {
@@ -183,17 +192,17 @@ class EventModel extends AbstractModel
         }
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
+            throw new AppException('Forbidden', 403);
         }
         if ($this->isAdmin($token)) {
             if (
-                isset($data->status) AND 
+                isset($data->status) and
                 !in_array($data->status, $this->possibleEventStatuses)
             ) {
                 http_response_code(422);
                 throw new AppException(
-                    'Incorrect status. Possible only: ' . 
-                    implode(', ', $this->possibleEventStatuses), 
+                    'Incorrect status. Possible only: ' .
+                    implode(', ', $this->possibleEventStatuses),
                     422
                 );
             }
@@ -203,7 +212,7 @@ class EventModel extends AbstractModel
         } else {
             if (isset($data->wantCancel)) {
                 if ($event['status'] === 'approved') {
-                    if ($event['dateFrom'] > Date("Y-m-d"))  {
+                    if ($event['dateFrom'] > Date("Y-m-d")) {
                         if (in_array($data->wantCancel, ["no", "yes"])) {
                             $this->event->setWantCancel($data->wantCancel);
                             $rowCount = $this->setEventWantCancel($id);
@@ -235,18 +244,19 @@ class EventModel extends AbstractModel
                     }
                     $this->event->setDays(
                         $this->calculateDays(
-                            $this->event->getDateFrom(), $this->event->getDateTo()
+                            $this->event->getDateFrom(),
+                            $this->event->getDateTo()
                         )
                     );
                     $this->event->setNotice($data->notice ?? $event['notice']);
 
                     $result = $this->checkUsedDates(
-                        $this->getUserId($token), 
-                        $this->event->getDateFrom(), 
+                        $this->getUserId($token),
+                        $this->event->getDateFrom(),
                         $this->event->getDateTo(),
                         $id
                     );
-        
+
                     if (!empty($result)) {
                         sort($result);
                         $c = count($result);
@@ -275,28 +285,31 @@ class EventModel extends AbstractModel
      * @return void
      */
     public function deleteEvent(
-        string $token, string $authorize, int $id
-    ): void
-    {
-        if ($authorize !== 'user' OR $this->isAdmin($token)) {
+        string $token,
+        string $authorize,
+        int $id
+    ): void {
+        if ($authorize !== 'user' or $this->isAdmin($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);            
+            throw new AppException('Forbidden', 403);
         }
         if (!$this->getEvent($id, $token, $authorize)) {
             http_response_code(404);
-            throw new AppException('Not found', 404);            
+            throw new AppException('Not found', 404);
         }
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
+            throw new AppException('Forbidden', 403);
         }
         $this->deleteEventFromDB($id);
     }
 
     private function getEventsFromDBAsAdmin(
-        int $offset, int $limit, int $groupId, ?int $userId
-    ): array
-    {
+        int $offset,
+        int $limit,
+        int $groupId,
+        ?int $userId
+    ): array {
         $result = [];
         $params = [];
         $sql = "
@@ -320,22 +333,22 @@ class EventModel extends AbstractModel
         $sql .= " ORDER BY createdAt DESC";
         $sql .= " LIMIT " . $offset . ", " . $limit;
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
-        foreach($rows as $row) {
-            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
-            $result[] = $row;            
+        foreach ($rows as $row) {
+            $row['reasonName'] = $this->getReasonName((int) $row['reasonId']);
+            $result[] = $row;
         }
         return $result;
     }
 
     private function getCountAllEventsFromDBAsAdmin(
-        int $groupId, ?int $userId
-    ): int
-    {
+        int $groupId,
+        ?int $userId
+    ): int {
         $sql = "
             SELECT COUNT(*) AS count   
             FROM Events 
             WHERE groupId = :groupId 
-        ";        
+        ";
         $params[] = [
             'key' => ':groupId',
             'value' => $groupId,
@@ -348,15 +361,16 @@ class EventModel extends AbstractModel
                 'value' => $userId,
                 'type' => \PDO::PARAM_INT,
             ];
-        }        
+        }
         $row = $this->db->selectProcess($sql, $params, 'fetch');
         return (int) ($row['count'] ?? 0);
     }
 
     private function getEventsFromDBAsUser(
-        int $offset, int $limit, int $userId
-    ): array
-    {
+        int $offset,
+        int $limit,
+        int $userId
+    ): array {
         $result = [];
         $params = [];
         $sql = "
@@ -372,17 +386,16 @@ class EventModel extends AbstractModel
         $sql .= " ORDER BY createdAt DESC";
         $sql .= " LIMIT " . $offset . ", " . $limit;
         $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
-        foreach($rows as $row) {
-            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
-            $result[] = $row;            
+        foreach ($rows as $row) {
+            $row['reasonName'] = $this->getReasonName((int) $row['reasonId']);
+            $result[] = $row;
         }
         return $result;
     }
 
     private function getCountAllEventsFromDBAsUser(
         int $userId
-    ): int
-    {
+    ): int {
         $sql = "
             SELECT COUNT(*) AS count   
             FROM Events 
@@ -406,9 +419,9 @@ class EventModel extends AbstractModel
         ";
         $params = [
             [
-                "key"=> ":id",
-                "value"=> $id,
-                "type"=> \PDO::PARAM_INT,
+                "key" => ":id",
+                "value" => $id,
+                "type" => \PDO::PARAM_INT,
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
@@ -420,9 +433,9 @@ class EventModel extends AbstractModel
     }
 
     private function getEventFromDB(
-        int $id, bool $notice=false
-    ): ?array
-    {
+        int $id,
+        bool $notice = false
+    ): ?array {
         if ($notice) {
             $sql = "
             SELECT id, userId, groupId, reasonId, dateFrom, dateTo, days, status, notice, wantCancel, createdAt, updatedAt  
@@ -447,10 +460,10 @@ class EventModel extends AbstractModel
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
         if ($row) {
-            $row['reasonName'] = $this->getReasonName((int)$row['reasonId']);
+            $row['reasonName'] = $this->getReasonName((int) $row['reasonId']);
             return $row;
         }
-        return null;           
+        return null;
     }
 
     private function getReasonName(int $reasonId): string
@@ -462,9 +475,9 @@ class EventModel extends AbstractModel
         ";
         $params = [
             [
-                "key"=> ":reasonId",
-                "value"=> $reasonId,
-                "type"=> \PDO::PARAM_INT,
+                "key" => ":reasonId",
+                "value" => $reasonId,
+                "type" => \PDO::PARAM_INT,
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
@@ -489,8 +502,7 @@ class EventModel extends AbstractModel
             $stmt->bindValue(":notice", $this->event->getNotice(), \PDO::PARAM_STR);
             $stmt->execute();
             return (int) $this->db->getConn()->lastInsertId();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -525,8 +537,7 @@ class EventModel extends AbstractModel
             }
             $stmt->execute();
             return (int) $stmt->rowCount();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -584,8 +595,7 @@ class EventModel extends AbstractModel
             }
             $stmt->execute();
             return (int) $stmt->rowCount();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -619,8 +629,7 @@ class EventModel extends AbstractModel
             }
             $stmt->execute();
             return (int) $stmt->rowCount();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -634,7 +643,7 @@ class EventModel extends AbstractModel
                 'value' => $id,
                 'type' => \PDO::PARAM_INT,
             ],
-        ];  
+        ];
         try {
             $sql = "DELETE FROM Events WHERE id = :id";
             $stmt = $this->db->getConn()->prepare($sql);
@@ -642,29 +651,30 @@ class EventModel extends AbstractModel
                 $stmt->bindValue($param['key'], $param['value'], $param['type']);
             }
             $stmt->execute();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
     }
 
     private function calculateDays(
-        string $dateFrom, string $dateTo
-    ): int
-    {
+        string $dateFrom,
+        string $dateTo
+    ): int {
         return (int) (
             floor(
                 (strtotime($dateTo) - strtotime($dateFrom)) / 86400
-            ) 
+            )
             + 1
         );
     }
 
     private function checkUsedDates(
-        int $userId, string $dateFrom, string $dateTo, ?int $eventId = null
-    ): array
-    {
+        int $userId,
+        string $dateFrom,
+        string $dateTo,
+        ?int $eventId = null
+    ): array {
         $result = [];
         $allDays = $this->getAllDays($dateFrom, $dateTo);
 
@@ -680,7 +690,7 @@ class EventModel extends AbstractModel
                 'type' => \PDO::PARAM_INT,
             ]
         ];
-        $rows = $this->db->selectProcess($sql, $params, 'fetchAll') ;
+        $rows = $this->db->selectProcess($sql, $params, 'fetchAll');
         foreach ($rows as $row) {
             if ($eventId !== null) {
                 if ($row['id'] === $eventId) {
@@ -688,7 +698,7 @@ class EventModel extends AbstractModel
                 }
             }
             $commonDays = array_intersect(
-                $allDays, 
+                $allDays,
                 $this->getAllDays($row['dateFrom'], $row['dateTo'])
             );
             foreach ($commonDays as $commonDay) {
@@ -706,7 +716,7 @@ class EventModel extends AbstractModel
         if ($dateFrom > $dateTo) {
             return $result;
         }
-        $date = $dateFrom;     
+        $date = $dateFrom;
         while ($date <= $dateTo) {
             $result[] = $date;
             $date = Date("Y-m-d", strtotime($date) + 24 * 60 * 60);

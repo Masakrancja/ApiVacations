@@ -23,7 +23,7 @@ class Validator
      * @param integer $maxLength
      * @return boolean
      */
-    public static function stringValidate(string $value, int $minLength=0, int $maxLength=20000000): bool
+    public static function stringValidate(string $value, int $minLength = 0, int $maxLength = 20000000): bool
     {
         if (mb_strlen($value, "UTF8") < $minLength) {
             return false;
@@ -42,9 +42,10 @@ class Validator
      * @return boolean
      */
     public static function intValidate(
-        int $value, int $min=0, int $max=PHP_INT_MAX
-    ): bool 
-    {
+        int $value,
+        int $min = 0,
+        int $max = PHP_INT_MAX
+    ): bool {
         if ($value >= $min && $value <= $max) {
             return true;
         }
@@ -79,10 +80,11 @@ class Validator
     }
 
     public static function dateRangeValidate(
-        string $value, string $from, string $to
-    ): bool
-    {
+        string $value,
+        string $from,
+        string $to
+    ): bool {
         return ($value >= $from && $value <= $to);
     }
-    
+
 }

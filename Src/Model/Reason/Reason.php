@@ -2,9 +2,6 @@
 declare(strict_types=1);
 namespace ApiVacations\Model\Reason;
 
-use ApiVacations\Helpers\Validator;
-use ApiVacations\Exceptions\AppException;
-
 class Reason
 {
     private ?int $id = null;
@@ -12,42 +9,42 @@ class Reason
     private ?string $createdAt = null;
     private ?string $updatedAt = null;
 
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id) : void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name) : void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getCreatedAt() : ?string
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?string $createdAt) : void
+    public function setCreatedAt(?string $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt() : ?string
+    public function getUpdatedAt(): ?string
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?string $updatedAt) : void
+    public function setUpdatedAt(?string $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

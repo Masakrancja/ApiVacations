@@ -11,7 +11,7 @@ final class DB
     private static ?DB $instance = null;
     private array $config;
     public \PDO $connect;
-    
+
     private function __construct(array $config)
     {
         $this->config = $config;
@@ -33,9 +33,10 @@ final class DB
     }
 
     public function selectProcess(
-        string $sql, array $params=[], $method='fetch'
-    ): ?array
-    {
+        string $sql,
+        array $params = [],
+        $method = 'fetch'
+    ): ?array {
         try {
             $stmt = $this->getConn()->prepare($sql);
             foreach ($params as $param) {
@@ -51,8 +52,7 @@ final class DB
                 Logger::error('Error method. Only fetch and fetchAll', ['Method' => 'DB::selectProcess', 'File' => 'db.php']);
                 throw new ConfigExcepion('Server error', 500);
             }
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage() . ' - sql query: ' . $sql, ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -62,7 +62,7 @@ final class DB
     {
         $correctKeys = ['host', 'user', 'name', 'pass'];
         foreach ($this->config as $key => $config) {
-            if (empty($config) OR !in_array($key, $correctKeys)) {
+            if (empty($config) or !in_array($key, $correctKeys)) {
                 Logger::error('Error configuration file', ['Method' => 'DB::validate', 'File' => 'db.php']);
                 throw new ConfigExcepion('Server error', 500);
             }
@@ -81,11 +81,10 @@ final class DB
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
                 ]
-            );            
-        }
-        catch (\PDOException $e) {
+            );
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
-        }  
+        }
     }
 }

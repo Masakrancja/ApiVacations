@@ -4,25 +4,54 @@ namespace ApiVacations\Controller;
 
 use ApiVacations\Controller\AbstractController;
 use ApiVacations\Exceptions\AppException;
+use ApiVacations\ApiDoc;
 class ApiController extends AbstractController
 {
     public function run(): void
     {
         [$path, $param] = $this->request->getUriTable();
-
         $method = $this->request->getMethod();
         $params = $this->request->getParams();
         $rawData = $this->request->getRawData();
         $token = null;
 
+        if ($path !== null) {
+            $allowed_origins = ['http://api.vacations.local', 'http://127.0.0.1', 'http://localhost'];
+
+            if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+                header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+            }
+
+            // Allow specific methods
+            header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
+
+            // Allow specific headers
+            header("Access-Control-Allow-Headers: Content-Type, Authorization");
+            header("Content-type: application/json; charset=UTF-8");
+
+            // Handle preflight (OPTIONS) requests
+            if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+                // If you want to allow cookies and other credentials
+                header("Access-Control-Allow-Credentials: true");
+
+                // Exit early for OPTIONS requests
+                exit(0);
+            }
+        } else {
+            header("Content-type: text/plain; charset=UTF-8");
+        }
+
         $authorizeAllowed = true;
-        if ($method === 'POST' AND $path === 'users') {
+        if ($method === 'POST' and $path === 'users') {
             $authorizeAllowed = false;
         }
-        if ($method === 'POST' AND $path === 'auth') {
+        if ($method === 'POST' and $path === 'auth') {
             $authorizeAllowed = false;
         }
-        if ($method === 'GET' AND $path === 'groups') {
+        if ($method === 'GET' and $path === 'groups') {
+            $authorizeAllowed = false;
+        }
+        if ($method === 'GET' and $path === null) {
             $authorizeAllowed = false;
         }
         if ($authorizeAllowed) {
@@ -31,30 +60,53 @@ class ApiController extends AbstractController
             );
         }
 
-        switch($path) {
+        switch ($path) {
+            case null:
+                $this->HelloController();
+                break;
             case 'users':
                 $this->UsersControler(
-                    $rawData, $method, $token, $param, $params
+                    $rawData,
+                    $method,
+                    $token,
+                    $param,
+                    $params
                 );
                 break;
             case 'groups':
                 $this->GroupsControler(
-                    $rawData, $method, $token, $param, $params
+                    $rawData,
+                    $method,
+                    $token,
+                    $param,
+                    $params
                 );
                 break;
             case 'events':
                 $this->EventsControler(
-                    $rawData, $method, $token, $param, $params
+                    $rawData,
+                    $method,
+                    $token,
+                    $param,
+                    $params
                 );
                 break;
             case 'reasons':
                 $this->ReasonsControler(
-                    $rawData, $method, $token, $param, $params
+                    $rawData,
+                    $method,
+                    $token,
+                    $param,
+                    $params
                 );
-                break;   
+                break;
             case 'auth':
                 $this->AuthControler(
-                    $rawData, $method, $token, $param, $params
+                    $rawData,
+                    $method,
+                    $token,
+                    $param,
+                    $params
                 );
                 break;
             default:
@@ -63,17 +115,27 @@ class ApiController extends AbstractController
         }
     }
 
-    private function UsersControler(
-        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
-    ): void
+    private function HelloController(): void
     {
+        (new ApiDoc())->show();
+    }
+
+    private function UsersControler(
+        ?object $rawData,
+        string $method,
+        ?string $token,
+        $param = null,
+        $params = []
+    ): void {
         $result = [];
         if ($method === 'GET') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
                 $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
                 $result['response'] = $this->userModel->getUser(
-                    $param, $token, $authorize
+                    $param,
+                    $token,
+                    $authorize
                 );
                 if ($result['response'] === null) {
                     http_response_code(404);
@@ -81,11 +143,13 @@ class ApiController extends AbstractController
                 }
             } else {
                 [
-                    $result['response'], 
+                    $result['response'],
                     $result['allRows'],
                 ] = $this->userModel->getUsers(
-                    $params, $token, 'admin'
-                );
+                            $params,
+                            $token,
+                            'admin'
+                        );
 
             }
             $result['code'] = 200;
@@ -95,20 +159,20 @@ class ApiController extends AbstractController
         } elseif ($method === 'PATCH') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
-                $result['response'] = $this->userModel->editUser($rawData, $token, $authorize, $param); 
+                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
+                $result['response'] = $this->userModel->editUser($rawData, $token, $authorize, $param);
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 404);               
+                throw new AppException('Not found', 404);
             }
             $result['code'] = 200;
-        } elseif ($method === 'DELETE') { 
+        } elseif ($method === 'DELETE') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $this->userModel->deleteUser($token, 'admin', $param); 
+                $this->userModel->deleteUser($token, 'admin', $param);
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 404);               
+                throw new AppException('Not found', 404);
             }
             $result['code'] = 204;
         } else {
@@ -118,13 +182,16 @@ class ApiController extends AbstractController
         }
         http_response_code($result['code']);
         $result['status'] = 'OK';
-        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
     }
 
     private function GroupsControler(
-        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
-    ): void
-    {
+        ?object $rawData,
+        string $method,
+        ?string $token,
+        $param = null,
+        $params = []
+    ): void {
         $result = [];
         if ($method === 'GET') {
             if ($param !== null) {
@@ -141,32 +208,37 @@ class ApiController extends AbstractController
         } elseif ($method === 'PATCH') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $result['response'] = $this->groupModel->editGroup($rawData, $token, 'admin', $param); 
+                $result['response'] = $this->groupModel->editGroup($rawData, $token, 'admin', $param);
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 404);               
+                throw new AppException('Not found', 404);
             }
         } else {
             header('Allow: GET, PATCH');
             http_response_code(405);
             throw new AppException('Method not allowed', 405);
-        }        
+        }
         http_response_code(200);
         $result['status'] = 'OK';
-        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
     }
 
     private function EventsControler(
-        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
-    ): void
-    {
+        ?object $rawData,
+        string $method,
+        ?string $token,
+        $param = null,
+        $params = []
+    ): void {
         $result = [];
         if ($method === 'GET') {
             $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
                 $result['response'] = $this->eventModel->getEvent(
-                    $param, $token, $authorize
+                    $param,
+                    $token,
+                    $authorize
                 );
                 if ($result['response'] === null) {
                     http_response_code(404);
@@ -174,35 +246,39 @@ class ApiController extends AbstractController
                 }
             } else {
                 [
-                    $result['response'], 
+                    $result['response'],
                     $result['allRows'],
                 ] = $this->eventModel->getEvents(
-                    $params, $token, $authorize
-                );
+                            $params,
+                            $token,
+                            $authorize
+                        );
             }
             $result['code'] = 200;
         } elseif ($method === 'POST') {
             $result['response'] = $this->eventModel->addEvent(
-                $rawData, $token, 'user'
+                $rawData,
+                $token,
+                'user'
             );
             $result['code'] = 201;
         } elseif ($method === 'PATCH') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);  
-                $result['response'] = $this->eventModel->editEvent($rawData, $token, $authorize, $param); 
+                $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
+                $result['response'] = $this->eventModel->editEvent($rawData, $token, $authorize, $param);
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 404);               
+                throw new AppException('Not found', 404);
             }
             $result['code'] = 200;
         } elseif ($method === 'DELETE') {
             if ($param !== null) {
                 $param = $this->request->paramValidateInt($param);
-                $this->eventModel->deleteEvent($token, 'user', $param); 
+                $this->eventModel->deleteEvent($token, 'user', $param);
             } else {
                 http_response_code(404);
-                throw new AppException('Not found', 404);               
+                throw new AppException('Not found', 404);
             }
             $result['code'] = 204;
         } else {
@@ -212,13 +288,16 @@ class ApiController extends AbstractController
         }
         http_response_code($result['code']);
         $result['status'] = 'OK';
-        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
     }
 
     private function ReasonsControler(
-        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
-    ): void
-    {
+        ?object $rawData,
+        string $method,
+        ?string $token,
+        $param = null,
+        $params = []
+    ): void {
         $result = [];
         if ($method === 'GET') {
             $authorize = $this->authModel->getAuthorize($token, ['admin', 'user']);
@@ -233,13 +312,16 @@ class ApiController extends AbstractController
         }
         http_response_code($result['code']);
         $result['status'] = 'OK';
-        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
     }
 
     private function AuthControler(
-        ?object $rawData, string $method, ?string $token, $param=null, $params=[]
-    ): void
-    {
+        ?object $rawData,
+        string $method,
+        ?string $token,
+        $param = null,
+        $params = []
+    ): void {
         $result = [];
         if ($method === 'POST') {
             $result['response'] = $this->authModel->createAuth(
@@ -248,7 +330,7 @@ class ApiController extends AbstractController
             $result['code'] = 201;
         } elseif ($method === 'PATCH') {
             $result['response'] = $this->authModel->refreshToken($token);
-            $result['code'] = 200;   
+            $result['code'] = 200;
         } elseif ($method === 'GET') {
             $result['response'] = $this->authModel->getAuth($token);
             $result['code'] = 200;
@@ -259,6 +341,6 @@ class ApiController extends AbstractController
         }
         http_response_code($result['code']);
         $result['status'] = 'OK';
-        echo json_encode($result, JSON_UNESCAPED_SLASHES , JSON_UNESCAPED_UNICODE);
+        echo json_encode($result, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
     }
 }

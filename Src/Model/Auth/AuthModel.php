@@ -43,9 +43,9 @@ class AuthModel extends AbstractModel
             ";
             $params = [
                 [
-                    "key"=> ":userId",
-                    "value"=> $userId,
-                    "type"=> \PDO::PARAM_INT,
+                    "key" => ":userId",
+                    "value" => $userId,
+                    "type" => \PDO::PARAM_INT,
                 ],
             ];
             $row = $this->db->selectProcess($sql, $params, "fetch");
@@ -66,8 +66,7 @@ class AuthModel extends AbstractModel
                     $stmt->bindValue(':token', $token, \PDO::PARAM_STR);
                     $stmt->execute();
                     return ['token' => $newToken, 'validAt' => $validAt];
-                }
-                catch (\PDOException $e) {
+                } catch (\PDOException $e) {
                     Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
                     throw new DatabaseException('Server error', 500);
                 }
@@ -88,14 +87,14 @@ class AuthModel extends AbstractModel
                 WHERE id = :userId";
                 $params = [
                     [
-                        "key"=> ":userId",
-                        "value"=> $userId,
-                        "type"=> \PDO::PARAM_INT,
+                        "key" => ":userId",
+                        "value" => $userId,
+                        "type" => \PDO::PARAM_INT,
                     ],
                 ];
                 $row = $this->db->selectProcess($sql, $params, "fetch");
                 if ($row) {
-                    return $row;          
+                    return $row;
                 }
             }
         }
@@ -161,7 +160,7 @@ class AuthModel extends AbstractModel
     private function isUserToken(string $token): bool
     {
         return !$this->getAdminValue($token);
-    }    
+    }
 
     private function getAdminValue(string $token): bool
     {
@@ -180,8 +179,8 @@ class AuthModel extends AbstractModel
         }
         http_response_code(403);
         throw new AppException('Forbidden', 403);
-    }   
-    
+    }
+
     private function getAuthData(string $login, string $pass): ?array
     {
         $sql = "
@@ -191,14 +190,14 @@ class AuthModel extends AbstractModel
         ";
         $params = [
             [
-                "key"=> ":login",
-                "value"=> $login,
-                "type"=> \PDO::PARAM_STR,
+                "key" => ":login",
+                "value" => $login,
+                "type" => \PDO::PARAM_STR,
             ],
             [
-                "key"=> ":pass",
-                "value"=> md5($pass),
-                "type"=> \PDO::PARAM_STR,                
+                "key" => ":pass",
+                "value" => md5($pass),
+                "type" => \PDO::PARAM_STR,
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, "fetch");
@@ -207,7 +206,7 @@ class AuthModel extends AbstractModel
             [$token, $validAt] = $this->createToken($row['id'], $login, md5($pass));
             $row['token'] = $token;
             $row['validAt'] = $validAt;
-            return $row;          
+            return $row;
         }
         return null;
     }
@@ -224,8 +223,7 @@ class AuthModel extends AbstractModel
             $stmt->bindValue(':userId', $userId, \PDO::PARAM_INT);
             $stmt->bindValue(':valid', $valid, \PDO::PARAM_STR);
             $stmt->execute();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }
@@ -246,8 +244,7 @@ class AuthModel extends AbstractModel
             $stmt->bindValue(':validAt', $validAt, \PDO::PARAM_STR);
             $stmt->execute();
             return [$token, $validAt];
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }

@@ -13,7 +13,7 @@ class GroupModel extends AbstractModel
      * Get all groups from Database. Default first 10 users
      *
      * @param array|null $params // keys: int limit, int offset
-     * @param string $token // X-API-KEY token
+     * @param string $token
      * @param string $authorize // 'admin' or 'user'
      * @return array
      */
@@ -26,7 +26,7 @@ class GroupModel extends AbstractModel
      * Get particular group
      *
      * @param integer $id // group ID
-     * @param string $token // X-API-KEY token
+     * @param string $token 
      * @param string $authorize // 'admin' or 'user'
      * @return array|null
      */
@@ -45,22 +45,24 @@ class GroupModel extends AbstractModel
      * @return array|null
      */
     public function editGroup(
-        ?object $data, string $token, string $authorize, int $id
-    ): ?array
-    {
+        ?object $data,
+        string $token,
+        string $authorize,
+        int $id
+    ): ?array {
         $groupId = $this->getUserGroupId($token);
         $group = $this->getGroup($id);
         if (!$group) {
             http_response_code(404);
-            throw new AppException('Not found', 404);            
+            throw new AppException('Not found', 404);
         }
-        if ($groupId <> $id OR !$this->isAdmin($token)) {
+        if ($groupId <> $id or !$this->isAdmin($token)) {
             http_response_code(403);
             throw new AppException('Forbidden', 403);
         }
         if (!$this->isUserActive($token)) {
             http_response_code(403);
-            throw new AppException('Forbidden', 403);  
+            throw new AppException('Forbidden', 403);
         }
         $this->group->setName((string) ($data->name ?? $group['name']));
         $this->group->setAddress((string) ($data->address ?? $group['address']));
@@ -79,8 +81,8 @@ class GroupModel extends AbstractModel
             ORDER BY name ASC 
         ";
         $rows = $this->db->selectProcess($sql, [], 'fetchAll');
-        foreach($rows as $row) {
-            $result[] = $row;            
+        foreach ($rows as $row) {
+            $result[] = $row;
         }
         return $result;
     }
@@ -103,7 +105,7 @@ class GroupModel extends AbstractModel
         if ($row) {
             return $row;
         }
-        return null;           
+        return null;
     }
 
     private function editGroupInDB(int $id): int
@@ -151,10 +153,9 @@ class GroupModel extends AbstractModel
                 $stmt->bindValue($param['key'], $param['value'], $param['type']);
             }
             $stmt->execute();
-    
+
             return (int) $stmt->rowCount();
-        }
-        catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             Logger::error($e->getMessage(), ['Line' => $e->getLine(), 'File' => $e->getFile()]);
             throw new DatabaseException('Server error', 500);
         }

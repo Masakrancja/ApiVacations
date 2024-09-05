@@ -1,5 +1,5 @@
 <?php
-declare(strict_types= 1);
+declare(strict_types=1);
 namespace ApiVacations\Model;
 
 use ApiVacations\Config\DBConfig;
@@ -56,7 +56,7 @@ abstract class AbstractModel
             ]
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
-        return (bool) $row;        
+        return (bool) $row;
     }
 
     protected function isUserLogin(string $login): bool
@@ -70,7 +70,7 @@ abstract class AbstractModel
             ]
         ];
         $row = $this->db->selectProcess($sql, $params, 'fetch');
-        return (bool) $row;  
+        return (bool) $row;
     }
 
     protected function getUserGroupId(string $token): int
@@ -154,7 +154,7 @@ abstract class AbstractModel
                 'type' => \PDO::PARAM_INT,
             ]
         ];
-        return (bool) $this->db->selectProcess($sql, $params, 'fetch');       
+        return (bool) $this->db->selectProcess($sql, $params, 'fetch');
     }
 
     protected function checkReason(int $id): int
@@ -166,20 +166,20 @@ abstract class AbstractModel
         ";
         $params = [
             [
-                "key"=> ":id",
+                "key" => ":id",
                 "value" => $id,
-                "type"=> \PDO::PARAM_INT,
+                "type" => \PDO::PARAM_INT,
             ],
         ];
-        $row =  $this->db->selectProcess($sql, $params, "fetch");
+        $row = $this->db->selectProcess($sql, $params, "fetch");
         if ($row) {
             return $id;
         }
         http_response_code(422);
-        throw new AppException('Niepoprawny powód urlopu', 422);        
+        throw new AppException('Niepoprawny powód urlopu', 422);
     }
 
-    protected function getUserId(string $token): int
+    protected function getUserId(string $token): ?int
     {
         if (!$this->isTokenValid($token)) {
             return null;
@@ -191,9 +191,9 @@ abstract class AbstractModel
         ";
         $params = [
             [
-                "key"=> ":token",
-                "value"=> $token,
-                "type"=> \PDO::PARAM_STR,                
+                "key" => ":token",
+                "value" => $token,
+                "type" => \PDO::PARAM_STR,
             ],
         ];
         $row = $this->db->selectProcess($sql, $params, "fetch");
@@ -214,9 +214,9 @@ abstract class AbstractModel
             ";
             $params = [
                 [
-                    "key"=> ":token",
-                    "value"=> $token,
-                    "type"=> \PDO::PARAM_STR,
+                    "key" => ":token",
+                    "value" => $token,
+                    "type" => \PDO::PARAM_STR,
                 ],
             ];
             $row = $this->db->selectProcess($sql, $params, "fetch");

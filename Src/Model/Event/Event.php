@@ -112,7 +112,7 @@ class Event
         $from = Date("Y-m-d", time() - 90 * 86400);
         $to = Date("Y-m-d", time() + 90 * 86400);
         if (!Validator::dateRangeValidate($dateFrom, $from, $to)) {
-            throw new AppException("Data rozpoczęcia urlopu musi być z zakresu: " . $from . " - " . $to , 422);
+            throw new AppException("Data rozpoczęcia urlopu musi być z zakresu: " . $from . " - " . $to, 422);
         }
         $this->dateFrom = $dateFrom;
     }
@@ -129,7 +129,7 @@ class Event
         $from = Date("Y-m-d", time() - 90 * 86400);
         $to = Date("Y-m-d", time() + 90 * 86400);
         if (!Validator::dateRangeValidate($dateTo, $from, $to)) {
-            throw new AppException("Data zakończenia urlopu musi być z zakresu: " . $from . " - " . $to , 422);
+            throw new AppException("Data zakończenia urlopu musi być z zakresu: " . $from . " - " . $to, 422);
         }
         $this->dateTo = $dateTo;
     }

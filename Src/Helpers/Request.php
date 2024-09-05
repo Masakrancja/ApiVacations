@@ -25,8 +25,8 @@ class Request
         $uri = strtolower($this->getRedirectUrl());
         if (($pos = strpos($uri, '?')) !== false) {
             $uri = substr($uri, 0, $pos);
-        } 
-        $table =  explode('/', $uri);
+        }
+        $table = explode('/', $uri);
         $result[] = $table[1] ?? null;
         $result[] = $table[2] ?? null;
         return $result;
@@ -40,8 +40,8 @@ class Request
             foreach ($queries as $query) {
                 $query = explode('=', $query);
                 if (
-                    isset($query[0]) && 
-                    isset($query[1]) && 
+                    isset($query[0]) &&
+                    isset($query[1]) &&
                     in_array(strtolower($query[0]), $this->possibleParamKeys)
                 ) {
                     $result[$query[0]] = $query[1];

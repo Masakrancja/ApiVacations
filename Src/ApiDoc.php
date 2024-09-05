@@ -325,7 +325,9 @@ class ApiDoc
           "response": [
             {
               "id": int,
-              "name": "string"
+              "name": "string",
+              "nip": "string",
+              "city": "string",
             }
           ],
           "status": "OK"

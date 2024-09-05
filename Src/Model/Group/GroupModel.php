@@ -76,7 +76,7 @@ class GroupModel extends AbstractModel
     {
         $result = [];
         $sql = "
-            SELECT id, name 
+            SELECT id, name, city, nip 
             FROM `Groups`  
             ORDER BY name ASC 
         ";

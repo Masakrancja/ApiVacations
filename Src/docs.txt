@@ -316,7 +316,9 @@ Title: Get simple information about all groups
       "response": [
         {
           "id": int,
-          "name": "string"
+          "name": "string",
+          "nip": "string",
+          "city": "string",
         }
       ],
       "status": "OK"

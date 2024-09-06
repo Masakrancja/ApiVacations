@@ -80,6 +80,7 @@ class UserModel extends AbstractModel
         }
         $this->user->setLogin((string) ($data->login ?? ''));
         $this->user->setPass((string) ($data->pass ?? ''));
+        $this->user->setPass2((string) ($data->pass2 ?? ''));
 
         //UserData
         $this->userData->setFirstName((string) ($data->userData->firstName ?? ''));

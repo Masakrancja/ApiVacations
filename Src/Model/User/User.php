@@ -11,6 +11,7 @@ class User
     private ?int $groupId = null;
     private string $login;
     private string $pass;
+    private string $pass2;
     private bool $isActive = false;
     private bool $isAdmin = false;
     private ?string $createdAt = null;
@@ -65,6 +66,20 @@ class User
             throw new AppException("Hasło musi zawierać od 4 do 20 znaków", 422);
         }
         $this->pass = $pass;
+    }
+
+    public function getPass2(): string
+    {
+        return $this->pass2;
+    }
+
+    public function setPass2(string $pass2): void
+    {
+        $pass = $this->getPass() ?? "";
+        if ($pass !== $pass2) {
+            throw new AppException("Podane hasła są niezgodne", 422);
+        }
+        $this->pass2 = $pass2;
     }
 
     public function getIsActive(): bool

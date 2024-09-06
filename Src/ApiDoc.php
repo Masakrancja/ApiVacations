@@ -107,6 +107,7 @@ class ApiDoc
         {
           "login":"string", //required
           "pass":"string", //required
+          "pass2":"string", //required must be equal pass
           "isAdmin":false, //required
           "userData":
             {

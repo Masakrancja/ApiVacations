@@ -27,9 +27,9 @@ class EventModel extends AbstractModel
     public function getEvents(?array $params, string $token, string $authorize): array
     {
         $offset = (int) ($params['offset'] ?? 0);
-        $limit = (int) ($params['limit'] ?? 10);
-        $offset = ($offset < 0) ? 0 : $offset;
-        $limit = ($limit > 25) ? 10 : $limit;
+        $limit = (int) ($params['limit'] ?? 1000);
+        // $offset = ($offset < 0) ? 0 : $offset;
+        // $limit = ($limit > 25) ? 10 : $limit;
         $userId = (isset($params['userid'])) ? (int) $params['userid'] : null;
         if ($userId !== null) {
             if (!$this->isItMyUser($token, (int) $userId)) {

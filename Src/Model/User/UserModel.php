@@ -10,7 +10,7 @@ use ApiVacations\Helpers\Logger;
 class UserModel extends AbstractModel
 {
     /**
-     * Get all users from Database. Default first 10 users
+     * Get all users from Database.
      *
      * @param array|null $params // keys: int limit, int offset
      * @param string $token // Bearer
@@ -196,9 +196,9 @@ class UserModel extends AbstractModel
     {
         $result = [];
         $offset = (int) ($params['offset'] ?? 0);
-        $limit = (int) ($params['limit'] ?? 10);
-        $offset = ($offset < 0) ? 0 : $offset;
-        $limit = ($limit > 25) ? 10 : $limit;
+        $limit = (int) ($params['limit'] ?? 1000);
+        // $offset = ($offset < 0) ? 0 : $offset;
+        // $limit = ($limit > 25) ? 10 : $limit;
 
         $sql = "
             SELECT id, login, isActive, isAdmin, createdAt  

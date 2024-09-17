@@ -1,6 +1,16 @@
 Search.appendIndex(
     [
                 {
+            "fqsen": "\\ApiVacations\\ApiDoc",
+            "name": "ApiDoc",
+            "summary": "",
+            "url": "classes/ApiVacations-ApiDoc.html"
+        },                {
+            "fqsen": "\\ApiVacations\\ApiDoc\u003A\u003Ashow\u0028\u0029",
+            "name": "show",
+            "summary": "",
+            "url": "classes/ApiVacations-ApiDoc.html#method_show"
+        },                {
             "fqsen": "\\ApiVacations\\Controller\\AbstractController",
             "name": "AbstractController",
             "summary": "",
@@ -493,7 +503,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel\u003A\u003AgetGroups\u0028\u0029",
             "name": "getGroups",
-            "summary": "Get\u0020all\u0020groups\u0020from\u0020Database.\u0020Default\u0020first\u002010\u0020users",
+            "summary": "Get\u0020all\u0020groups\u0020from\u0020Database.",
             "url": "classes/ApiVacations-Model-Group-GroupModel.html#method_getGroups"
         },                {
             "fqsen": "\\ApiVacations\\Model\\Group\\GroupModel\u003A\u003AgetGroup\u0028\u0029",
@@ -605,6 +615,16 @@ Search.appendIndex(
             "name": "setPass",
             "summary": "",
             "url": "classes/ApiVacations-Model-User-User.html#method_setPass"
+        },                {
+            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AgetPass2\u0028\u0029",
+            "name": "getPass2",
+            "summary": "",
+            "url": "classes/ApiVacations-Model-User-User.html#method_getPass2"
+        },                {
+            "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AsetPass2\u0028\u0029",
+            "name": "setPass2",
+            "summary": "",
+            "url": "classes/ApiVacations-Model-User-User.html#method_setPass2"
         },                {
             "fqsen": "\\ApiVacations\\Model\\User\\User\u003A\u003AgetIsActive\u0028\u0029",
             "name": "getIsActive",
@@ -768,7 +788,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetUsers\u0028\u0029",
             "name": "getUsers",
-            "summary": "Get\u0020all\u0020users\u0020from\u0020Database.\u0020Default\u0020first\u002010\u0020users",
+            "summary": "Get\u0020all\u0020users\u0020from\u0020Database.",
             "url": "classes/ApiVacations-Model-User-UserModel.html#method_getUsers"
         },                {
             "fqsen": "\\ApiVacations\\Model\\User\\UserModel\u003A\u003AgetUser\u0028\u0029",
@@ -796,15 +816,15 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/default.html"
         },                {
-            "fqsen": "\\ApiVacations\\Controller",
-            "name": "Controller",
-            "summary": "",
-            "url": "namespaces/apivacations-controller.html"
-        },                {
             "fqsen": "\\ApiVacations",
             "name": "ApiVacations",
             "summary": "",
             "url": "namespaces/apivacations.html"
+        },                {
+            "fqsen": "\\ApiVacations\\Controller",
+            "name": "Controller",
+            "summary": "",
+            "url": "namespaces/apivacations-controller.html"
         },                {
             "fqsen": "\\ApiVacations\\Debug",
             "name": "Debug",

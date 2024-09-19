@@ -1,9 +1,16 @@
 {
     "name": "piotr/api_vacations",
     "require": {},
+    
     "autoload": {
         "psr-4": {
             "ApiVacations\\": "Src/"
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "Piotr Pietrzak",
+            "email": "piotrpietrzak145@gmail.com"
+        }
+    ]
 }

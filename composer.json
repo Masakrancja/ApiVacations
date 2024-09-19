@@ -1,5 +1,5 @@
 {
-    "name": "your-name/your-project",
+    "name": "piotr/api_vacations",
     "require": {},
     "autoload": {
         "psr-4": {

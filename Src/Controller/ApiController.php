@@ -16,17 +16,6 @@ class ApiController extends AbstractController
         $token = null;
 
         if ($path !== null) {
-            $allowed_origins = ['http://api.vacations.local', 'http://127.0.0.1', 'http://localhost'];
-
-            if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
-                header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
-            }
-
-            // Allow specific methods
-            header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
-
-            // Allow specific headers
-            header("Access-Control-Allow-Headers: Content-Type, Authorization");
             header("Content-type: application/json; charset=UTF-8");
 
             // Handle preflight (OPTIONS) requests

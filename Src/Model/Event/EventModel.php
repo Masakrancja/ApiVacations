@@ -681,7 +681,7 @@ class EventModel extends AbstractModel
         $sql = "
             SELECT id, dateFrom, dateTo 
             FROM Events 
-            WHERE userId = :userId
+            WHERE userId = :userId && status != 'cancelled'
             ";
         $params = [
             [

@@ -30,19 +30,23 @@ class ApiController extends AbstractController
             header("Content-type: text/plain; charset=UTF-8");
         }
 
-        $authorizeAllowed = true;
-        if ($method === 'POST' and $path === 'users') {
-            $authorizeAllowed = false;
+        $authorizeAllowed = false;
+        if ($method !== 'POST' and $path === 'users') {
+            $authorizeAllowed = true;
         }
-        if ($method === 'POST' and $path === 'auth') {
-            $authorizeAllowed = false;
+        if ($method !== 'GET' and $path === 'groups') {
+            $authorizeAllowed = true;
         }
-        if ($method === 'GET' and $path === 'groups') {
-            $authorizeAllowed = false;
+        if ($path === 'events') {
+            $authorizeAllowed = true;
         }
-        if ($method === 'GET' and $path === null) {
-            $authorizeAllowed = false;
+        if ($path === 'reasons') {
+            $authorizeAllowed = true;
         }
+        if ($method !== 'POST' and $path === 'auth') {
+            $authorizeAllowed = true;
+        }
+
         if ($authorizeAllowed) {
             $token = $this->authModel->checkToken(
                 $this->authModel->getTokenFromHeader()

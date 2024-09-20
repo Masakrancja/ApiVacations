@@ -9,10 +9,15 @@
 
 4. Run `composer install`
 
-5. Instructions:
+5. Set privileges 777 to `Log` directory
+    `chmod 777 ./Log`
+
+6. Copy `Src/Config/config_sample.php` to `Src/Config/config.php` and fill it correct database credentials
+
+6. Instructions:
 
 - Api routes: `docs.txt`
 - phpdoc: `docs/`
 
-6. If you don't want install or deploy - try it in followed link:
+7. If you don't want install or deploy - try it followed link:
    https://api.vacations.kefas.ovh/

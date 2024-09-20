@@ -10,6 +10,8 @@
 declare(strict_types= 1);
 namespace ApiVacations\Config;
 
+use \ApiVacations\Debug\Dump;
+
 /**
  * Class store credentials to database
  */
@@ -17,9 +19,9 @@ class DBConfig
 {
   private static array $config = [
     "host"=> "localhost",
-    "name"=> "Vacations",
-    "user"=> "root",
-    "pass"=> "dupablada2000"
+    "name"=> "db_name",
+    "user"=> "db_user",
+    "pass"=> "db_password"
   ];
 
   /**
@@ -27,6 +29,10 @@ class DBConfig
    */
   public static function getConfig(): array
   {
+    if (file_exists(__DIR__ . '/config.php')) {
+      $config = include __DIR__ . '/config.php';
+      self::$config = $config;
+    }
     return self::$config;
   }
 }

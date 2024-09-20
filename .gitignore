@@ -1,3 +1,4 @@
 vendor/
 .phpdoc/
 Log/log.txt
+Src/Config/config.php

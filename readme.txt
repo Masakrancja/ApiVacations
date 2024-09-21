@@ -5,7 +5,7 @@
 
 2. If you use apache2 as server www - check if you have enable "rewrite" and "headers" modules
 
-3. Edit file `.htaccess` for your preferences
+3. Edit file `.htaccess` and change your domain name if not localhost
 
 4. Run `composer install`
 
@@ -16,8 +16,9 @@
 
 6. Instructions:
 
-- Api routes: `docs.txt`
+- api endpoints: `docs.txt`
 - phpdoc: `docs/`
+- schema: `databases/schema.sql`
 
 7. If you don't want install or deploy - try it followed link:
    https://api.vacations.kefas.ovh/

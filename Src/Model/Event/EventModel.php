@@ -242,6 +242,7 @@ class EventModel extends AbstractModel
                     if ($this->event->getDateFrom() > $this->event->getDateTo()) {
                         throw new AppException('Data początkowa musi być mniejsza lub równa od daty końcowej', 422);
                     }
+
                     $this->event->setDays(
                         $this->calculateDays(
                             $this->event->getDateFrom(),
@@ -719,7 +720,7 @@ class EventModel extends AbstractModel
         $date = $dateFrom;
         while ($date <= $dateTo) {
             $result[] = $date;
-            $date = Date("Y-m-d", strtotime($date) + 24 * 60 * 60);
+            $date = Date("Y-m-d", strtotime($date . ' + 1 day'));
         }
         return $result;
     }
